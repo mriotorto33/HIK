@@ -3,17 +3,15 @@ import { Link } from 'react-router-dom';
 import { siteData } from '../data/mock';
 import {
   AlertTriangle, Shield, Scale, ArrowRight, Cpu,
-  User, FileText, Hash, Layers, Globe, Timer, Lock
+  User, FileText, Hash, Layers, Globe, Lock
 } from 'lucide-react';
 
 const useScrollReveal = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('revealed');
-        });
-      },
+      (entries) => entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('revealed');
+      }),
       { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     );
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
@@ -26,90 +24,68 @@ const ExecutiveSummaryPage = () => {
 
   return (
     <div>
-      {/* ===== HERO ===== */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 dot-grid" />
-        <div className="glow-gold w-[400px] h-[400px] top-20 right-10" />
-        <div className="max-w-5xl mx-auto px-6 lg:px-8 relative z-10">
-          <p className="hero-title text-xs uppercase tracking-[0.3em] text-[#C9A84C] mb-6 font-medium">
-            Executive Summary
-          </p>
-          <h1 className="hero-subtitle text-4xl md:text-6xl font-extrabold text-[#F0F0F2] tracking-tight leading-[1.1] mb-4">
-            HumanisKind (HIK)
-          </h1>
-          <p className="hero-desc text-xl text-[#C9A84C] font-medium">
-            Deterministic AI Governance Infrastructure
-          </p>
-        </div>
-      </section>
-
-      <div className="gold-line max-w-7xl mx-auto" />
-
-      {/* ===== PROBLEM ===== */}
-      <section className="section-spacing">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="reveal glass-card rounded-2xl p-8 lg:p-10">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
-                <AlertTriangle size={18} className="text-red-400" />
-              </div>
-              <h2 className="text-2xl font-bold text-[#F0F0F2]">The Problem</h2>
-            </div>
-            <p className="text-lg text-[#8A8A9B] leading-relaxed mb-6">
-              {siteData.problem.description}
-            </p>
-            <p className="text-[#C9A84C] font-medium quote-line">
-              {siteData.problem.highlight}
-            </p>
+      {/* ===== HERO (Dark) ===== */}
+      <section className="relative pt-[72px] overflow-hidden">
+        <div className="bg-[#2D2D2D] pt-16 pb-20">
+          <div className="max-w-5xl mx-auto px-6 lg:px-8">
+            <p className="hero-title text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-5 font-semibold">Executive Summary</p>
+            <h1 className="hero-subtitle text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-4">HumanisKind (HIK)</h1>
+            <p className="hero-desc text-xl text-[#E8761D] font-medium">Deterministic AI Governance Infrastructure</p>
           </div>
         </div>
+        <div className="h-1 bg-gradient-to-r from-transparent via-[#E8761D] to-transparent" />
       </section>
 
-      {/* ===== SOLUTION ===== */}
-      <section className="pb-20">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="reveal glass-card rounded-2xl p-8 lg:p-10">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-[#C9A84C]/10 flex items-center justify-center">
-                <Shield size={18} className="text-[#C9A84C]" />
+      {/* ===== PROBLEM & SOLUTION (White) ===== */}
+      <section className="section-spacing bg-white">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 space-y-6">
+          <div className="reveal pro-card p-8 lg:p-10">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                <AlertTriangle size={18} className="text-red-500" />
               </div>
-              <h2 className="text-2xl font-bold text-[#F0F0F2]">The Solution</h2>
+              <h2 className="text-2xl font-bold text-[#2D2D2D]">The Problem</h2>
             </div>
-            <p className="text-lg text-[#8A8A9B] leading-relaxed mb-6">
+            <p className="text-lg text-[#6B6B6B] leading-relaxed mb-5">{siteData.problem.description}</p>
+            <p className="text-[#E8761D] font-medium quote-line">{siteData.problem.highlight}</p>
+          </div>
+
+          <div className="reveal pro-card p-8 lg:p-10">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
+                <Shield size={18} className="text-[#E8761D]" />
+              </div>
+              <h2 className="text-2xl font-bold text-[#2D2D2D]">The Solution</h2>
+            </div>
+            <p className="text-lg text-[#6B6B6B] leading-relaxed mb-5">
               HIK is a model-agnostic middleware layer that intercepts every AI interaction at the output
               boundary — before it reaches any workflow. At the moment of enforcement, it generates a
-              <span className="text-[#C9A84C] font-medium"> Sacred Trace™</span>: an immutable cryptographic
-              receipt anchoring the query, the policy manifest, the source corpus, and the AI output into
-              a single verifiable chain.
+              <span className="text-[#E8761D] font-medium"> Sacred Trace™</span>: an immutable cryptographic
+              receipt.
             </p>
-            <p className="text-[#34D399] font-medium quote-line" style={{ borderColor: '#34D399' }}>
-              {siteData.solution.highlight}
-            </p>
+            <p className="text-[#16A34A] font-medium quote-line" style={{borderColor:'#16A34A'}}>{siteData.solution.highlight}</p>
           </div>
         </div>
       </section>
 
-      {/* ===== WHY NOW ===== */}
-      <section className="section-spacing bg-[#08080C]">
+      {/* ===== WHY NOW (Light Gray) ===== */}
+      <section className="section-spacing bg-[#F8F8F8]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="reveal mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <Scale size={20} className="text-[#C9A84C]" />
-              <h2 className="text-2xl font-bold text-[#F0F0F2]">Why Now</h2>
-            </div>
+          <div className="reveal flex items-center gap-3 mb-10">
+            <Scale size={20} className="text-[#E8761D]" />
+            <h2 className="text-2xl font-bold text-[#2D2D2D]">Why Now</h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {siteData.whyNow.map((item, i) => {
               const icons = [FileText, Scale, Lock];
               const Icon = icons[i];
               return (
-                <div key={i} className={`reveal reveal-delay-${i + 1} glass-card rounded-xl p-6`}>
-                  <div className="w-9 h-9 rounded-lg bg-[#C9A84C]/10 flex items-center justify-center mb-4">
-                    <Icon size={16} className="text-[#C9A84C]" />
+                <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-6 border-l-[3px] border-l-[#E8761D]`}>
+                  <div className="w-9 h-9 rounded-lg bg-orange-50 flex items-center justify-center mb-3">
+                    <Icon size={16} className="text-[#E8761D]" />
                   </div>
-                  <h4 className="text-sm font-bold text-[#C9A84C] mb-3">{item.regulation}</h4>
-                  <p className="text-sm text-[#8A8A9B] leading-relaxed">{item.detail}</p>
+                  <h4 className="text-sm font-bold text-[#2D2D2D] mb-2">{item.regulation}</h4>
+                  <p className="text-sm text-[#6B6B6B] leading-relaxed">{item.detail}</p>
                 </div>
               );
             })}
@@ -117,25 +93,22 @@ const ExecutiveSummaryPage = () => {
         </div>
       </section>
 
-      {/* ===== WHAT HIK PRODUCES ===== */}
-      <section className="section-spacing">
+      {/* ===== WHAT HIK PRODUCES (White) ===== */}
+      <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="reveal mb-12">
-            <h2 className="text-2xl font-bold text-[#F0F0F2]">What HIK Produces</h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="reveal mb-10"><h2 className="text-2xl font-bold text-[#2D2D2D]">What HIK Produces</h2></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {siteData.whatHikProduces.map((item, i) => {
               const icons = [Hash, Layers, Globe, Cpu];
               const Icon = icons[i];
               return (
-                <div key={i} className={`reveal reveal-delay-${i + 1} glass-card rounded-xl p-6 flex items-start gap-4`}>
-                  <div className="w-10 h-10 rounded-lg bg-[#C9A84C]/10 flex items-center justify-center flex-shrink-0">
-                    <Icon size={18} className="text-[#C9A84C]" />
+                <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-6 flex items-start gap-4`}>
+                  <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center flex-shrink-0">
+                    <Icon size={18} className="text-[#E8761D]" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-[#F0F0F2] mb-1">{item.title}</h4>
-                    <p className="text-sm text-[#8A8A9B] leading-relaxed">{item.description}</p>
+                    <h4 className="text-sm font-bold text-[#2D2D2D] mb-1">{item.title}</h4>
+                    <p className="text-sm text-[#6B6B6B] leading-relaxed">{item.description}</p>
                   </div>
                 </div>
               );
@@ -144,65 +117,51 @@ const ExecutiveSummaryPage = () => {
         </div>
       </section>
 
-      {/* ===== STATUS ===== */}
-      <section className="py-12">
+      {/* ===== STATUS (Graphite) ===== */}
+      <section className="py-12 bg-[#3D3D3D]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="reveal glass-card rounded-2xl p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#34D399] animate-pulse" />
-              <h3 className="text-lg font-bold text-[#F0F0F2]">Current Status</h3>
+          <div className="reveal flex items-start gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 rounded-full bg-[#16A34A] animate-pulse" />
+              <h3 className="text-lg font-bold text-white">Current Status</h3>
             </div>
-            <p className="text-[#8A8A9B] leading-relaxed">
-              SDK v1.0 live. GATE 1 / GATE 2 enforcement live. Running on Gemini 2.5 Flash.
-              IPFS pinning and private EVM node on GCP active. Go core binary (Phase 3, sub-millisecond)
-              in active development.
-            </p>
           </div>
+          <p className="reveal text-white/60 leading-relaxed mt-4">
+            SDK v1.0 live. GATE 1 / GATE 2 enforcement live. Running on Gemini 2.5 Flash.
+            IPFS pinning and private EVM node on GCP active. Go core binary in active development.
+          </p>
         </div>
       </section>
 
-      {/* ===== TEAM ===== */}
-      <section className="section-spacing bg-[#08080C]">
+      {/* ===== TEAM (Light Gray) ===== */}
+      <section className="section-spacing bg-[#F8F8F8]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="reveal mb-12">
-            <h2 className="text-2xl font-bold text-[#F0F0F2]">Team</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="reveal mb-10"><h2 className="text-2xl font-bold text-[#2D2D2D]">Team</h2></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {siteData.team.map((member, i) => (
-              <div key={i} className={`reveal reveal-delay-${i + 1} glass-card rounded-xl p-6`}>
-                <div className="w-12 h-12 rounded-full bg-[#C9A84C]/10 flex items-center justify-center mb-4">
-                  <User size={20} className="text-[#C9A84C]" />
+              <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-6`}>
+                <div className="w-12 h-12 rounded-full bg-[#E8761D]/10 flex items-center justify-center mb-4">
+                  <User size={20} className="text-[#E8761D]" />
                 </div>
-                <h4 className="text-base font-bold text-[#F0F0F2] mb-1">{member.name}</h4>
-                <p className="text-sm text-[#C9A84C] font-medium mb-3">{member.role}</p>
-                <p className="text-sm text-[#8A8A9B] leading-relaxed">{member.bio}</p>
+                <h4 className="text-base font-bold text-[#2D2D2D] mb-1">{member.name}</h4>
+                <p className="text-sm text-[#E8761D] font-medium mb-3">{member.role}</p>
+                <p className="text-sm text-[#6B6B6B] leading-relaxed">{member.bio}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ===== CTA ===== */}
-      <section className="section-spacing relative overflow-hidden">
-        <div className="glow-gold w-[400px] h-[400px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-        <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
+      {/* ===== CTA (White) ===== */}
+      <section className="section-spacing bg-white">
+        <div className="max-w-3xl mx-auto px-6 text-center">
           <div className="reveal">
-            <h2 className="text-3xl font-bold text-[#F0F0F2] mb-10">
-              Interested in learning more?
-            </h2>
+            <h2 className="text-3xl font-bold text-[#2D2D2D] mb-8">Interested in learning more?</h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="mailto:contact@humaniskind.com"
-                className="px-8 py-3.5 bg-[#C9A84C] text-[#0B0B0F] font-semibold rounded-lg hover:bg-[#D4B35A] transition-colors duration-200 flex items-center gap-2"
-              >
-                Request Pitch Deck
-                <ArrowRight size={16} />
+              <a href="mailto:contact@humaniskind.com" className="px-8 py-3.5 bg-[#E8761D] text-white font-semibold rounded-lg hover:bg-[#D06A18] transition-colors duration-200 flex items-center gap-2">
+                Request Pitch Deck <ArrowRight size={16} />
               </a>
-              <Link
-                to="/technology"
-                className="px-8 py-3.5 border border-[#1E1E2A] text-[#F0F0F2] font-semibold rounded-lg hover:border-[#C9A84C]/50 hover:text-[#C9A84C] transition-all duration-200"
-              >
+              <Link to="/technology" className="px-8 py-3.5 border border-[#E5E5E5] text-[#2D2D2D] font-semibold rounded-lg hover:border-[#E8761D] hover:text-[#E8761D] transition-all duration-200">
                 Explore Technology
               </Link>
             </div>

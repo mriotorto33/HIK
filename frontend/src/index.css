@@ -9,8 +9,8 @@ body {
         "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #0B0B0F;
-    color: #F0F0F2;
+    background-color: #FFFFFF;
+    color: #2D2D2D;
 }
 
 code {
@@ -20,28 +20,28 @@ code {
 
 @layer base {
   :root {
-        --background: 240 10% 4%;
-        --foreground: 240 5% 95%;
-        --card: 240 8% 7%;
-        --card-foreground: 240 5% 95%;
-        --popover: 240 8% 7%;
-        --popover-foreground: 240 5% 95%;
-        --primary: 42 52% 54%;
-        --primary-foreground: 240 10% 4%;
-        --secondary: 240 6% 10%;
-        --secondary-foreground: 240 5% 95%;
-        --muted: 240 6% 10%;
-        --muted-foreground: 240 5% 57%;
-        --accent: 42 52% 54%;
-        --accent-foreground: 240 10% 4%;
+        --background: 0 0% 100%;
+        --foreground: 0 0% 18%;
+        --card: 0 0% 100%;
+        --card-foreground: 0 0% 18%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 0 0% 18%;
+        --primary: 24 82% 52%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 0 0% 96%;
+        --secondary-foreground: 0 0% 18%;
+        --muted: 0 0% 96%;
+        --muted-foreground: 0 0% 45%;
+        --accent: 24 82% 52%;
+        --accent-foreground: 0 0% 100%;
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 0 0% 98%;
-        --border: 240 6% 15%;
-        --input: 240 6% 15%;
-        --ring: 42 52% 54%;
-        --chart-1: 42 52% 54%;
-        --chart-2: 160 60% 45%;
-        --chart-3: 197 37% 24%;
+        --border: 0 0% 90%;
+        --input: 0 0% 90%;
+        --ring: 24 82% 52%;
+        --chart-1: 24 82% 52%;
+        --chart-2: 200 40% 50%;
+        --chart-3: 0 0% 24%;
         --chart-4: 43 74% 66%;
         --chart-5: 27 87% 67%;
         --radius: 0.5rem;
@@ -62,18 +62,18 @@ code {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B0B0F;
+  background: #F5F5F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E1E2A;
+  background: #CDCDCD;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #2A2A3A;
+  background: #ABABAB;
 }
 
 /* Selection */
 ::selection {
-  background: rgba(201, 168, 76, 0.3);
-  color: #F0F0F2;
+  background: rgba(232, 118, 29, 0.2);
+  color: #2D2D2D;
 }
