@@ -6,7 +6,7 @@ import {
   Layers, Zap, Globe, ChevronRight, Hash, User
 } from 'lucide-react';
 
-const LOGO_V_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/zsbt789z_Logo_HIK_V_Para_Fondo_Oscuro.png.png';
+const LOGO_V_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/7jf99bko_Logo_HIK_V_Para_Fondo_Oscuro.png.png';
 const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
 
 const useScrollReveal = () => {
@@ -48,8 +48,10 @@ const HomePage = () => {
           <div className="hero-logo">
             <img src={LOGO_V_DARK} alt="Human Is Kind" className="h-32 sm:h-40 md:h-52 mx-auto mb-6 sm:mb-8 drop-shadow-2xl" />
           </div>
-          <p className="hero-subtitle text-xs sm:text-sm text-[#E8761D] tracking-[0.3em] uppercase mb-5 font-semibold">{siteData.hero.subtitle}</p>
-          <p className="hero-desc text-sm sm:text-base md:text-lg text-white/55 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">{siteData.hero.description}</p>
+          <p className="hero-subtitle text-sm sm:text-lg md:text-xl text-[#E8761D] tracking-[0.08em] uppercase mb-5 font-bold leading-snug">
+            DETERMINISTIC AI<br />GOVERNANCE INFRASTRUCTURE
+          </p>
+          <p className="hero-desc text-sm sm:text-base md:text-lg text-white/90 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">{siteData.hero.description}</p>
           <div className="hero-badges flex flex-wrap justify-center gap-2 mb-10 sm:mb-12 px-2">
             {siteData.hero.badges.map((b, i) => <span key={i} className="tech-badge">{b}</span>)}
           </div>

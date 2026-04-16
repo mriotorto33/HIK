@@ -3,8 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { siteData } from '../data/mock';
 import { Menu, X, ArrowUp, Mail, ExternalLink } from 'lucide-react';
 
-const LOGO_NAV_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/8qq54wda_Logo_HIK_Abreviado_Para_Fondo_Oscuro.png.png';
-const LOGO_FOOTER_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/aabcyg2s_Logo_HIK_Para_Fondo_Oscuro.png';
+const LOGO_NAV_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/4yaw500s_Logo_HIK_Abreviado_Para_Fondo_Oscuro.png.png';
+const LOGO_FOOTER_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/g6utoxhc_Logo_HIK_Para_Fondo_Oscuro.png';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
