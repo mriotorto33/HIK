@@ -1,0 +1,225 @@
+/* ====== ANIMATIONS ====== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes gradientShift {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* ====== SCROLL REVEAL ====== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ====== HERO ANIMATIONS ====== */
+.hero-title {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.hero-subtitle {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+
+.hero-desc {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
+.hero-badges {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
+}
+
+.hero-cta {
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1s both;
+}
+
+/* ====== CARDS & INTERACTIVE ====== */
+.glass-card {
+  background: rgba(17, 17, 22, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(30, 30, 42, 0.8);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(201, 168, 76, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(201, 168, 76, 0.08);
+}
+
+.code-block {
+  background: #08080C;
+  border: 1px solid #1E1E2A;
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #A0A0B0;
+  overflow-x: auto;
+}
+
+.code-block .keyword { color: #C9A84C; }
+.code-block .string { color: #34D399; }
+.code-block .comment { color: #555566; }
+.code-block .function { color: #93C5FD; }
+
+/* ====== GOLD LINE SEPARATOR ====== */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.4), transparent);
+}
+
+/* ====== DOT GRID PATTERN ====== */
+.dot-grid {
+  background-image: radial-gradient(circle at 1px 1px, rgba(201, 168, 76, 0.08) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+
+/* ====== STATUS BADGES ====== */
+.status-live {
+  color: #34D399;
+  border-color: rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.08);
+}
+
+.status-active {
+  color: #FBBF24;
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.08);
+}
+
+.status-roadmap {
+  color: #8A8A9B;
+  border-color: rgba(138, 138, 155, 0.3);
+  background: rgba(138, 138, 155, 0.08);
+}
+
+/* ====== GLOW EFFECTS ====== */
+.glow-gold {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(201, 168, 76, 0.06);
+  filter: blur(100px);
+  pointer-events: none;
+}
+
+/* ====== QUOTE STYLING ====== */
+.quote-line {
+  border-left: 3px solid #C9A84C;
+  padding-left: 1.5rem;
+}
+
+/* ====== ARCHITECTURE FLOW ====== */
+.flow-node {
+  background: #111116;
+  border: 1px solid #1E1E2A;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.flow-node:hover {
+  border-color: #C9A84C;
+}
+
+.flow-arrow {
+  color: #C9A84C;
+  font-size: 1.25rem;
+}
+
+/* ====== SECTION SPACING ====== */
+.section-spacing {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+/* ====== CUSTOM NAV LINK ====== */
+.nav-link {
+  position: relative;
+  color: #8A8A9B;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #C9A84C;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #C9A84C;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ====== MOBILE MENU ====== */
+@media (max-width: 768px) {
+  .section-spacing {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* ====== PAGE TRANSITIONS ====== */
+.page-enter {
+  animation: fadeIn 0.5s ease both;
+}
