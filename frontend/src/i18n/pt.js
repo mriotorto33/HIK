@@ -140,6 +140,7 @@ export const pt = {
     whatProduces: "O Que o HIK Produz",
     verifiableAI: "IA Verific\u00e1vel em Tempo Real",
     quickIntegration: "Integra\u00e7\u00e3o R\u00e1pida",
+    architectureFlowLabel: "Fluxo de Arquitetura",
     architectureFlowTitle: "Da Consulta ao Trace",
     cryptographicCore: "N\u00facleo Criptogr\u00e1fico",
     sacredTraceEthical: "Sacred Trace\u2122 e Pulso \u00c9tico",

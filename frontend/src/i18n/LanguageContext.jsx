@@ -1,17 +1,35 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { en } from './en';
 import { es } from './es';
 import { pt } from './pt';
 
 const allTranslations = { en, es, pt };
-const LanguageContext = createContext();
+const SUPPORTED = ['en', 'es', 'pt'];
+
+const detectInitialLang = () => {
+  try {
+    const saved = localStorage.getItem('hik-lang');
+    if (saved && SUPPORTED.includes(saved)) return saved;
+    const browser = (navigator.language || navigator.userLanguage || 'en').slice(0, 2).toLowerCase();
+    if (SUPPORTED.includes(browser)) return browser;
+  } catch (e) { /* no-op */ }
+  return 'en';
+};
+
+const LanguageContext = createContext(null);
 
 export const LanguageProvider = ({ children }) => {
-  const [lang, setLang] = useState(() => localStorage.getItem('hik-lang') || 'en');
+  const [lang, setLang] = useState(detectInitialLang);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('hik-lang', lang);
+      document.documentElement.lang = lang;
+    } catch (e) { /* no-op */ }
+  }, [lang]);
 
   const changeLang = (newLang) => {
-    setLang(newLang);
-    localStorage.setItem('hik-lang', newLang);
+    if (SUPPORTED.includes(newLang)) setLang(newLang);
   };
 
   return (
@@ -20,9 +38,9 @@ export const LanguageProvider = ({ children }) => {
       t: allTranslations[lang] || allTranslations.en,
       changeLang,
       languages: [
-        { code: 'en', label: 'EN' },
-        { code: 'es', label: 'ES' },
-        { code: 'pt', label: 'PT' }
+        { code: 'en', label: 'EN', flag: '🇬🇧', name: 'English' },
+        { code: 'es', label: 'ES', flag: '🇪🇸', name: 'Español' },
+        { code: 'pt', label: 'PT', flag: '🇧🇷', name: 'Português' }
       ]
     }}>
       {children}
@@ -30,4 +48,8 @@ export const LanguageProvider = ({ children }) => {
   );
 };
 
-export const useTranslation = () => useContext(LanguageContext);
+export const useTranslation = () => {
+  const ctx = useContext(LanguageContext);
+  if (!ctx) throw new Error('useTranslation must be used within a LanguageProvider');
+  return ctx;
+};

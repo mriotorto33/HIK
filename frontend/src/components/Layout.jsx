@@ -1,15 +1,99 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { siteData } from '../data/mock';
-import { Menu, X, ArrowUp, Mail, ExternalLink } from 'lucide-react';
+import { useTranslation } from '../i18n/LanguageContext';
+import { Menu, X, ArrowUp, Mail, ExternalLink, Globe, Check } from 'lucide-react';
 
 const LOGO_NAV_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/4yaw500s_Logo_HIK_Abreviado_Para_Fondo_Oscuro.png.png';
 const LOGO_FOOTER_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/g6utoxhc_Logo_HIK_Para_Fondo_Oscuro.png';
+
+const LanguageSwitcher = ({ variant = 'desktop' }) => {
+  const { lang, changeLang, languages } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const current = languages.find((l) => l.code === lang) || languages[0];
+
+  useEffect(() => {
+    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, []);
+
+  if (variant === 'mobile') {
+    return (
+      <div className="mt-4 px-4" data-testid="language-switcher-mobile">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-3 flex items-center gap-2">
+          <Globe size={12} /> Language
+        </p>
+        <div className="flex gap-2">
+          {languages.map((l) => (
+            <button
+              key={l.code}
+              onClick={() => changeLang(l.code)}
+              data-testid={`lang-btn-mobile-${l.code}`}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-lg text-sm font-medium transition-all duration-200 border ${
+                lang === l.code
+                  ? 'bg-[#E8761D]/15 border-[#E8761D]/40 text-[#E8761D]'
+                  : 'bg-white/[0.03] border-white/10 text-white/60 hover:text-white hover:border-white/20'
+              }`}
+            >
+              <span className="text-base leading-none">{l.flag}</span>
+              <span>{l.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative" ref={ref} data-testid="language-switcher">
+      <button
+        onClick={() => setOpen(!open)}
+        data-testid="language-switcher-button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 transition-all duration-200"
+      >
+        <span className="text-base leading-none">{current.flag}</span>
+        <span className="font-mono tracking-wider">{current.label}</span>
+      </button>
+      {open && (
+        <div
+          role="listbox"
+          className="absolute right-0 top-full mt-2 w-44 rounded-lg bg-[#1C1C1C] border border-white/10 shadow-xl shadow-black/40 overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-200"
+          data-testid="language-switcher-menu"
+        >
+          {languages.map((l) => {
+            const active = lang === l.code;
+            return (
+              <button
+                key={l.code}
+                onClick={() => { changeLang(l.code); setOpen(false); }}
+                data-testid={`lang-btn-${l.code}`}
+                role="option"
+                aria-selected={active}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-left transition-colors duration-150 ${
+                  active ? 'bg-[#E8761D]/10 text-[#E8761D]' : 'text-white/70 hover:bg-white/5 hover:text-white'
+                }`}
+              >
+                <span className="text-base leading-none">{l.flag}</span>
+                <span className="font-mono text-xs tracking-wider w-6">{l.label}</span>
+                <span className="flex-1 text-xs text-white/40">{l.name}</span>
+                {active && <Check size={14} className="text-[#E8761D]" />}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -19,7 +103,6 @@ const Navbar = () => {
 
   useEffect(() => { setMobileOpen(false); }, [location]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -28,40 +111,52 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${
       scrolled ? 'bg-[#1C1C1C] shadow-xl shadow-black/10' : 'bg-[#1C1C1C]/80 backdrop-blur-md'
-    }`}>
+    }`} data-testid="main-navbar">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 h-16 sm:h-[72px] flex items-center justify-between">
-        <Link to="/" className="flex items-center transition-transform duration-200 hover:scale-105">
+        <Link to="/" className="flex items-center transition-transform duration-200 hover:scale-105" data-testid="nav-home-link">
           <img src={LOGO_NAV_DARK} alt="HIK" className="h-9 sm:h-11" />
         </Link>
 
         <div className="hidden lg:flex items-center gap-7">
-          {siteData.nav.links.map((link) => (
-            <Link key={link.path} to={link.path}
-              className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}>
+          {t.nav.links.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              data-testid={`nav-link-${link.path.replace('/', '') || 'home'}`}
+              className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+            >
               {link.label}
             </Link>
           ))}
         </div>
 
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex items-center gap-3">
+          <LanguageSwitcher />
           <a href="mailto:contact@humaniskind.com"
+            data-testid="nav-contact-button"
             className="btn-primary text-sm !py-2.5 !px-5">
-            Contact Us
+            {t.ui.contactUs}
           </a>
         </div>
 
-        <button className="lg:hidden text-white p-2 -mr-2 transition-transform duration-200 active:scale-90"
-          onClick={() => setMobileOpen(!mobileOpen)}>
+        <button
+          className="lg:hidden text-white p-2 -mr-2 transition-transform duration-200 active:scale-90"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          data-testid="mobile-menu-toggle"
+          aria-label="Toggle menu"
+        >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden mobile-menu-enter bg-[#1C1C1C] border-t border-white/5 absolute w-full h-[calc(100vh-64px)] overflow-y-auto">
+        <div className="lg:hidden mobile-menu-enter bg-[#1C1C1C] border-t border-white/5 absolute w-full h-[calc(100vh-64px)] overflow-y-auto" data-testid="mobile-menu">
           <div className="px-6 py-8 flex flex-col gap-2">
-            {siteData.nav.links.map((link) => (
-              <Link key={link.path} to={link.path}
+            {t.nav.links.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                data-testid={`mobile-nav-link-${link.path.replace('/', '') || 'home'}`}
                 className={`text-lg font-medium py-3 px-4 rounded-lg transition-all duration-200 ${
                   location.pathname === link.path
                     ? 'text-[#E8761D] bg-[#E8761D]/10'
@@ -70,9 +165,13 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+
+            <LanguageSwitcher variant="mobile" />
+
             <a href="mailto:contact@humaniskind.com"
+              data-testid="mobile-nav-contact-button"
               className="mt-6 btn-primary text-center justify-center">
-              Contact Us
+              {t.ui.contactUs}
             </a>
           </div>
         </div>
@@ -81,43 +180,50 @@ const Navbar = () => {
   );
 };
 
-const Footer = () => (
-  <footer className="bg-[#1C1C1C]">
-    <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 lg:py-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        <div className="sm:col-span-2">
-          <Link to="/" className="inline-block mb-5 transition-transform duration-200 hover:scale-105">
-            <img src={LOGO_FOOTER_DARK} alt="Human Is Kind" className="h-10 sm:h-12" />
-          </Link>
-          <p className="text-white/40 text-sm leading-relaxed max-w-md">{siteData.footer.tagline}</p>
-          <p className="text-white/25 text-xs mt-3">Est. 2026 · Montevideo — Buenos Aires</p>
-        </div>
-        <div>
-          <h4 className="text-xs font-semibold text-white/80 mb-4 uppercase tracking-[0.15em]">Navigation</h4>
-          <div className="flex flex-col gap-2.5">
-            {siteData.nav.links.map((link) => (
-              <Link key={link.path} to={link.path}
-                className="text-sm text-white/40 hover:text-[#E8761D] transition-colors duration-200">{link.label}</Link>
-            ))}
+const Footer = () => {
+  const { t } = useTranslation();
+  return (
+    <footer className="bg-[#1C1C1C]" data-testid="main-footer">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="sm:col-span-2">
+            <Link to="/" className="inline-block mb-5 transition-transform duration-200 hover:scale-105">
+              <img src={LOGO_FOOTER_DARK} alt="Human Is Kind" className="h-10 sm:h-12" />
+            </Link>
+            <p className="text-white/40 text-sm leading-relaxed max-w-md">{t.footer.tagline}</p>
+            <p className="text-white/25 text-xs mt-3">Est. 2026 · Montevideo — Buenos Aires</p>
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold text-white/80 mb-4 uppercase tracking-[0.15em]">{t.ui.navigation}</h4>
+            <div className="flex flex-col gap-2.5">
+              {t.nav.links.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  data-testid={`footer-link-${link.path.replace('/', '') || 'home'}`}
+                  className="text-sm text-white/40 hover:text-[#E8761D] transition-colors duration-200">{link.label}</Link>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-xs font-semibold text-white/80 mb-4 uppercase tracking-[0.15em]">{t.ui.contact}</h4>
+            <a href="mailto:contact@humaniskind.com"
+              data-testid="footer-email"
+              className="flex items-center gap-2 text-sm text-[#E8761D] hover:text-[#F5993D] transition-colors duration-200">
+              <Mail size={14} /> {t.footer.contact}
+            </a>
+            <a href="https://humaniskind.com" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm text-white/40 hover:text-[#E8761D] transition-colors duration-200 mt-3">
+              <ExternalLink size={14} /> humaniskind.com
+            </a>
           </div>
         </div>
-        <div>
-          <h4 className="text-xs font-semibold text-white/80 mb-4 uppercase tracking-[0.15em]">Contact</h4>
-          <a href="mailto:contact@humaniskind.com"
-            className="flex items-center gap-2 text-sm text-[#E8761D] hover:text-[#F5993D] transition-colors duration-200">
-            <Mail size={14} /> {siteData.footer.contact}
-          </a>
-          <a href="https://humaniskind.com" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 text-sm text-white/40 hover:text-[#E8761D] transition-colors duration-200 mt-3">
-            <ExternalLink size={14} /> humaniskind.com
-          </a>
-        </div>
+        <div className="h-px bg-white/8 mt-10 mb-6" />
+        <p className="text-[11px] text-white/25 text-center">{t.footer.copyright} | {t.footer.trademark}</p>
       </div>
-      <div className="h-px bg-white/8 mt-10 mb-6" />
-      <p className="text-[11px] text-white/25 text-center">{siteData.footer.copyright} | {siteData.footer.trademark}</p>
-    </div>
-  </footer>
-);
+    </footer>
+  );
+};
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -134,7 +240,10 @@ const BackToTop = () => {
   }, []);
   if (!visible) return null;
   return (
-    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      data-testid="back-to-top-button"
+      aria-label="Back to top"
       className="fixed bottom-5 left-5 z-40 w-10 h-10 bg-[#E8761D] rounded-full flex items-center justify-center text-white shadow-lg shadow-orange-500/20 transition-all duration-300 hover:scale-110 hover:shadow-orange-500/40">
       <ArrowUp size={16} />
     </button>

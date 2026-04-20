@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { siteData } from '../data/mock';
+import { useTranslation } from '../i18n/LanguageContext';
 import { CheckCircle2, Loader, Clock, ArrowRight } from 'lucide-react';
 
 const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
@@ -23,8 +23,9 @@ const statusIcons = { green: CheckCircle2, amber: Loader, gray: Clock };
 const statusClasses = { green: 'status-live', amber: 'status-active', gray: 'status-roadmap' };
 
 const RoadmapPage = () => {
+  const { t, lang } = useTranslation();
   useScrollReveal();
-  const { roadmap } = siteData;
+  const { roadmap } = t;
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const h = () => setScrollY(window.scrollY);
@@ -32,15 +33,22 @@ const RoadmapPage = () => {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-scale').forEach((el) => el.classList.add('revealed'));
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [lang]);
+
   return (
-    <div>
+    <div data-testid="roadmap-page">
       <section className="relative pt-16 sm:pt-[72px] overflow-hidden">
         <div className="relative bg-[#1C1C1C] pt-12 sm:pt-16 pb-16 sm:pb-20">
           <div className="absolute inset-0 will-change-transform opacity-15" style={{backgroundImage:`url(${HERO_BG})`,backgroundSize:'cover',backgroundPosition:'center',transform:`translateY(${scrollY*0.1}px)`}} />
           <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
-            <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">Development Roadmap</p>
-            <h1 className="hero-desc text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-4 sm:mb-5">HIK Architectural Roadmap</h1>
-            <p className="hero-desc text-base sm:text-lg text-white/45 leading-relaxed">From Manifesto to Infrastructure — Live Status</p>
+            <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">{t.ui.developmentRoadmap}</p>
+            <h1 className="hero-desc text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-4 sm:mb-5">{t.ui.roadmapTitle}</h1>
+            <p className="hero-desc text-base sm:text-lg text-white/45 leading-relaxed">{t.ui.roadmapDesc}</p>
           </div>
         </div>
         <div className="h-1 bg-gradient-to-r from-transparent via-[#E8761D] to-transparent" />
@@ -89,11 +97,11 @@ const RoadmapPage = () => {
       <section className="section-spacing bg-[#1C1C1C]">
         <div className="max-w-3xl mx-auto px-5 sm:px-6 text-center">
           <div className="reveal">
-            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-5">Building the infrastructure for accountable intelligence</h2>
-            <p className="text-white/40 mb-8 sm:mb-10 text-sm sm:text-base">SDK v1.0 is live. Join us in building the governance layer the world needs.</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-5">{t.ui.buildingInfra}</h2>
+            <p className="text-white/40 mb-8 sm:mb-10 text-sm sm:text-base">{t.ui.buildingDesc}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <Link to="/technology" className="btn-primary w-full sm:w-auto justify-center">Explore Technology <ArrowRight size={16} /></Link>
-              <Link to="/manifesto" className="btn-secondary-dark w-full sm:w-auto justify-center">Read Manifesto</Link>
+              <Link to="/technology" className="btn-primary w-full sm:w-auto justify-center">{t.ui.exploreTech} <ArrowRight size={16} /></Link>
+              <Link to="/manifesto" className="btn-secondary-dark w-full sm:w-auto justify-center">{t.ui.readManifesto}</Link>
             </div>
           </div>
         </div>

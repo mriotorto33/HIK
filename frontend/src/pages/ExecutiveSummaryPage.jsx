@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { siteData } from '../data/mock';
+import { useTranslation } from '../i18n/LanguageContext';
 import { AlertTriangle, Shield, Scale, ArrowRight, Cpu, User, FileText, Hash, Layers, Globe, Lock } from 'lucide-react';
 
 const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
@@ -20,6 +20,7 @@ const useScrollReveal = () => {
 };
 
 const ExecutiveSummaryPage = () => {
+  const { t, lang } = useTranslation();
   useScrollReveal();
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
@@ -28,15 +29,22 @@ const ExecutiveSummaryPage = () => {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-scale').forEach((el) => el.classList.add('revealed'));
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [lang]);
+
   return (
-    <div>
+    <div data-testid="executive-summary-page">
       <section className="relative pt-16 sm:pt-[72px] overflow-hidden">
         <div className="relative bg-[#1C1C1C] pt-12 sm:pt-16 pb-16 sm:pb-20">
           <div className="absolute inset-0 will-change-transform opacity-15" style={{backgroundImage:`url(${HERO_BG})`,backgroundSize:'cover',backgroundPosition:'center',transform:`translateY(${scrollY*0.1}px)`}} />
           <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
-            <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">Executive Summary</p>
+            <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">{t.ui.executiveSummary}</p>
             <h1 className="hero-desc text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-3 sm:mb-4">HumanisKind (HIK)</h1>
-            <p className="hero-desc text-lg sm:text-xl text-[#E8761D] font-medium">Deterministic AI Governance Infrastructure</p>
+            <p className="hero-desc text-lg sm:text-xl text-[#E8761D] font-medium">{t.hero.subtitle}</p>
           </div>
         </div>
         <div className="h-1 bg-gradient-to-r from-transparent via-[#E8761D] to-transparent" />
@@ -47,20 +55,18 @@ const ExecutiveSummaryPage = () => {
           <div className="reveal pro-card p-6 sm:p-8 lg:p-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="icon-box w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center"><AlertTriangle size={18} className="text-red-500" /></div>
-              <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">The Problem</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">{t.problem.title}</h2>
             </div>
-            <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-5">{siteData.problem.description}</p>
-            <p className="text-[#E8761D] font-medium quote-line text-sm sm:text-base">{siteData.problem.highlight}</p>
+            <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-5">{t.problem.description}</p>
+            <p className="text-[#E8761D] font-medium quote-line text-sm sm:text-base">{t.problem.highlight}</p>
           </div>
           <div className="reveal pro-card p-6 sm:p-8 lg:p-10">
             <div className="flex items-center gap-3 mb-5">
               <div className="icon-box w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center"><Shield size={18} className="text-[#E8761D]" /></div>
-              <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">The Solution</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">{t.solution.title}</h2>
             </div>
-            <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-5">
-              HIK is a model-agnostic middleware layer that intercepts every AI interaction at the output boundary. At the moment of enforcement, it generates a <span className="text-[#E8761D] font-medium">Sacred Trace™</span>: an immutable cryptographic receipt.
-            </p>
-            <p className="text-[#16A34A] font-medium quote-line text-sm sm:text-base" style={{borderColor:'#16A34A'}}>{siteData.solution.highlight}</p>
+            <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-5">{t.solution.description}</p>
+            <p className="text-[#16A34A] font-medium quote-line text-sm sm:text-base" style={{borderColor:'#16A34A'}}>{t.solution.highlight}</p>
           </div>
         </div>
       </section>
@@ -69,10 +75,10 @@ const ExecutiveSummaryPage = () => {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="reveal flex items-center gap-3 mb-8 sm:mb-10">
             <Scale size={20} className="text-[#E8761D]" />
-            <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">Why Now</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">{t.ui.whyNowTitle}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
-            {siteData.whyNow.map((item, i) => {
+            {t.whyNow.map((item, i) => {
               const icons = [FileText, Scale, Lock]; const Icon = icons[i];
               return (
                 <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-5 sm:p-6 border-l-[3px] border-l-[#E8761D] group`}>
@@ -88,9 +94,9 @@ const ExecutiveSummaryPage = () => {
 
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-          <div className="reveal mb-8 sm:mb-10"><h2 className="text-xl sm:text-2xl font-bold text-[#111111]">What HIK Produces</h2></div>
+          <div className="reveal mb-8 sm:mb-10"><h2 className="text-xl sm:text-2xl font-bold text-[#111111]">{t.ui.whatProduces}</h2></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-            {siteData.whatHikProduces.map((item, i) => {
+            {t.whatHikProduces.map((item, i) => {
               const icons = [Hash, Layers, Globe, Cpu]; const Icon = icons[i];
               return (
                 <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-5 sm:p-6 flex items-start gap-3 sm:gap-4 group`}>
@@ -110,17 +116,17 @@ const ExecutiveSummaryPage = () => {
         <div className="max-w-4xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="reveal flex items-center gap-3 mb-4">
             <div className="w-3 h-3 rounded-full bg-[#16A34A] animate-pulse" />
-            <h3 className="text-base sm:text-lg font-bold text-white">Current Status</h3>
+            <h3 className="text-base sm:text-lg font-bold text-white">{t.ui.currentStatus}</h3>
           </div>
-          <p className="reveal text-white/50 leading-relaxed text-sm sm:text-base">SDK v1.0 live. GATE 1 / GATE 2 enforcement live. Running on Gemini 2.5 Flash. IPFS pinning and private EVM node on GCP active. Go core binary in active development.</p>
+          <p className="reveal text-white/50 leading-relaxed text-sm sm:text-base">{t.ui.currentStatusDesc}</p>
         </div>
       </section>
 
       <section className="section-spacing bg-[#F7F7F7]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-          <div className="reveal mb-8 sm:mb-10"><h2 className="text-xl sm:text-2xl font-bold text-[#111111]">Team</h2></div>
+          <div className="reveal mb-8 sm:mb-10"><h2 className="text-xl sm:text-2xl font-bold text-[#111111]">{t.ui.theTeam}</h2></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">
-            {siteData.team.map((member, i) => (
+            {t.team.map((member, i) => (
               <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-5 sm:p-6 group`}>
                 <div className="icon-box w-12 h-12 rounded-full bg-[#E8761D]/10 flex items-center justify-center mb-4"><User size={20} className="text-[#E8761D]" /></div>
                 <h4 className="text-base font-bold text-[#111111] mb-1">{member.name}</h4>
@@ -135,10 +141,10 @@ const ExecutiveSummaryPage = () => {
       <section className="section-spacing bg-white">
         <div className="max-w-3xl mx-auto px-5 sm:px-6 text-center">
           <div className="reveal">
-            <h2 className="text-2xl sm:text-3xl font-bold text-[#111111] mb-6 sm:mb-8">Interested in learning more?</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#111111] mb-6 sm:mb-8">{t.ui.interestedMore}</h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-              <a href="mailto:contact@humaniskind.com" className="btn-primary w-full sm:w-auto justify-center">Request Pitch Deck <ArrowRight size={16} /></a>
-              <Link to="/technology" className="btn-secondary w-full sm:w-auto justify-center">Explore Technology</Link>
+              <a href="mailto:contact@humaniskind.com" className="btn-primary w-full sm:w-auto justify-center">{t.ui.requestPitchDeck} <ArrowRight size={16} /></a>
+              <Link to="/technology" className="btn-secondary w-full sm:w-auto justify-center">{t.ui.exploreTech}</Link>
             </div>
           </div>
         </div>

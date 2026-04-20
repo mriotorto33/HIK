@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { siteData } from '../data/mock';
+import { useTranslation } from '../i18n/LanguageContext';
 import { ArrowRight, BookOpen, Quote, ExternalLink } from 'lucide-react';
 
 const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
@@ -20,8 +20,9 @@ const useScrollReveal = () => {
 };
 
 const OriginsPage = () => {
+  const { t, lang } = useTranslation();
   useScrollReveal();
-  const { origins } = siteData;
+  const origins = t.origins;
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => {
     const h = () => setScrollY(window.scrollY);
@@ -29,13 +30,20 @@ const OriginsPage = () => {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.reveal, .reveal-left, .reveal-scale').forEach((el) => el.classList.add('revealed'));
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [lang]);
+
   return (
-    <div>
+    <div data-testid="origins-page">
       <section className="relative pt-16 sm:pt-[72px] overflow-hidden">
         <div className="relative bg-[#1C1C1C] pt-12 sm:pt-16 pb-16 sm:pb-20">
           <div className="absolute inset-0 will-change-transform opacity-15" style={{backgroundImage:`url(${HERO_BG})`,backgroundSize:'cover',backgroundPosition:'center',transform:`translateY(${scrollY*0.1}px)`}} />
           <div className="relative z-10 max-w-4xl mx-auto px-5 sm:px-6 lg:px-8">
-            <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">Origins</p>
+            <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">{t.ui.originsLabel}</p>
             <p className="hero-desc text-xl sm:text-2xl md:text-3xl text-white/45 italic mb-4 sm:mb-6 leading-relaxed">{origins.intro}</p>
             <h1 className="hero-desc text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-[1.1]">{origins.title}</h1>
           </div>
@@ -75,7 +83,7 @@ const OriginsPage = () => {
             <p className="text-base sm:text-lg text-[#555555] leading-relaxed mb-6">{origins.intellectualBedrock.text}</p>
             <a href={origins.intellectualBedrock.archiveLink} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-[#E8761D] hover:text-[#D06A18] font-medium transition-colors">
-              Explore the Personal Archive <ExternalLink size={14} />
+              {t.ui.exploreArchive} <ExternalLink size={14} />
             </a>
           </div>
         </div>
@@ -88,7 +96,7 @@ const OriginsPage = () => {
           ))}
           <div className="reveal mt-8 sm:mt-10 flex justify-center">
             <Link to="/manifesto" className="btn-primary">
-              Read the Founders' Manifesto <ArrowRight size={16} />
+              {t.ui.readManifesto} <ArrowRight size={16} />
             </Link>
           </div>
         </div>

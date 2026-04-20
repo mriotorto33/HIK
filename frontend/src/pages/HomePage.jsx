@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { siteData } from '../data/mock';
+import { useTranslation } from '../i18n/LanguageContext';
 import {
   Shield, Lock, Radio, ArrowRight, Fingerprint, ArrowDown,
   Layers, Zap, Globe, ChevronRight, Hash, User
@@ -26,6 +26,7 @@ const useScrollReveal = () => {
 const layerIcons = [Shield, Lock, Radio];
 
 const HomePage = () => {
+  const { t, lang } = useTranslation();
   useScrollReveal();
   const [scrollY, setScrollY] = useState(0);
 
@@ -35,11 +36,19 @@ const HomePage = () => {
     return () => window.removeEventListener('scroll', h);
   }, []);
 
+  // Re-run scroll reveal when lang changes (new DOM nodes may appear)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-scale');
+      els.forEach((el) => el.classList.add('revealed'));
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [lang]);
+
   return (
-    <div>
+    <div data-testid="home-page">
       {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Parallax BG */}
         <div className="absolute inset-0 will-change-transform"
           style={{ backgroundImage: `url(${HERO_BG})`, backgroundSize: 'cover', backgroundPosition: 'center', transform: `scale(1.1) translateY(${scrollY * 0.15}px)` }} />
         <div className="absolute inset-0 bg-black/55" />
@@ -48,27 +57,26 @@ const HomePage = () => {
           <div className="hero-logo">
             <img src={LOGO_V_DARK} alt="Human Is Kind" className="h-32 sm:h-40 md:h-52 mx-auto mb-6 sm:mb-8 drop-shadow-2xl" />
           </div>
-          <p className="hero-subtitle text-sm sm:text-lg md:text-xl text-[#E8761D] tracking-[0.08em] uppercase mb-5 font-bold leading-snug">
-            DETERMINISTIC AI<br />GOVERNANCE INFRASTRUCTURE
+          <p data-testid="hero-subtitle" className="hero-subtitle text-sm sm:text-lg md:text-xl text-[#E8761D] tracking-[0.08em] uppercase mb-5 font-bold leading-snug">
+            {t.hero.subtitle}
           </p>
-          <p className="hero-desc text-sm sm:text-base md:text-lg text-white/90 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">{siteData.hero.description}</p>
+          <p data-testid="hero-description" className="hero-desc text-sm sm:text-base md:text-lg text-white/90 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">{t.hero.description}</p>
           <div className="hero-badges flex flex-wrap justify-center gap-2 mb-10 sm:mb-12 px-2">
-            {siteData.hero.badges.map((b, i) => <span key={i} className="tech-badge">{b}</span>)}
+            {t.hero.badges.map((b, i) => <span key={i} className="tech-badge">{b}</span>)}
           </div>
           <div className="hero-cta flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <Link to={siteData.hero.cta.primary.link} className="btn-primary w-full sm:w-auto justify-center">
-              {siteData.hero.cta.primary.text} <ArrowRight size={16} />
+            <Link to={t.hero.cta.primary.link} data-testid="hero-cta-primary" className="btn-primary w-full sm:w-auto justify-center">
+              {t.hero.cta.primary.text} <ArrowRight size={16} />
             </Link>
-            <Link to={siteData.hero.cta.secondary.link} className="btn-secondary-dark w-full sm:w-auto justify-center">
-              {siteData.hero.cta.secondary.text}
+            <Link to={t.hero.cta.secondary.link} data-testid="hero-cta-secondary" className="btn-secondary-dark w-full sm:w-auto justify-center">
+              {t.hero.cta.secondary.text}
             </Link>
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <div className="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
           <div className="scroll-indicator text-white/30 flex flex-col items-center gap-1">
-            <span className="text-[10px] uppercase tracking-widest">Scroll</span>
+            <span className="text-[10px] uppercase tracking-widest">{t.ui.scroll}</span>
             <ArrowDown size={16} />
           </div>
         </div>
@@ -83,20 +91,20 @@ const HomePage = () => {
                 <div className="icon-box w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
                   <Zap size={18} className="text-red-500" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-[#111111]">{siteData.problem.title}</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-[#111111]">{t.problem.title}</h3>
               </div>
-              <p className="text-[#555555] leading-relaxed mb-5 text-sm sm:text-base">{siteData.problem.description}</p>
-              <p className="text-[#E8761D] text-sm font-medium quote-line">{siteData.problem.highlight}</p>
+              <p className="text-[#555555] leading-relaxed mb-5 text-sm sm:text-base">{t.problem.description}</p>
+              <p className="text-[#E8761D] text-sm font-medium quote-line">{t.problem.highlight}</p>
             </div>
             <div className="reveal reveal-delay-2 pro-card p-6 sm:p-8 lg:p-10">
               <div className="flex items-center gap-3 mb-5">
                 <div className="icon-box w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
                   <Fingerprint size={18} className="text-[#E8761D]" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-[#111111]">{siteData.solution.title}</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-[#111111]">{t.solution.title}</h3>
               </div>
-              <p className="text-[#555555] leading-relaxed mb-5 text-sm sm:text-base">{siteData.solution.description}</p>
-              <p className="text-[#16A34A] text-sm font-medium quote-line" style={{borderColor:'#16A34A'}}>{siteData.solution.highlight}</p>
+              <p className="text-[#555555] leading-relaxed mb-5 text-sm sm:text-base">{t.solution.description}</p>
+              <p className="text-[#16A34A] text-sm font-medium quote-line" style={{borderColor:'#16A34A'}}>{t.solution.highlight}</p>
             </div>
           </div>
         </div>
@@ -106,11 +114,11 @@ const HomePage = () => {
       <section className="section-spacing bg-[#F7F7F7]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="reveal text-center mb-10 sm:mb-14">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">What HIK Produces</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">Verifiable AI at Runtime</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{t.ui.whatProduces}</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">{t.ui.verifiableAI}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {siteData.whatHikProduces.map((item, i) => {
+            {t.whatHikProduces.map((item, i) => {
               const icons = [Hash, Layers, Globe, Zap]; const Icon = icons[i];
               return (
                 <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-5 sm:p-6 group`}>
@@ -130,11 +138,11 @@ const HomePage = () => {
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="reveal text-center mb-10 sm:mb-14">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{siteData.trinityProtocol.subtitle}</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">{siteData.trinityProtocol.title}</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{t.trinityProtocol.subtitle}</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">{t.trinityProtocol.title}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {siteData.trinityProtocol.layers.map((layer, i) => {
+            {t.trinityProtocol.layers.map((layer, i) => {
               const Icon = layerIcons[i];
               return (
                 <div key={layer.id} className={`reveal reveal-delay-${i+1} pro-card p-6 sm:p-8 group`}>
@@ -162,16 +170,16 @@ const HomePage = () => {
       <section className="section-spacing bg-[#111111] relative overflow-hidden">
         <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
           <div className="reveal text-center mb-8 sm:mb-10">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{siteData.sacredTrace.subtitle}</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">{siteData.sacredTrace.title}</h2>
-            <p className="text-white/40 max-w-2xl mx-auto text-sm sm:text-base">{siteData.sacredTrace.description}</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{t.sacredTrace.subtitle}</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">{t.sacredTrace.title}</h2>
+            <p className="text-white/40 max-w-2xl mx-auto text-sm sm:text-base">{t.sacredTrace.description}</p>
           </div>
           <div className="reveal-scale code-block p-5 sm:p-6 md:p-8 mb-6 sm:mb-8 pulse-glow">
-            <p className="text-[#E8761D] font-mono text-xs sm:text-sm md:text-base text-center break-all sm:break-normal">{siteData.sacredTrace.formula}</p>
+            <p className="text-[#E8761D] font-mono text-xs sm:text-sm md:text-base text-center break-all sm:break-normal">{t.sacredTrace.formula}</p>
           </div>
           <div className="reveal text-center">
             <Link to="/technology" className="inline-flex items-center gap-2 text-sm text-[#E8761D] hover:text-[#F5993D] font-medium transition-colors duration-200">
-              View full technical specification <ChevronRight size={14} />
+              {t.ui.viewTechSpec} <ChevronRight size={14} />
             </Link>
           </div>
         </div>
@@ -181,11 +189,11 @@ const HomePage = () => {
       <section className="section-spacing bg-white">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="reveal text-center mb-10 sm:mb-14">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">Regulatory Landscape</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">Why Now</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{t.ui.regulatoryLandscape}</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">{t.ui.whyNowTitle}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            {siteData.whyNow.map((item, i) => (
+            {t.whyNow.map((item, i) => (
               <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-5 sm:p-6 border-l-[3px] border-l-[#E8761D]`}>
                 <h4 className="text-sm font-bold text-[#111111] mb-2">{item.regulation}</h4>
                 <p className="text-sm text-[#555555] leading-relaxed">{item.detail}</p>
@@ -199,11 +207,11 @@ const HomePage = () => {
       <section className="section-spacing bg-[#F7F7F7]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="reveal text-center mb-10 sm:mb-14">
-            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">The Team</p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">Three People. Three Continents.<br className="hidden sm:block" /> One Protocol.</h2>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-3 font-semibold">{t.ui.theTeam}</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111]">{t.ui.teamTitle}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            {siteData.team.map((member, i) => (
+            {t.team.map((member, i) => (
               <div key={i} className={`reveal reveal-delay-${i+1} pro-card p-6 sm:p-8 group`}>
                 <div className="icon-box w-14 h-14 rounded-full bg-[#E8761D]/10 flex items-center justify-center mb-5">
                   <User size={22} className="text-[#E8761D]" />
@@ -222,14 +230,14 @@ const HomePage = () => {
       <section className="section-spacing bg-white">
         <div className="max-w-3xl mx-auto px-5 sm:px-6 text-center">
           <div className="reveal">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111] mb-5">Ready to make AI observable at runtime?</h2>
-            <p className="text-[#555555] mb-8 sm:mb-10 leading-relaxed text-sm sm:text-base">SDK v1.0 is live. Static asset integrity available today. Live stream enforcement in v2.0.</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#111111] mb-5">{t.ui.readyTitle}</h2>
+            <p className="text-[#555555] mb-8 sm:mb-10 leading-relaxed text-sm sm:text-base">{t.ui.readyDesc}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Link to="/technology" className="btn-primary w-full sm:w-auto justify-center">
-                Explore SDK v1.0 <ArrowRight size={16} />
+                {t.ui.exploreSDK} <ArrowRight size={16} />
               </Link>
               <a href="mailto:contact@humaniskind.com" className="btn-secondary w-full sm:w-auto justify-center">
-                Request Pitch Deck
+                {t.ui.requestPitchDeck}
               </a>
             </div>
           </div>
