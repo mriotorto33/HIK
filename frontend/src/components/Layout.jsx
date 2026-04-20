@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from '../i18n/LanguageContext';
+import { Flag } from '../i18n/flags';
 import { Menu, X, ArrowUp, Mail, ExternalLink, Globe, Check } from 'lucide-react';
 
 const LOGO_NAV_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/4yaw500s_Logo_HIK_Abreviado_Para_Fondo_Oscuro.png.png';
@@ -36,7 +37,7 @@ const LanguageSwitcher = ({ variant = 'desktop' }) => {
                   : 'bg-white/[0.03] border-white/10 text-white/60 hover:text-white hover:border-white/20'
               }`}
             >
-              <span className="text-base leading-none">{l.flag}</span>
+              <Flag code={l.code} />
               <span>{l.label}</span>
             </button>
           ))}
@@ -54,7 +55,7 @@ const LanguageSwitcher = ({ variant = 'desktop' }) => {
         aria-expanded={open}
         className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-white/70 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-white/20 transition-all duration-200"
       >
-        <span className="text-base leading-none">{current.flag}</span>
+        <Flag code={current.code} />
         <span className="font-mono tracking-wider">{current.label}</span>
       </button>
       {open && (
@@ -76,7 +77,7 @@ const LanguageSwitcher = ({ variant = 'desktop' }) => {
                   active ? 'bg-[#E8761D]/10 text-[#E8761D]' : 'text-white/70 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                <span className="text-base leading-none">{l.flag}</span>
+                <Flag code={l.code} className="w-5 h-[14px] rounded-sm shadow-sm overflow-hidden inline-block flex-shrink-0" />
                 <span className="font-mono text-xs tracking-wider w-6">{l.label}</span>
                 <span className="flex-1 text-xs text-white/40">{l.name}</span>
                 {active && <Check size={14} className="text-[#E8761D]" />}

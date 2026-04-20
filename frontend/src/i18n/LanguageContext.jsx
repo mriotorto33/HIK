@@ -38,9 +38,9 @@ export const LanguageProvider = ({ children }) => {
       t: allTranslations[lang] || allTranslations.en,
       changeLang,
       languages: [
-        { code: 'en', label: 'EN', flag: '🇬🇧', name: 'English' },
-        { code: 'es', label: 'ES', flag: '🇪🇸', name: 'Español' },
-        { code: 'pt', label: 'PT', flag: '🇧🇷', name: 'Português' }
+        { code: 'en', label: 'EN', name: 'English' },
+        { code: 'es', label: 'ES', name: 'Español' },
+        { code: 'pt', label: 'PT', name: 'Português' }
       ]
     }}>
       {children}
