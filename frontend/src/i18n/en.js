@@ -44,11 +44,12 @@ export const en = {
     highlight: "If the output violates policy, the gate fires. The output never reaches the workflow. The receipt proves the gate held."
   },
   trinityProtocol: {
-    title: "The Trinity Protocol", subtitle: "Core Architecture",
+    title: "The Enforcement Protocol", subtitle: "Core Architecture",
     layers: [
       { id: "01", name: "Content Provenance", description: "C2PA 2.3 standard for cryptographic signing of every content fragment. Each fMP4 video segment includes a hash of its predecessor, creating an unbreakable chain of custody from source to output.", tags: ["C2PA 2.3", "VSI", "Merkle Anchoring"] },
       { id: "02", name: "Ethical Runtime Kernel", description: "KMIR \u2014 the Kernel for Manifesto-based Intent Recognition. Validates every AI output against the declared Sovereign Intent before delivery. If the system drifts, enforcement is automatic.", tags: ["KMIR v1.1", "manifesto.json", "@ethics_constrained"] },
-      { id: "03", name: "Live Telemetry Pulse", description: "CMCD v2 extended keys broadcast the Ethical State of every live fragment in real-time. Integrity becomes observable at the infrastructure level \u2014 not after the fact, but during transmission.", tags: ["CMCD v2", "hik-es", "hik-ps", "Real-time"] }
+      { id: "03", name: "Live Telemetry Pulse", description: "CMCD v2 extended keys broadcast the Ethical State of every live fragment in real-time. Integrity becomes observable at the infrastructure level \u2014 not after the fact, but during transmission.", tags: ["CMCD v2", "hik-es", "hik-ps", "Real-time"] },
+      { id: "04", name: "Multi-Layered Enforcement Cascade", description: "Sub-millisecond semantic evaluation and hardware telemetry. Not just for LLM wrappers—our Live Stream Governance capability can actively drop physical security camera feeds or livestream sessions mid-flight if a violation occurs.", tags: ["Sub-millisecond", "Stream Kill-Switch", "Edge-Native"] }
     ]
   },
   sacredTrace: {
@@ -76,9 +77,9 @@ export const en = {
   ],
   whatHikProduces: [
     { title: "Cryptographic Receipts", description: "Court-admissible, regulator-ready, machine-verifiable audit trails." },
-    { title: "Dual-Gate Enforcement", description: "GATE 1 input / GATE 2 output enforcement in under 1 millisecond." },
-    { title: "Blockchain Anchoring", description: "Proof via Polygon \u2014 replayable by any auditor or court." },
-    { title: "Model-Agnostic", description: "Integrates into existing AI pipelines without replacing them." }
+    { title: "Three-Layer Enforcement Cascade", description: "Hardware telemetry and semantic evaluation with sub-millisecond latency." },
+    { title: "Live Stream Kill-Switch Proxy", description: "Govern continuous video streams in real-time. Instantly drops physical security camera feeds or livestream sessions (e.g., YouTube) mid-flight upon intent violation." },
+    { title: "Edge-Native Interception", description: "Stateless edge deployment integrating directly with hardware enclaves for sub-millisecond stream interdiction without replacing AI pipelines." }
   ],
   whyNow: [
     { regulation: "EU AI Act Article 50", detail: "Enforcement begins August 2, 2026. Fines up to \u20ac35M or 7% of global revenue per violation." },
@@ -93,8 +94,9 @@ export const en = {
   roadmap: { phases: [
     { phase: "Phase 1", version: "SDK v1.0", status: "LIVE", statusColor: "green", title: "Static Asset Integrity", items: ["Sacred Trace\u2122 cryptographic receipts", "Merkle-anchored source corpus", "Polygon blockchain anchoring", "GATE 1 (input) and GATE 2 (output) enforcement active"] },
     { phase: "Phase 2", version: "Live Infrastructure", status: "LIVE", statusColor: "green", title: "Live Infrastructure", items: ["IPFS pinning active", "Private EVM node on GCP/Kubernetes", "CMCD v2 telemetry headers injection", "Gemini 2.5 Flash integration live"] },
-    { phase: "Phase 3", version: "Go Core + KMIR", status: "ACTIVE DEV", statusColor: "amber", title: "Go Core Binary + KMIR v1.1", items: ["Atomic fail-close enforcement in under 1ms", "Go static binary for P99 sub-millisecond execution", "KMIR Ethical Kernel with fuzzy matching", "Structural gate fires on prohibited intent categories"] },
-    { phase: "Phase 4", version: "Enterprise Layer", status: "ROADMAP", statusColor: "gray", title: "Enterprise Layer", items: ["Multi-tenant enforcement pipelines", "SDK dashboard", "Enterprise SLA", "Native integrations for HR, FinTech, HealthTech"] }
+    { phase: "Phase 3", version: "Go Core + KMIR", status: "LIVE", statusColor: "green", title: "Go Core Binary + KMIR v1.1", items: ["Atomic fail-close enforcement in under 1ms", "Go static binary for P99 sub-millisecond execution", "KMIR Ethical Kernel with fuzzy matching", "Structural gate fires on prohibited intent categories"] },
+    { phase: "Phase 4", version: "Edge Interdiction", status: "LIVE", statusColor: "green", title: "Hardware & Edge Interdiction", items: ["Integration with hardware enclaves (smart cameras)", "Extreme low-latency CDN edge-deployment", "Sub-millisecond stream interdiction", "Stateless edge interception"] },
+    { phase: "Phase 5", version: "Enterprise Layer", status: "ROADMAP", statusColor: "gray", title: "Enterprise Layer", items: ["Multi-tenant enforcement pipelines", "SDK dashboard", "Enterprise SLA", "Native integrations for HR, FinTech, HealthTech"] }
   ]},
   origins: {
     intro: "Systems are not neutral. They carry the intent of their architects.",
@@ -131,7 +133,7 @@ export const en = {
     exploreTech: "Explore Technology",
     exploreSDK: "Explore SDK v1.0",
     readyTitle: "Ready to make AI observable at runtime?",
-    readyDesc: "SDK v1.0 is live. Static asset integrity available today. Live stream enforcement in v2.0.",
+    readyDesc: "SDK v1.0, Live Infrastructure, Go Core v5.0 and Edge Interdiction are all LIVE today.",
     teamTitle: "Three People. Three Continents. One Protocol.",
     theTeam: "The Team",
     signedBy: "Signed By",
@@ -160,7 +162,7 @@ export const en = {
     buildingDesc: "SDK v1.0 is live. Join us in building the governance layer the world needs.",
     interestedMore: "Interested in learning more?",
     currentStatus: "Current Status",
-    currentStatusDesc: "SDK v1.0 live. GATE 1 / GATE 2 enforcement live. Running on Gemini 2.5 Flash. IPFS pinning and private EVM node on GCP active. Go core binary in active development.",
+    currentStatusDesc: "From SDK v1.0 to Edge Interdiction, HIK v5.0 is LIVE. Sub-millisecond fail-close execution, KMIR Ethical Kernel, and hardware enclave integration are deployed and running.",
     exploreArchive: "Explore the Personal Archive",
     navigation: "Navigation",
     contact: "Contact"

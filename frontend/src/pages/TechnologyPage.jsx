@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../i18n/LanguageContext';
 import {
   Shield, Lock, Radio, ArrowRight,
-  Terminal, Database, Activity, FileCheck, Cpu
+  Terminal, Database, Activity, FileCheck, Cpu, VideoIcon
 } from 'lucide-react';
 
 const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
@@ -22,7 +22,7 @@ const useScrollReveal = () => {
   }, []);
 };
 
-const layerIcons = [Shield, Lock, Radio];
+const layerIcons = [Shield, Lock, Radio, VideoIcon];
 
 const TechnologyPage = () => {
   const { t, lang } = useTranslation();
