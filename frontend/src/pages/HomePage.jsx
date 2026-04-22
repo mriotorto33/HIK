@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from '../i18n/LanguageContext';
 import {
   Shield, Lock, Radio, ArrowRight, Fingerprint, ArrowDown,
-  Layers, Zap, Globe, ChevronRight, Hash, User
+  Layers, Zap, Globe, ChevronRight, Hash, User, VideoIcon
 } from 'lucide-react';
 
 const LOGO_V_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/7jf99bko_Logo_HIK_V_Para_Fondo_Oscuro.png.png';
@@ -23,7 +23,7 @@ const useScrollReveal = () => {
   }, []);
 };
 
-const layerIcons = [Shield, Lock, Radio];
+const layerIcons = [Shield, Lock, Radio, VideoIcon];
 
 const HomePage = () => {
   const { t, lang } = useTranslation();
