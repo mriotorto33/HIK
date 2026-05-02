@@ -1,0 +1,2 @@
+--update-env-vars:
+  CORS_ORIGINS: "https://hik.artificialmente.uy,https://humaniskind.com,https://www.humaniskind.com,https://hik-frontend-6oohyoez6q-uk.a.run.app,https://hik-frontend-805730087505.us-east4.run.app"

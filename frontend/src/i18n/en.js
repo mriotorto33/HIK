@@ -17,6 +17,7 @@ const trace = await engine.trace();
 export const en = {
   nav: {
     links: [
+      { label: "Dashboard", path: "/dashboard" },
       { label: "Technology", path: "/technology" },
       { label: "Origins", path: "/origins" },
       { label: "Roadmap", path: "/roadmap" },

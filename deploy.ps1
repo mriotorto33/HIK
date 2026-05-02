@@ -10,8 +10,9 @@ $REGION = "us-east4"
 $REGISTRY = "us-east1-docker.pkg.dev/$PROJECT_ID/artefactos"
 $DOMAIN = "hik.artificialmente.uy"
 
-$MONGO_URL = "mongodb+srv://martin_db_user:VCBNEt8fKBIXAEaM@cluster0.a6v4fzz.mongodb.net/?appName=Cluster0"
+$MONGO_URL = "mongodb+srv://martin_db_user:7sEBf58_gV6i%25-%25@cluster0.a6v4fzz.mongodb.net/?appName=Cluster0"
 $DB_NAME = "hikdb"
+$CORS_ORIGINS = "https://hik.artificialmente.uy,https://humaniskind.com,https://www.humaniskind.com,https://hik-frontend-6oohyoez6q-uk.a.run.app,https://hik-frontend-805730087505.us-east4.run.app"
 
 $BACKEND_SERVICE = "hik-backend"
 $FRONTEND_SERVICE = "hik-frontend"
@@ -43,7 +44,7 @@ gcloud run deploy $BACKEND_SERVICE `
   --cpu=1 `
   --min-instances=0 `
   --max-instances=3 `
-  --set-env-vars="MONGO_URL=$MONGO_URL,DB_NAME=$DB_NAME,CORS_ORIGINS=https://$DOMAIN"
+  --set-env-vars="MONGO_URL=$MONGO_URL,DB_NAME=$DB_NAME,CORS_ORIGINS=$CORS_ORIGINS"
 
 $BACKEND_URL = gcloud run services describe $BACKEND_SERVICE --region=$REGION --format="value(status.url)"
 Write-Host "`nBackend deployed at: $BACKEND_URL"
@@ -83,8 +84,7 @@ Write-Host "`nMapping custom domain: $DOMAIN to $FRONTEND_SERVICE"
 try {
     gcloud run domain-mappings create `
       --service=$FRONTEND_SERVICE `
-      --domain=$DOMAIN `
-      --region=$REGION
+      --domain=$DOMAIN
 } catch {
     Write-Host "Domain mapping may already exist."
 }
