@@ -34,6 +34,7 @@ CISOs relying on probabilistic guardrails will fail audits.
 
 ```
 HIK/
+├── .emergent/            # Origin fingerprint — Manifesto, Governance, License live here
 ├── frontend-next/        # Next.js 15 website (canonical, deployed to Cloud Run)
 │   ├── src/app/          # App Router pages + metadata + JSON-LD schema
 │   ├── src/views/        # Page client components
@@ -41,7 +42,9 @@ HIK/
 │   └── src/i18n/         # EN / ES / PT translations
 ├── backend/              # FastAPI + MongoDB governance dashboard API
 │   └── server.py         # Enforcement event API, Sacred Trace receipts, PDF export
-└── frontend/             # Legacy Vite/React frontend (deprecated)
+├── Manifesto.md          # The philosophy
+├── GOVERNANCE.md         # The rules
+└── frontend/             # Legacy React frontend (deprecated)
 ```
 
 ---
@@ -52,9 +55,10 @@ The HIK platform is governed by the documents maintained in the core infrastruct
 
 | Document | Purpose |
 |---|---|
-| [Manifesto](https://github.com/mriotorto33/HumanIsKind/blob/main/Manifesto.md) | The philosophical and architectural foundation of HIK — Zero Trust, Fail-Close, human provenance |
-| [Governance](https://github.com/mriotorto33/HumanIsKind/blob/main/GOVERNANCE.md) | Decision-making, contributor standards, licensing model (Source Visible), and IP policy |
-| [License](https://github.com/mriotorto33/HumanIsKind/blob/main/LICENSE.md) | Source Visible — open for audit, commercial use requires license |
+| [Manifesto](./Manifesto.md) | The philosophy — Zero Trust, Fail-Close, human provenance. The paradox of a governance platform built by the AI it governs. |
+| [Governance](./GOVERNANCE.md) | Decision-making, licensing model (FCL-1.0), NDA access policy, Apache 2.0 conversion date |
+| [License](https://github.com/mriotorto33/HumanIsKind/blob/main/LICENSE.md) | **FCL-1.0-Apache-2.0** — Source Visible under NDA. Apache 2.0 on **July 1, 2027**. Irrevocable. |
+| [.emergent/](./emergent/) | The agentic origin folder — holds Manifesto, Governance, and License. The AI built this. The human governed it. |
 
 ---
 
@@ -99,7 +103,20 @@ $env:DB_NAME      = "hikdb"
 $env:CORS_ORIGINS = "https://www.humaniskind.com"
 ```
 
-See [GOVERNANCE.md](https://github.com/mriotorto33/HumanIsKind/blob/main/GOVERNANCE.md) for the deployment decision model.
+See [GOVERNANCE.md](./GOVERNANCE.md) for the deployment decision model.
+
+---
+
+## Licensing
+
+This repository is **Source Visible under NDA**.
+
+- **License:** FCL-1.0-Apache-2.0 (Fair Core License, Version 1.0)
+- **This release (v4.0):** Apache 2.0 opens on **July 1, 2027** — 12 months, irrevocable
+- **Future releases:** Each carries its own FCL-1.0 term from release date, at founders' discretion
+- **Access:** Signed NDA required → [martin@humaniskind.com](mailto:martin@humaniskind.com)
+
+> *The AI governance crisis doesn't wait — neither do we.*
 
 ---
 
