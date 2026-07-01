@@ -29,7 +29,7 @@ export const en = {
   hero: {
     subtitle: "DETERMINISTIC POLICY ENFORCEMENT FOR ENTERPRISE AI",
     description: "AI systems make consequential decisions — but produce no proof they stayed within policy. HIK changes that: every AI interaction is enforced at the policy boundary and issues a court-admissible compliance receipt before it reaches your workflow.",
-    badges: ["EU AI Act Art. 50", "NYC LL144", "GDPR Art. 22", "Live Enforcement", "Blockchain-Anchored", "Model-Agnostic"],
+    badges: ["Fail Open to Humans", "Fail Closed to Machines", "EU AI Act Art. 50", "NYC LL144", "GDPR Art. 22", "Zero Trust", "Blockchain-Anchored", "Model-Agnostic"],
     cta: {
       primary: { text: "Request a Compliance Demo", link: "mailto:contact@humaniskind.com" },
       secondary: { text: "View the Architecture", link: "/technology" }

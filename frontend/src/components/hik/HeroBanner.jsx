@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ShieldCheck, ArrowRight } from "lucide-react";
 
 const SHIELD_URL =
-  "https://customer-assets.emergentagent.com/job_hik-zero-trust/artifacts/b0pfqdbo_ChatGPT%20Image%2029%20abr%202026%2C%2003_33_42%20p.m..png";
+  "/hero-banner-bg.png";
 
 // Rotating value-prop messages. Each has 3 parts:
 // the prefix (white) · the highlight (orange) · the suffix (white).

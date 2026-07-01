@@ -10,7 +10,7 @@ import {
   LayoutGrid, Hash, Code, Scale
 } from 'lucide-react';
 
-const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
+const HERO_BG = '/hero-bg.png';
 
 const useScrollReveal = () => {
   useEffect(() => {

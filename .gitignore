@@ -1,5 +1,18 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# ── Secrets & credentials (NEVER commit these) ────────────────────────────────
+backend/.env
+backend/.env.cloudrun.yaml
+frontend-next/.env.local
+frontend-next/.env*.local
+.env
+.env.local
+.env.*.local
+*.cloudrun.yaml
+deploy.ps1
+redeploy.ps1
+
+
 # IDE and editors
 .idea/
 .vscode/

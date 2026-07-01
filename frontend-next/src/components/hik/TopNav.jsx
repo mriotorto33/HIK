@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Link as LinkIcon, ArrowLeft } from "lucide-react";
 
 const LOGO_URL =
-  "https://customer-assets.emergentagent.com/job_hik-zero-trust/artifacts/ecvdsk2d_Logo_HIK_Para_Fondo_Oscuro.png";
+  "/logo-nav-alt.png";
 
 export const TopNav = () => {
   return (

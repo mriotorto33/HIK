@@ -4,8 +4,8 @@ import { useTranslation } from '../i18n/LanguageContext';
 import { Flag } from '../i18n/flags';
 import { Menu, X, ArrowUp, Mail, ExternalLink, Globe, Check } from 'lucide-react';
 
-const LOGO_NAV_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/4yaw500s_Logo_HIK_Abreviado_Para_Fondo_Oscuro.png.png';
-const LOGO_FOOTER_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/g6utoxhc_Logo_HIK_Para_Fondo_Oscuro.png';
+const LOGO_NAV_DARK = '/logo-nav-dark.png';
+const LOGO_FOOTER_DARK = '/logo-footer-dark.png';
 
 const LanguageSwitcher = ({ variant = 'desktop' }) => {
   const { lang, changeLang, languages } = useTranslation();

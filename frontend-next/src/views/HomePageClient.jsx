@@ -13,8 +13,8 @@ import {
 
 
 
-const LOGO_V_DARK = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/7jf99bko_Logo_HIK_V_Para_Fondo_Oscuro.png.png';
-const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
+const LOGO_V_DARK = '/logo-v-dark.png';
+const HERO_BG = '/hero-bg.png';
 
 const useScrollReveal = () => {
   useEffect(() => {

@@ -6,7 +6,7 @@ import { useTranslation } from '../i18n/LanguageContext';
 import ContactCTA from '../components/hik/ContactCTA';
 import { AlertTriangle, Shield, Scale, ArrowRight, Cpu, User, FileText, Hash, Layers, Globe, Lock } from 'lucide-react';
 
-const HERO_BG = 'https://customer-assets.emergentagent.com/job_new-site-demo/artifacts/e3jgxsd0_Srt_tL1J5nBSk76xz46Rb.png';
+const HERO_BG = '/hero-bg.png';
 
 const useScrollReveal = () => {
   useEffect(() => {

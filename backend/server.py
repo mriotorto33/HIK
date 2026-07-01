@@ -54,7 +54,8 @@ else:
     from mongomock_motor import AsyncMongoMockClient
     client = AsyncMongoMockClient()
 
-db = client['hik_dashboard']
+_db_name = os.environ.get('DB_NAME', 'hik_dashboard')
+db = client[_db_name]
 
 # Key used to sign evidence-pack PDFs. Rotate in production.
 EVIDENCE_SIGNING_KEY = os.environ.get(
