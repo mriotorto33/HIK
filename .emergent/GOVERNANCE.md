@@ -37,14 +37,16 @@ All contributions and iterations of the HIK SDK must adhere to the following det
 
 ---
 
-## 4. Intellectual Property & "Source Visible" Licensing
+## 4. Intellectual Property & Licensing
 
-To protect the integrity of the protocol and the work of its founders during the **"Clone Wars,"** HIK follows a specific licensing model:
+This repository is **private**. Access is granted exclusively on a **Source Visible** basis requiring a signed NDA.
 
+* **License:** Fair Core License, Version 1.0 (FCL-1.0-Apache-2.0)
 * **Copyright (c) 2026:** Jointly held by **Martín Riotorto and Matías Mospan**.
-* **Visible Source:** The code is open for audit and transparency to ensure human provenance and AI compliance.
-* **Commercial Use:** Redistribution or commercial integration requires a valid subscription license.
-* **Redaction:** We reserve the right to redact sensitive logic while providing cryptographic proofs of its validity.
+* **Source Visible under NDA:** The source is open for audit by authorized parties only. All reviewers must sign a Non-Disclosure Agreement before receiving access.
+* **Competing Use Prohibited:** No commercial product or service may be built using this Software that substitutes or competes with HIK.
+* **Apache 2.0 Conversion:** This Software will automatically convert to full **Apache License 2.0** on **July 1, 2028** — 24 months from the release date of July 1, 2026. This date is fixed and irrevocable.
+* **Access Requests:** Contact **martin@humaniskind.com**
 
 ---
 
