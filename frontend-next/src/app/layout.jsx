@@ -61,7 +61,7 @@ const organizationJsonLd = {
     { '@type': 'Person', name: 'Martín Riotorto', jobTitle: 'Founder & Lead Architect', description: '20+ years in telecom infrastructure, AI systems, and real-time content pipelines.' },
     { '@type': 'Person', name: 'Matías Mospan', jobTitle: 'Co-Founder & Platform Lead', description: 'Platform architect for HIK enterprise infrastructure and Kubernetes sidecar deployment.' },
     { '@type': 'Person', name: 'Federico Brubacher', jobTitle: 'External Strategic Advisor', description: 'Senior technology leader with enterprise and cloud infrastructure expertise.' },
-    { '@type': 'Person', name: 'Agustín Ortiz', jobTitle: 'Chief Marketing Officer', description: 'Bridges the gap between cryptographic AI governance and enterprise adoption. Zero fluff. Pure deterministic execution.', url: 'https://humaniskind.com/#agustin-ortiz' },
+    { '@type': 'Person', name: 'Agustín Ortiz', jobTitle: 'Commercial Strategy Director', description: 'Converts technical architecture into institutional credibility. Opens enterprise doors and builds the commercial pipeline for HIK\'s regulatory positioning.', url: 'https://humaniskind.com/#agustin-ortiz' },
   ],
   contactPoint: [
     { '@type': 'ContactPoint', email: 'contact@humaniskind.com', contactType: 'sales' },
@@ -87,8 +87,8 @@ const agustinOrtizJsonLd = {
   '@type': 'Person',
   '@id': 'https://humaniskind.com/#agustin-ortiz',
   name: 'Agustín Ortiz',
-  jobTitle: 'Chief Marketing Officer',
-  description: 'Agustín Ortiz bridges the gap between cryptographic AI governance and enterprise adoption. Zero fluff. Pure deterministic execution.',
+  jobTitle: 'Commercial Strategy Director',
+  description: 'Agustín Ortiz converts technical architecture into institutional credibility. He builds the commercial pipeline and opens the enterprise doors that don\'t have handles. The strategic edge behind HIK\'s institutional footprint.',
   worksFor: {
     '@type': 'Organization',
     '@id': 'https://humaniskind.com/#organization',
@@ -97,12 +97,13 @@ const agustinOrtizJsonLd = {
   },
   url: 'https://humaniskind.com/#agustin-ortiz',
   knowsAbout: [
-    'AI Governance Marketing',
-    'Enterprise B2B GTM Strategy',
-    'EU AI Act Compliance Narrative',
+    'Commercial Strategy',
+    'Enterprise B2B Pipeline Development',
+    'Institutional Stakeholder Engagement',
+    'EU AI Act Regulatory Positioning',
+    'AI Governance Go-To-Market',
+    'Strategic Partnerships',
     'Deterministic AI Infrastructure',
-    'Zero-Trust M2M Enforcement',
-    'Cryptographic Audit Trails',
   ],
 };
 
