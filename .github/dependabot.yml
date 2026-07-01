@@ -1,0 +1,68 @@
+# HIK Dependabot Configuration
+# Controlled scanning — we audit our own dependencies on our own schedule.
+# Fail Open to Humans. Fail Closed, Zero Trust to Machines.
+
+version: 2
+updates:
+  # Next.js frontend — weekly, grouped, auto-merge patch only
+  - package-ecosystem: "npm"
+    directory: "/frontend-next"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Montevideo"
+    open-pull-requests-limit: 5
+    groups:
+      next-ecosystem:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+        update-types:
+          - "minor"
+          - "patch"
+      ui-deps:
+        patterns:
+          - "@radix-ui/*"
+          - "lucide-react"
+          - "tailwindcss"
+        update-types:
+          - "patch"
+    ignore:
+      # Never auto-update major versions — reviewed manually
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Legacy React frontend — security fixes only (deprecated, not shipped)
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 3
+    allow:
+      - dependency-type: "all"
+    ignore:
+      # Suppress all non-security updates on deprecated frontend
+      - dependency-name: "*"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+
+  # Docker base images
+  - package-ecosystem: "docker"
+    directory: "/frontend-next"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+
+  - package-ecosystem: "docker"
+    directory: "/backend"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+
+  # GitHub Actions (if added later)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
