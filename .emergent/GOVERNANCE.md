@@ -45,7 +45,7 @@ This repository is **private**. Access is granted exclusively on a **Source Visi
 * **Copyright (c) 2026:** Jointly held by **Martín Riotorto and Matías Mospan**.
 * **Source Visible under NDA:** The source is open for audit by authorized parties only. All reviewers must sign a Non-Disclosure Agreement before receiving access.
 * **Competing Use Prohibited:** No commercial product or service may be built using this Software that substitutes or competes with HIK.
-* **Apache 2.0 Conversion:** This Software will automatically convert to full **Apache License 2.0** on **July 1, 2028** — 24 months from the release date of July 1, 2026. This date is fixed and irrevocable.
+* **Apache 2.0 Conversion (v4.0):** This release (v4.0, July 1, 2026) converts to full **Apache License 2.0** on **July 1, 2028**. This is fixed and irrevocable. Future releases carry their own independent FCL-1.0 term, reset from their release date, with conversion timelines set at founders' discretion. *The door opens on its own schedule.*
 * **Access Requests:** Contact **martin@humaniskind.com**
 
 ---
