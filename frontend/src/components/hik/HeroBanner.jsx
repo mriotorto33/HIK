@@ -10,31 +10,33 @@ const SHIELD_URL =
 const MESSAGES = [
   {
     parts: [
-      { text: "The most robust " },
-      { text: "AI governance", highlight: true },
-      { text: " infrastructure in the market." },
-    ],
-  },
-  {
-    parts: [
-      { text: "Auditable. Immutable." },
+      { text: "Logs tell you what happened." },
       { break: true },
-      { text: "Real-time", highlight: true },
-      { text: " enforcement." },
+      { text: "HIK proves", highlight: true },
+      { text: " what was authorized." },
     ],
   },
   {
     parts: [
-      { text: "Others log what happened. " },
-      { text: "HIK enforces", highlight: true },
-      { text: " at the output boundary." },
-    ],
-  },
-  {
-    parts: [
-      { text: "Cryptographic proof of policy, " },
-      { text: "at runtime.", highlight: true },
+      { text: "Policy enforcement" },
+      { break: true },
+      { text: "at the gate.", highlight: true },
       { text: " Not after the fact." },
+    ],
+  },
+  {
+    parts: [
+      { text: "Every AI decision." },
+      { break: true },
+      { text: "Court-admissible", highlight: true },
+      { text: " compliance receipt." },
+    ],
+  },
+  {
+    parts: [
+      { text: "Live stream kill-switch. " },
+      { text: "Demonstrated.", highlight: true },
+      { text: " OBS → YouTube → terminated." },
     ],
   },
 ];
@@ -124,7 +126,7 @@ export const HeroBanner = () => {
         <div className="flex items-center gap-2 mb-5">
           <span className="h-[1px] w-8 bg-orange-400" />
           <span className="text-[10px] uppercase tracking-[0.32em] text-orange-400 font-medium">
-            Deterministic AI Governance Infrastructure
+            Deterministic Policy Enforcement · Enterprise AI
           </span>
         </div>
 
@@ -166,11 +168,11 @@ export const HeroBanner = () => {
         </div>
 
         <p className="text-sm sm:text-base text-zinc-400 mt-6 max-w-xl leading-relaxed">
-          Every autonomous agent action is intercepted at the output boundary.
-          If it violates a KMIR rule, the gate fires — the receipt is anchored
-          to IPFS + Besu.{" "}
+          Every AI action is intercepted at the policy boundary — Gate 1 before
+          the model, Gate 2 before the user. If a rule fires, the gate closes
+          and a Sacred Trace™ receipt is anchored to IPFS + Besu.{" "}
           <span className="text-zinc-100 font-medium">
-            Fail-close by design.
+            Fail-close. Cryptographically proven.
           </span>
         </p>
 

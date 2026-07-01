@@ -19,8 +19,8 @@ const useScrollReveal = () => {
   }, []);
 };
 
-const statusIcons = { green: CheckCircle2, amber: Loader, gray: Clock };
-const statusClasses = { green: 'status-live', amber: 'status-active', gray: 'status-roadmap' };
+const statusIcons = { green: CheckCircle2, amber: Loader, orange: Loader, gray: Clock };
+const statusClasses = { green: 'status-live', amber: 'status-active', orange: 'status-active', gray: 'status-roadmap' };
 
 const RoadmapPage = () => {
   const { t, lang } = useTranslation();

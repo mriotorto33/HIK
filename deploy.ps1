@@ -1,39 +1,48 @@
 $ErrorActionPreference = "Stop"
 
 # ============================================================
-# HIK - Google Cloud Run Deploy Script (PowerShell)
+# HIK Website — Deploy Script (PowerShell)
+# Project:  gen-lang-client-0109704786  (HIK Project — mriotorto33)
+# Region:   us-east4
+# Registry: us-east4-docker.pkg.dev/gen-lang-client-0109704786/hik-repo
+# Domain:   www.humaniskind.com
 # ============================================================
 
-# --- CONFIG (edit these) ---
-$PROJECT_ID = "artf-staging-env"
-$REGION = "us-east4"
-$REGISTRY = "us-east1-docker.pkg.dev/$PROJECT_ID/artefactos"
-$DOMAIN = "hik.artificialmente.uy"
+$PROJECT_ID      = "gen-lang-client-0109704786"
+$REGION          = "us-east4"
+$REGISTRY        = "us-east4-docker.pkg.dev/$PROJECT_ID/hik-repo"
+$DOMAIN          = "www.humaniskind.com"
 
-$MONGO_URL = "mongodb+srv://martin_db_user:7sEBf58_gV6i%25-%25@cluster0.a6v4fzz.mongodb.net/?appName=Cluster0"
-$DB_NAME = "hikdb"
-$CORS_ORIGINS = "https://hik.artificialmente.uy,https://humaniskind.com,https://www.humaniskind.com,https://hik-frontend-6oohyoez6q-uk.a.run.app,https://hik-frontend-805730087505.us-east4.run.app"
+$MONGO_URI       = "mongodb+srv://martinriotorto33_db_user:dNnwes30FtG2SiMN@cluster0.rjqx6n0.mongodb.net/?appName=Cluster0"
+$DB_NAME         = "hikdb"
+$CORS_ORIGINS    = "https://www.humaniskind.com,https://humaniskind.com"
 
-$BACKEND_SERVICE = "hik-backend"
+$BACKEND_SERVICE  = "hik-backend"
 $FRONTEND_SERVICE = "hik-frontend"
 
-$BACKEND_IMAGE = "$REGISTRY/$BACKEND_SERVICE`:latest"
-$FRONTEND_IMAGE = "$REGISTRY/$FRONTEND_SERVICE`:latest"
+$BACKEND_IMAGE    = "$REGISTRY/$BACKEND_SERVICE`:latest"
+$FRONTEND_IMAGE   = "$REGISTRY/$FRONTEND_SERVICE`:latest"
 
 # ============================================================
+Write-Host "`n╔══════════════════════════════════════════╗" -ForegroundColor Cyan
+Write-Host   "║  HIK Deploy — gen-lang-client-0109704786 ║" -ForegroundColor Cyan
+Write-Host   "╚══════════════════════════════════════════╝`n" -ForegroundColor Cyan
 
-Write-Host "Authenticating with Google Cloud..."
+# ── 0. Auth ───────────────────────────────────────────────────────────────────
+Write-Host "[ 0/5 ] Authenticating..." -ForegroundColor Yellow
 gcloud config set project $PROJECT_ID
-gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
+gcloud config set account martinriotorto33@gmail.com
+gcloud auth configure-docker us-east4-docker.pkg.dev --quiet
 
-# ============================================================
-Write-Host "`nBuilding backend image..."
+# ── 1. Build & push backend ───────────────────────────────────────────────────
+Write-Host "`n[ 1/5 ] Building backend image..." -ForegroundColor Yellow
 docker build -t $BACKEND_IMAGE ./backend
-
-Write-Host "Pushing backend image..."
+Write-Host "        Pushing backend image..." -ForegroundColor Yellow
 docker push $BACKEND_IMAGE
+Write-Host "  ✓ Backend image pushed" -ForegroundColor Green
 
-Write-Host "`nDeploying backend to Cloud Run..."
+# ── 2. Deploy hik-backend ─────────────────────────────────────────────────────
+Write-Host "`n[ 2/5 ] Deploying hik-backend to Cloud Run..." -ForegroundColor Yellow
 gcloud run deploy $BACKEND_SERVICE `
   --image=$BACKEND_IMAGE `
   --region=$REGION `
@@ -44,58 +53,58 @@ gcloud run deploy $BACKEND_SERVICE `
   --cpu=1 `
   --min-instances=0 `
   --max-instances=3 `
-  --set-env-vars="MONGO_URL=$MONGO_URL,DB_NAME=$DB_NAME,CORS_ORIGINS=$CORS_ORIGINS"
+  --set-env-vars="MONGO_URI=$MONGO_URI,MONGO_TLS=true,DB_NAME=$DB_NAME,CORS_ORIGINS=$CORS_ORIGINS"
 
 $BACKEND_URL = gcloud run services describe $BACKEND_SERVICE --region=$REGION --format="value(status.url)"
-Write-Host "`nBackend deployed at: $BACKEND_URL"
+Write-Host "  ✓ Backend live at: $BACKEND_URL" -ForegroundColor Green
 
-# ============================================================
-Write-Host "`nBuilding frontend image (with backend URL: $BACKEND_URL)..."
-Push-Location -Path ./frontend
-$env:REACT_APP_BACKEND_URL=$BACKEND_URL
-npm install
-npm run build
-Pop-Location
+# ── 3. Build frontend (Next.js) ───────────────────────────────────────────────
+Write-Host "`n[ 3/5 ] Building frontend (Next.js)..." -ForegroundColor Yellow
 docker build `
-  --build-arg REACT_APP_BACKEND_URL=$BACKEND_URL `
+  --build-arg NEXT_PUBLIC_BACKEND_URL=$BACKEND_URL `
+  --build-arg NEXT_PUBLIC_POSTHOG_KEY=phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs `
+  --build-arg NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com `
   -t $FRONTEND_IMAGE `
-  ./frontend
-
-Write-Host "Pushing frontend image..."
+  ./frontend-next
+Write-Host "        Pushing frontend image..." -ForegroundColor Yellow
 docker push $FRONTEND_IMAGE
+Write-Host "  ✓ Frontend image pushed" -ForegroundColor Green
 
-Write-Host "`nDeploying frontend to Cloud Run..."
+# ── 4. Deploy hik-frontend ────────────────────────────────────────────────────
+Write-Host "`n[ 4/5 ] Deploying hik-frontend to Cloud Run..." -ForegroundColor Yellow
 gcloud run deploy $FRONTEND_SERVICE `
   --image=$FRONTEND_IMAGE `
   --region=$REGION `
   --platform=managed `
   --allow-unauthenticated `
   --port=8080 `
-  --memory=256Mi `
+  --memory=512Mi `
   --cpu=1 `
   --min-instances=0 `
   --max-instances=3
 
 $FRONTEND_URL = gcloud run services describe $FRONTEND_SERVICE --region=$REGION --format="value(status.url)"
-Write-Host "`nFrontend deployed at: $FRONTEND_URL"
+Write-Host "  ✓ Frontend live at: $FRONTEND_URL" -ForegroundColor Green
 
-# ============================================================
-Write-Host "`nMapping custom domain: $DOMAIN to $FRONTEND_SERVICE"
+# ── 5. Map custom domain ──────────────────────────────────────────────────────
+Write-Host "`n[ 5/5 ] Mapping domain $DOMAIN to $FRONTEND_SERVICE..." -ForegroundColor Yellow
 try {
     gcloud run domain-mappings create `
       --service=$FRONTEND_SERVICE `
-      --domain=$DOMAIN
+      --domain=$DOMAIN `
+      --region=$REGION
 } catch {
-    Write-Host "Domain mapping may already exist."
+    Write-Host "  (Domain mapping may already exist — skipping)" -ForegroundColor DarkYellow
 }
 
-Write-Host "`nCNAME record to add in cPanel:"
-Write-Host "   Name:  hik"
-Write-Host "   Type:  CNAME"
-Write-Host "   Value: ghs.googlehosted.com`n"
-Write-Host "============================================================"
-Write-Host "Deploy complete!"
-Write-Host "   Frontend (Cloud Run): $FRONTEND_URL"
-Write-Host "   Frontend (cPanel domain): https://$DOMAIN  <- after CNAME"
-Write-Host "   Backend:  $BACKEND_URL"
-Write-Host "============================================================"
+# ── Summary ───────────────────────────────────────────────────────────────────
+Write-Host "`n╔══════════════════════════════════════════╗" -ForegroundColor Green
+Write-Host   "║            Deploy Complete!              ║" -ForegroundColor Green
+Write-Host   "╚══════════════════════════════════════════╝" -ForegroundColor Green
+Write-Host "`n  Frontend (Cloud Run) : $FRONTEND_URL"     -ForegroundColor Cyan
+Write-Host   "  Frontend (domain)    : https://$DOMAIN  <- after CNAME" -ForegroundColor Cyan
+Write-Host   "  Backend              : $BACKEND_URL`n"   -ForegroundColor Cyan
+Write-Host "  CNAME record to set in your DNS:" -ForegroundColor Yellow
+Write-Host "    Name:  www" -ForegroundColor White
+Write-Host "    Type:  CNAME" -ForegroundColor White
+Write-Host "    Value: ghs.googlehosted.com" -ForegroundColor White

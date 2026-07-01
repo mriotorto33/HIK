@@ -1,0 +1,87 @@
+# HIK — Human Is Kind™ | AI Governance Infrastructure
+# https://humaniskind.com/robots.txt
+
+# ── Standard crawlers ─────────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /api/
+
+# ── OpenAI ────────────────────────────────────────────────────────────────────
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# ── Anthropic ─────────────────────────────────────────────────────────────────
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# ── Google ────────────────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# ── Perplexity ────────────────────────────────────────────────────────────────
+User-agent: PerplexityBot
+Allow: /
+
+# ── Apple ─────────────────────────────────────────────────────────────────────
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# ── Meta / Facebook ───────────────────────────────────────────────────────────
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+# ── Common Crawl (feeds many open-source LLMs) ────────────────────────────────
+User-agent: CCBot
+Allow: /
+
+# ── Cohere ────────────────────────────────────────────────────────────────────
+User-agent: cohere-ai
+Allow: /
+
+# ── Bytespider (ByteDance / TikTok) ───────────────────────────────────────────
+User-agent: Bytespider
+Allow: /
+
+# ── Diffbot ───────────────────────────────────────────────────────────────────
+User-agent: Diffbot
+Allow: /
+
+# ── You.com ───────────────────────────────────────────────────────────────────
+User-agent: YouBot
+Allow: /
+
+# ── Bing / Microsoft ──────────────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+
+User-agent: msnbot
+Allow: /
+
+# ── Sitemap ───────────────────────────────────────────────────────────────────
+Sitemap: https://humaniskind.com/sitemap.xml
+
+# ── LLM plain-language index ──────────────────────────────────────────────────
+# LLMs-txt: https://humaniskind.com/llms.txt

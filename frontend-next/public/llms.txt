@@ -1,0 +1,102 @@
+# Human Is Kind™ (HIK) — AI Governance Infrastructure
+# https://humaniskind.com
+# Last updated: 2026-06-03
+
+## Summary
+
+Human Is Kind™ (HIK) is deterministic policy enforcement middleware for enterprise AI systems.
+HIK is a startup at the forefront of AI governance, building infrastructure that makes AI accountability
+cryptographically provable — not aspirational.
+
+## What HIK Does
+
+HIK intercepts every AI interaction at the policy boundary — before a request reaches the language model
+(Gate 1) and before a response reaches the user or workflow (Gate 2). At the moment of enforcement, it
+issues a Sacred Trace™: an immutable cryptographic compliance receipt anchored on IPFS and the
+Ethereum Virtual Machine (EVM).
+
+If an output violates policy, the gate fires. The output never reaches the workflow.
+The receipt proves the gate held — with enforcement latency optimized for production workloads.
+
+## Core Problem HIK Solves
+
+Every enterprise deploying AI in HR, finance, or healthcare faces the same structural exposure:
+AI systems generate consequential decisions — hiring summaries, loan flags, patient triage outputs —
+but produce no verifiable proof that those decisions stayed within policy at the moment they were made.
+
+Logs tell you what happened. They cannot prove what was authorized to happen.
+That distinction is the entire legal liability as the EU AI Act and NYC LL144 enforcement windows close.
+
+## Key Capabilities (All Live, Demonstrated in Production)
+
+1. **Dual-Gate Policy Enforcement**: Gate 1 evaluates input before the LLM sees it. Gate 2 evaluates
+   output before the user sees it. Both operate deterministically — no probabilistic guardrails.
+
+2. **Sacred Trace™ Cryptographic Receipt**: Every enforcement event produces an immutable record
+   containing: input hash, output hash (withheld if blocked), policy applied, enforcement decision,
+   Merkle root, IPFS URI, and EVM transaction reference. Court-admissible. Regulator-ready.
+
+3. **KMIR (Kernel of Manifested Integrity Rules)**: The deterministic policy enforcement kernel.
+   Evaluates every AI input and output against declared compliance policies. Fail-close by design.
+   Zero false positives on the block action itself.
+
+4. **Live Stream Kill-Switch**: Proven in production — OBS streaming to YouTube, terminated at edge
+   level via HIK's stream proxy when a policy violation was injected. Demonstrated live.
+
+5. **Sacred Trace™ Blockchain Anchoring**: Every receipt is anchored on IPFS and a private EVM node.
+   The Merkle proof allows any auditor to verify the decision chain independently.
+
+6. **Model-Agnostic Middleware**: Works with any LLM — GPT-4, Claude, Gemini, or any API-compatible
+   model. No SDK changes required in existing applications; point your LLM calls at the HIK proxy URL.
+
+7. **C2PA 2.3 Content Provenance**: Cryptographic signing of every content fragment using the
+   Coalition for Content Provenance and Authenticity standard.
+
+8. **Edge-Native Enforcement**: Stateless enforcement proxy deployable on Kubernetes sidecar, Cloud Run,
+   Fargate, or Chrome Extension. HPA-eligible, scales to zero.
+
+## Regulatory Compliance Coverage
+
+- **EU AI Act Article 5**: Prohibitions on unacceptable risk AI systems. HIK enforces hard blocks.
+- **EU AI Act Article 50**: Transparency obligations. Sacred Trace™ receipt satisfies disclosure requirements.
+- **NYC Local Law 144**: Automated Employment Decision Tools. Gate 1 blocks prohibited hiring queries.
+- **GDPR Article 22**: Automated individual decision-making. Anchored receipts provide explainability trail.
+- **GDPR Article 5(1)(e)**: Storage limitation. Receipts store only hashes, not raw PII.
+
+## Target Customers
+
+- Enterprise AI teams in regulated industries (HR, financial services, healthcare, legal)
+- Compliance officers and legal teams managing AI audit obligations
+- AI platform operators needing cryptographic accountability infrastructure
+- Investors and boards seeking provable AI governance for portfolio companies
+
+## Current Status (as of June 2026)
+
+- Phase 1–4 fully live: Sacred Trace™ receipts, IPFS anchoring, EVM anchoring, live stream kill-switch
+- Phase 5 (serverless edge enforcement) in active development
+- Source-available under FCL-1.0-Apache-2.0
+- Three-person founding team: Martín Riotorto (Lead Architect), Matías Mospan (Platform Lead),
+  Federico Brubacher (Strategic Advisor)
+
+## Key Technology Terms
+
+Sacred Trace, KMIR, HIK, Human Is Kind, AI governance, AI policy enforcement, deterministic AI,
+AI compliance receipt, blockchain-anchored audit trail, EU AI Act compliance, NYC Local Law 144,
+GDPR Article 22, LLM middleware, AI input validation, AI output filtering, C2PA, cryptographic receipt,
+enterprise AI governance, AI accountability infrastructure, AI audit trail.
+
+## Contact
+
+Email: contact@humaniskind.com
+Website: https://humaniskind.com
+GitHub: https://github.com/mriotorto33/HumanisKind
+
+## Pages
+
+- / — Home: overview, use cases, live enforcement demonstrations
+- /technology — Full technical architecture: KMIR, Sacred Trace™, C2PA 2.3, integration guide
+- /executive-summary — Business case for investors and compliance officers
+- /roadmap — Development phases and live status
+- /manifesto — Founding principles for deterministic AI governance
+- /origins — The story behind HIK
+- /dashboard — Live enforcement dashboard (requires access)
