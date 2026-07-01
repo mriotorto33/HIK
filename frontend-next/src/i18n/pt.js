@@ -29,7 +29,7 @@ export const pt = {
   hero: {
     subtitle: "CONFORMIDADE DE POLÍTICAS DETERMINÍSTICA PARA IA EMPRESARIAL",
     description: "Sistemas de IA tomam decisões com consequências legais — mas não produzem prova de que permaneceram dentro da política. O HIK muda isso: cada interação de IA é avaliada no limite da política e emite um recibo de conformidade admissível em tribunal antes de chegar ao seu fluxo de trabalho.",
-    badges: ["EU AI Act Art. 50", "NYC LL144", "GDPR Art. 22", "Aplicação ao Vivo", "Ancoragem Blockchain", "Agnóstico ao Modelo"],
+    badges: ["Aberto a Humanos", "Fechado a Máquinas", "EU AI Act Art. 50", "NYC LL144", "GDPR Art. 22", "Zero Trust", "Ancoragem Blockchain", "Agnóstico ao Modelo"],
     cta: {
       primary: { text: "Solicitar Demo de Conformidade", link: "mailto:contact@humaniskind.com" },
       secondary: { text: "Ver a Arquitetura", link: "/technology" }
