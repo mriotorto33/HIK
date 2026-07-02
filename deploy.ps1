@@ -11,23 +11,27 @@ $REGION          = "us-east4"
 $REGISTRY        = "us-east4-docker.pkg.dev/$PROJECT_ID/hik-repo"
 $DOMAIN          = "www.humaniskind.com"
 
-$MONGO_URI       = "mongodb+srv://martinriotorto33_db_user:dNnwes30FtG2SiMN@cluster0.rjqx6n0.mongodb.net/?appName=Cluster0"
-$DB_NAME         = "hikdb"
-$CORS_ORIGINS    = "https://www.humaniskind.com,https://humaniskind.com"
-
 $BACKEND_SERVICE  = "hik-backend"
 $FRONTEND_SERVICE = "hik-frontend"
 
 $BACKEND_IMAGE    = "$REGISTRY/$BACKEND_SERVICE`:latest"
 $FRONTEND_IMAGE   = "$REGISTRY/$FRONTEND_SERVICE`:latest"
 
-Write-Host "=== HIK Deploy: gen-lang-client-0109704786 ===" -ForegroundColor Cyan
+Write-Host "=== HIK Deploy: $PROJECT_ID ===" -ForegroundColor Cyan
 
 # 0. Auth
-Write-Host "[0/5] Authenticating..." -ForegroundColor Yellow
+Write-Host "[0/6] Authenticating..." -ForegroundColor Yellow
 gcloud config set project $PROJECT_ID
 gcloud config set account martinriotorto33@gmail.com
 gcloud auth configure-docker us-east4-docker.pkg.dev --quiet
+
+# 0b. Pull runtime config from Secret Manager
+Write-Host "[0/6] Resolving runtime config..." -ForegroundColor Yellow
+$MONGO_URI      = gcloud secrets versions access latest --secret="hik-mongo-uri"      --project=$PROJECT_ID
+$DB_NAME        = gcloud secrets versions access latest --secret="hik-db-name"        --project=$PROJECT_ID
+$CORS_ORIGINS   = gcloud secrets versions access latest --secret="hik-cors-origins"   --project=$PROJECT_ID
+$POSTHOG_KEY    = gcloud secrets versions access latest --secret="hik-posthog-key"    --project=$PROJECT_ID
+Write-Host "  Config resolved." -ForegroundColor Green
 
 # 1. Build + push backend
 Write-Host "[1/5] Building backend image..." -ForegroundColor Yellow
@@ -56,7 +60,7 @@ Write-Host "  Backend live at: $BACKEND_URL" -ForegroundColor Green
 Write-Host "[3/5] Building frontend (Next.js)..." -ForegroundColor Yellow
 docker build `
   --build-arg NEXT_PUBLIC_BACKEND_URL=$BACKEND_URL `
-  --build-arg NEXT_PUBLIC_POSTHOG_KEY=phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs `
+  --build-arg NEXT_PUBLIC_POSTHOG_KEY=$POSTHOG_KEY `
   --build-arg NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com `
   -t $FRONTEND_IMAGE `
   ./frontend-next
