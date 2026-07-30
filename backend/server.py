@@ -707,7 +707,7 @@ def _generate_evidence_pdf(event: dict) -> bytes:
     signature = hmac.new(
         EVIDENCE_SIGNING_KEY.encode("utf-8"),
         sig_input.encode("utf-8"),
-        hashlib.sha256,
+        digestmod=hashlib.sha256,
     ).hexdigest()
     sig_block = [
         ["Signed at (UTC)", signed_at],
@@ -765,7 +765,7 @@ def _generate_evidence_pdf(event: dict) -> bytes:
         Spacer(1, 10),
         Paragraph("EVENT CONTEXT", h_section),
         _table(summary),
-        Paragraph("STORAGE &amp; ON-CHAIN ANCHORS", h_section),
+        Paragraph("STORAGE & ON-CHAIN ANCHORS", h_section),
         _table(anchors, highlight=True),
         Paragraph("RAW JSON PAYLOAD", h_section),
     ]
