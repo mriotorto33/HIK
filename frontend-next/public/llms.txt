@@ -75,8 +75,8 @@ That distinction is the entire legal liability as the EU AI Act and NYC LL144 en
 - Phase 1–4 fully live: Sacred Trace™ receipts, IPFS anchoring, EVM anchoring, live stream kill-switch
 - Phase 5 (serverless edge enforcement) in active development
 - Source-available under FCL-1.0-Apache-2.0
-- Three-person founding team: Martín Riotorto (Lead Architect), Matías Mospan (Platform Lead),
-  Federico Brubacher (Strategic Advisor)
+- Team: Martín Riotorto (Founder & Lead Architect), Federico Brubacher (Co-Founder & Strategic Advisor),
+  Matías Mospan (Platform Architect)
 
 ## Key Technology Terms
 

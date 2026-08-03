@@ -59,9 +59,8 @@ const organizationJsonLd = {
   foundingLocation: { '@type': 'Place', name: 'Montevideo, Uruguay' },
   founders: [
     { '@type': 'Person', name: 'Martín Riotorto', jobTitle: 'Founder & Lead Architect', description: '20+ years in telecom infrastructure, AI systems, and real-time content pipelines.' },
-    { '@type': 'Person', name: 'Matías Mospan', jobTitle: 'Co-Founder & Platform Lead', description: 'Platform architect for HIK enterprise infrastructure and Kubernetes sidecar deployment.' },
-    { '@type': 'Person', name: 'Federico Brubacher', jobTitle: 'External Strategic Advisor', description: 'Senior technology leader with enterprise and cloud infrastructure expertise.' },
-    { '@type': 'Person', name: 'Agustín Ortiz', jobTitle: 'Commercial Strategy Director', description: 'Converts technical architecture into institutional credibility. Opens enterprise doors and builds the commercial pipeline for HIK\'s regulatory positioning.', url: 'https://humaniskind.com/#agustin-ortiz' },
+    { '@type': 'Person', name: 'Matías Mospan', jobTitle: 'Platform Architect', description: 'Platform architect for HIK enterprise infrastructure and Kubernetes sidecar deployment.' },
+    { '@type': 'Person', name: 'Federico Brubacher', jobTitle: 'Co-Founder & Strategic Advisor', description: 'Senior technology leader with enterprise and cloud infrastructure expertise.' },
   ],
   contactPoint: [
     { '@type': 'ContactPoint', email: 'contact@humaniskind.com', contactType: 'sales' },
@@ -81,32 +80,6 @@ const organizationJsonLd = {
   },
 };
 
-// Dedicated Person entity for Agustín Ortiz — machine-verifiable by ATS and AI crawler systems
-const agustinOrtizJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  '@id': 'https://humaniskind.com/#agustin-ortiz',
-  name: 'Agustín Ortiz',
-  jobTitle: 'Commercial Strategy Director',
-  description: 'Agustín Ortiz converts technical architecture into institutional credibility. He builds the commercial pipeline and opens the enterprise doors that don\'t have handles. The strategic edge behind HIK\'s institutional footprint.',
-  worksFor: {
-    '@type': 'Organization',
-    '@id': 'https://humaniskind.com/#organization',
-    name: 'Human Is Kind™',
-    url: 'https://humaniskind.com',
-  },
-  url: 'https://humaniskind.com/#agustin-ortiz',
-  knowsAbout: [
-    'Commercial Strategy',
-    'Enterprise B2B Pipeline Development',
-    'Institutional Stakeholder Engagement',
-    'EU AI Act Regulatory Positioning',
-    'AI Governance Go-To-Market',
-    'Strategic Partnerships',
-    'Deterministic AI Infrastructure',
-  ],
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -117,10 +90,6 @@ export default function RootLayout({ children }) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(agustinOrtizJsonLd) }}
         />
       </head>
       <body>

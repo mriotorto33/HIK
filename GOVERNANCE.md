@@ -84,6 +84,18 @@ That sequence — advice from the machine, authorization from the human — is n
 
 ---
 
+## 8. Research & Publications
+
+The following peer-reviewed papers and technical milestones document the theoretical and regulatory foundations of the HIK protocol, published on Zenodo under CC BY 4.0:
+
+| # | Title | DOI |
+|---|---|---|
+| 1 | [Paper1_HumanIsKind_Architecture](https://doi.org/10.5281/zenodo.21710655) | `10.5281/zenodo.21710655` |
+| 2 | [A Deterministic Infrastructure Approach to AI Governance and Regulatory Compliance](https://doi.org/10.5281/zenodo.21710775) | `10.5281/zenodo.21710775` |
+| 3 | [Runtime Enforcement as a Precondition for SEC Approval of a Tokenized ETF](https://doi.org/10.5281/zenodo.21710856) | `10.5281/zenodo.21710856` |
+
+---
+
 > *"The Architect provides the vision; the Engineer builds the vessel. Together, we anchor the Trace."*
 
 **As Above, So Below.**

@@ -23,7 +23,8 @@ export const en = {
       { label: "Origins", path: "/origins" },
       { label: "Roadmap", path: "/roadmap" },
       { label: "Manifesto", path: "/manifesto" },
-      { label: "Executive Summary", path: "/executive-summary" }
+      { label: "Executive Summary", path: "/executive-summary" },
+      { label: "Redacciones", path: "/redacciones" }
     ]
   },
   hero: {
@@ -108,9 +109,8 @@ export const en = {
   ],
   team: [
     { name: "Mart\u00edn Riotorto", role: "Founder & Lead Architect", location: "Montevideo, Uruguay", bio: "20+ years across telecom infrastructure, real-time content systems, and AI integrity tooling. Designed the HIK enforcement architecture from the ground up." },
-    { name: "Mat\u00edas Mospan", role: "Co-Founder \u0026 Platform Lead", location: "Argentina", bio: "Platform architect responsible for HIK\u2019s enterprise infrastructure layer \u2014 Kubernetes sidecar deployment, multi-tenant enforcement pipelines, and the next-generation serverless edge enforcement engine." },
-    { name: "Federico Brubacher", role: "External Strategic Advisor", location: "California, USA", bio: "Senior technology leader with deep enterprise and cloud infrastructure expertise. Independently validated the HIK enforcement architecture against global scalability and Big Tech standards." },
-    { name: "Agustín Ortiz", role: "Commercial Strategy Director", location: "Uruguay", bio: "Agustín Ortiz converts technical architecture into institutional credibility. He builds the enterprise pipeline and opens the doors that don't have handles. The commercial edge that turns governance into a market position.", hoverLine: "The strategic force behind HIK's institutional footprint." }
+    { name: "Mat\u00edas Mospan", role: "Platform Architect", location: "Argentina", bio: "Platform architect responsible for HIK\u2019s enterprise infrastructure layer \u2014 Kubernetes sidecar deployment, multi-tenant enforcement pipelines, and the next-generation serverless edge enforcement engine." },
+    { name: "Federico Brubacher", role: "Co-Founder & Strategic Advisor", location: "California, USA", bio: "Senior technology leader with deep enterprise and cloud infrastructure expertise. Co-founder who validated and shaped the HIK enforcement architecture for global scalability and Big Tech standards." }
   ],
   roadmap: {
     phases: [
@@ -186,7 +186,7 @@ export const en = {
     exploreSDK: "View Technical Architecture",
     readyTitle: "Ready to enforce AI policy with cryptographic proof?",
     readyDesc: "HIK is live today: Native enforcement engine, deterministic policy cascade, live stream kill-switch, and blockchain-anchored audit receipts.",
-    teamTitle: "Four Principals. Two Continents. One Protocol.",
+    teamTitle: "Three Principals. Two Continents. One Protocol.",
     theTeam: "The Team",
     signedBy: "Signed By",
     regulatoryLandscape: "Regulatory Landscape",

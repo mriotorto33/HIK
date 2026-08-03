@@ -125,9 +125,8 @@ This repository is **Source Visible under NDA**.
 | Name | Role |
 |---|---|
 | **Martín Riotorto** | Founder & Lead Architect — Montevideo, Uruguay |
-| **Matías Mospan** | Co-Founder & Platform Lead — Argentina |
-| **Federico Brubacher** | External Strategic Advisor — California, USA |
-| **Agustín Ortiz** | Chief Marketing Officer |
+| **Matías Mospan** | Platform Architect — Argentina |
+| **Federico Brubacher** | Co-Founder & Strategic Advisor — California, USA |
 
 ---
 

@@ -23,7 +23,8 @@ export const es = {
       { label: "Orígenes", path: "/origins" },
       { label: "Hoja de Ruta", path: "/roadmap" },
       { label: "Manifiesto", path: "/manifesto" },
-      { label: "Resumen Ejecutivo", path: "/executive-summary" }
+      { label: "Resumen Ejecutivo", path: "/executive-summary" },
+      { label: "Redacciones", path: "/redacciones" }
     ]
   },
   hero: {
@@ -108,9 +109,8 @@ export const es = {
   ],
   team: [
     { name: "Martín Riotorto", role: "Fundador y Arquitecto Principal", location: "Montevideo, Uruguay", bio: "Más de 20 años en infraestructura de telecomunicaciones, sistemas de contenido en tiempo real y herramientas de integridad de IA. Diseñó la arquitectura de aplicación de HIK desde cero." },
-    { name: "Matías Mospan", role: "Co-Fundador y Líder de Plataforma", location: "Argentina", bio: "Arquitecto de plataforma responsable de la capa de infraestructura empresarial de HIK \u2014 despliegue en Kubernetes, pipelines de aplicación multi-tenant y el motor de aplicación serverless de próxima generación." },
-    { name: "Federico Brubacher", role: "Asesor Estratégico Externo", location: "California, EE.UU.", bio: "Líder tecnológico senior con profunda experiencia en infraestructura empresarial y cloud. Validó de forma independiente la arquitectura de aplicación de HIK frente a estándares de escalabilidad global y Big Tech." },
-    { name: "Agustín Ortiz", role: "Director de Estrategia Comercial", location: "Uruguay", bio: "Agustín Ortiz convierte arquitectura técnica en credibilidad institucional. Construye el pipeline comercial y abre las puertas que no tienen manija. El filo estratégico que transforma la gobernanza en posición de mercado.", hoverLine: "La fuerza estratégica detrás de la huella institucional de HIK." }
+    { name: "Matías Mospan", role: "Arquitecto de Plataforma", location: "Argentina", bio: "Arquitecto de plataforma responsable de la capa de infraestructura empresarial de HIK \u2014 despliegue en Kubernetes, pipelines de aplicación multi-tenant y el motor de aplicación serverless de próxima generación." },
+    { name: "Federico Brubacher", role: "Co-Fundador y Asesor Estratégico", location: "California, EE.UU.", bio: "Líder tecnológico senior con profunda experiencia en infraestructura empresarial y cloud. Co-fundador que validó y dio forma a la arquitectura de aplicación de HIK frente a estándares de escalabilidad global y Big Tech." }
   ],
   roadmap: { phases: [
     { phase: "Fase 1", version: "SDK v1.0", status: "LIVE", statusColor: "green", title: "Integridad de Activos Estáticos", items: ["Recibos criptográficos Sacred Trace™", "Corpus fuente anclado con Merkle", "Anclaje blockchain activo", "GATE 1 (entrada) y GATE 2 (salida) de cumplimiento activos"] },
@@ -182,7 +182,7 @@ export const es = {
     exploreSDK: "Ver Arquitectura Técnica",
     readyTitle: "¿Listo para aplicar políticas de IA con prueba criptográfica?",
     readyDesc: "HIK está en vivo hoy: motor de aplicación nativo, cascada de políticas determinística, kill-switch de transmisión en vivo y recibos de auditoría anclados en blockchain.",
-    teamTitle: "Cuatro Directivos. Dos Continentes. Un Protocolo.",
+    teamTitle: "Tres Directivos. Dos Continentes. Un Protocolo.",
     theTeam: "El Equipo",
     signedBy: "Firmado Por",
     regulatoryLandscape: "Panorama Regulatorio",

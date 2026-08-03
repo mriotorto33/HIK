@@ -39,5 +39,18 @@ export default function sitemap() {
       changeFrequency: 'monthly',
       priority: 0.75,
     },
+    {
+      url: `${base}/research`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+    {
+      url: `${base}/redacciones`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.85,
+    },
+
   ];
 }
