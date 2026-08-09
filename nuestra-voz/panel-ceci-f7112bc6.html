@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Admin · Nuestra Voz</title>
+  <!-- Firebase SDK — debe cargarse PRIMERO antes de cualquier script que lo use -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0d0d12; --surface: #16161f; --surface-2: #1e1e2a;
+      --border: #2a2a3a; --primary: #8b5cf6; --primary-light: #a78bfa;
+      --teal: #40c4b0; --gold: #f5c542; --red: #ef4444;
+      --text: #f0f0f5; --text-2: #9898aa; --text-3: #6b6b7d;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Layout ── */
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px; background: var(--surface); border-right: 1px solid var(--border);
+      padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; position: fixed; top: 0; bottom: 0;
+    }
+    .sidebar-brand {
+      font-size: 1.1rem; font-weight: 700; padding: 12px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-brand span { background: linear-gradient(135deg, var(--primary), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      color: var(--text-2); text-decoration: none; border-radius: 8px; font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+    .sidebar a:hover, .sidebar a.active { background: var(--surface-2); color: var(--text); }
+    .sidebar a.active { color: var(--primary-light); }
+    .sidebar a i { width: 18px; text-align: center; }
+    .sidebar-spacer { flex: 1; }
+
+    .main { margin-left: 260px; flex: 1; padding: 32px; }
+
+    /* ── Header ── */
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+    .page-title { font-size: 1.5rem; font-weight: 700; }
+    .page-subtitle { color: var(--text-3); font-size: 0.85rem; margin-top: 4px; }
+
+    /* ── Stats ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px;
+    }
+    .stat-card .label { font-size: 0.78rem; color: var(--text-3); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-card .value { font-size: 1.8rem; font-weight: 700; }
+    .stat-card .change { font-size: 0.75rem; margin-top: 4px; }
+    .stat-card .change.up { color: var(--teal); }
+
+    /* ── Table ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 18px 20px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .card-title { font-size: 1rem; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 12px 20px; font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    td { padding: 14px 20px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+    tr:hover td { background: var(--surface-2); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+      border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+    }
+    .badge-active { background: rgba(64,196,176,0.12); color: var(--teal); }
+    .badge-pending { background: rgba(245,197,66,0.12); color: var(--gold); }
+    .badge-inactive { background: rgba(239,68,68,0.1); color: var(--red); }
+    .badge-basico { background: rgba(139,92,246,0.1); color: var(--primary-light); }
+    .badge-profesional { background: rgba(64,196,176,0.1); color: var(--teal); }
+    .badge-elite { background: rgba(245,197,66,0.1); color: var(--gold); }
+
+    /* ── Buttons ── */
+    .btn {
+      padding: 8px 16px; border-radius: 8px; font-size: 0.84rem; font-weight: 600;
+      border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      transition: all 0.2s; font-family: inherit;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-sm { padding: 5px 10px; font-size: 0.78rem; border-radius: 6px; }
+    .btn-ghost { background: none; color: var(--text-2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+    .btn-danger { background: rgba(239,68,68,0.1); color: var(--red); }
+
+    /* ── Modal ── */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+      z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-bg.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 28px; max-width: 520px; width: 100%; max-height: 85vh; overflow-y: auto;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+    .modal h3 { margin-bottom: 20px; font-weight: 700; color: var(--text); }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 5px; font-weight: 600; }
+    .form-input {
+      width: 100%; padding: 10px 14px; background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.88rem; font-family: inherit; outline: none;
+    }
+    .form-input:focus { border-color: var(--primary); }
+    select.form-input option { background: #16161f; color: #f0f0f5; padding: 10px; }
+
+    /* ── Login screen ── */
+    .login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 24px;
+    }
+    .login-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 40px; max-width: 400px; width: 100%; text-align: center;
+    }
+    .login-box h2 { margin-bottom: 8px; }
+    .login-box p { color: var(--text-3); font-size: 0.88rem; margin-bottom: 24px; }
+
+    /* ── Empty state ── */
+    .empty { padding: 40px; text-align: center; color: var(--text-3); }
+    .empty i { font-size: 2rem; margin-bottom: 12px; display: block; }
+
+    /* ── Responsive Mobile Design ── */
+    @media (max-width: 768px) {
+      .admin-layout {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        position: relative;
+        top: auto;
+        bottom: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 16px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+      .sidebar-brand {
+        width: 100%;
+        margin-bottom: 4px;
+        padding: 4px 8px;
+      }
+      .sidebar a {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+      }
+      .sidebar-spacer { display: none; }
+      .main {
+        margin-left: 0 !important;
+        padding: 16px !important;
+        width: 100%;
+      }
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+      }
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .card {
+        overflow-x: auto;
+      }
+      table {
+        min-width: 600px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════ LOGIN SCREEN ═══════ -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-box">
+      <div style="font-size:2rem;margin-bottom:12px">🔐</div>
+      <h2>Panel Administrativo</h2>
+      <p>Solo para Cecilia Mahia — administradora de Nuestra Voz</p>
+      <div class="form-group">
+        <input class="form-input" type="password" id="adminPass" placeholder="Contraseña de admin" style="text-align:center" />
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="doAdminLogin()">
+        <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+      </button>
+      <p style="margin-top:16px;font-size:0.75rem;color:var(--text-3)">
+        <a href="index.html" style="color:var(--primary-light)">← Volver al sitio</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ═══════ ADMIN PANEL ═══════ -->
+  <div id="adminPanel" class="admin-layout" style="display:none">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-microphone-lines" style="color:var(--primary)"></i>
+        <span>Nuestra Voz</span>
+      </div>
+      <a href="#" class="active" onclick="showSection('dashboard')">
+        <i class="fa-solid fa-gauge"></i> Dashboard
+      </a>
+      <a href="#" onclick="showSection('operators')">
+        <i class="fa-solid fa-users"></i> Operadores
+      </a>
+      <a href="#" onclick="showSection('materials')">
+        <i class="fa-solid fa-file-lines"></i> Materiales
+      </a>
+      <a href="#" onclick="showSection('payments')">
+        <i class="fa-solid fa-credit-card"></i> Pagos
+      </a>
+      <a href="#" onclick="showSection('channels')">
+        <i class="fa-solid fa-share-nodes"></i> Canales
+      </a>
+      <div class="sidebar-spacer"></div>
+      <a href="index.html" style="color:var(--text-3)">
+        <i class="fa-solid fa-arrow-left"></i> Ir al sitio
+      </a>
+      <a href="#" onclick="adminLogout()" style="color:var(--red)">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+      </a>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- ── Dashboard ── -->
+      <section id="sec-dashboard">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Dashboard</div>
+            <div class="page-subtitle">Bienvenida, Cecilia 👋</div>
+          </div>
+          <button class="btn btn-primary" onclick="openNewOperatorModal()">
+            <i class="fa-solid fa-plus"></i> Nuevo Operador
+          </button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="label">Operadores activos</div>
+            <div class="value" id="statOperators">0</div>
+            <div class="change up">↑ Fase de lanzamiento</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Materiales subidos</div>
+            <div class="value" id="statMaterials">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Publicaciones este mes</div>
+            <div class="value" id="statPublished">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Ingresos UYU</div>
+            <div class="value" id="statRevenue">$0</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Últimos operadores registrados</div>
+          </div>
+          <div id="recentOperators">
+            <div class="empty">
+              <i class="fa-solid fa-users"></i>
+              Todavía no hay operadores registrados. Hacé clic en "Nuevo Operador" para crear el primero.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Operators ── -->
+      <section id="sec-operators" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">SuperAdmin · Gestión de Operadores</div>
+            <div class="page-subtitle">Alta, baja, edición y aprobación de operadores terapéuticos</div>
+          </div>
+          <button class="btn btn-primary" onclick="openNewOperatorModal()">
+            <i class="fa-solid fa-user-plus"></i> Nuevo Operador
+          </button>
+        </div>
+
+        <!-- Filter bar -->
+        <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+          <input class="form-input" id="searchOpInput" placeholder="🔍 Buscar por nombre, email o WhatsApp..." style="max-width:320px" oninput="refreshData()" />
+          <select class="form-input" id="filterStatusSelect" style="max-width:180px" onchange="refreshData()">
+            <option value="todos">Todos los estados</option>
+            <option value="activo">Solo Activos (en Front)</option>
+            <option value="pendiente_pago">Pendientes de Pago</option>
+            <option value="inactivo">Dados de Baja</option>
+          </select>
+          <select class="form-input" id="filterPlanSelect" style="max-width:160px" onchange="refreshData()">
+            <option value="todos">Todos los planes</option>
+            <option value="basico">Básico</option>
+            <option value="profesional">Profesional</option>
+            <option value="elite">Elite</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Operador / Especialidad</th>
+                <th>Contacto</th>
+                <th>Plan</th>
+                <th>Pago</th>
+                <th>Estado</th>
+                <th>Score</th>
+                <th>Acciones ABM</th>
+              </tr>
+            </thead>
+            <tbody id="operatorsTableBody">
+              <tr><td colspan="7" class="empty"><i class="fa-solid fa-users"></i> Cargando operadores...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Materials / Publicaciones Multi-Canal ── -->
+      <section id="sec-materials" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Materiales y Contenidos de Operadores</div>
+            <div class="page-subtitle">Coordinación de difusión en el Directorio, WhatsApp, Instagram y Facebook Oficial</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fa-solid fa-paper-plane" style="color:var(--primary)"></i> Solicitudes de Publicación Recibidas</div>
+          </div>
+          <div id="materialsListContainer" style="padding:20px">
+            <div class="empty">
+              <i class="fa-solid fa-file-lines"></i>
+              No hay publicaciones pendientes.<br>
+              <small style="color:var(--text-3)">Las publicaciones que los operadores envíen desde "Mi Panel" aparecerán acá para su aprobación y difusión.</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Payments ── -->
+      <section id="sec-payments" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Pagos y Comprobantes</div>
+            <div class="page-subtitle">Historial de suscripciones y transferencias bancarias</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Transferencias Santander (USD) & Pasarelas</div>
+          </div>
+          <div id="paymentsOverview" style="padding:20px">
+            <!-- Pagos resumen dinámico -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Channels ── -->
+      <section id="sec-channels" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Canales de Publicación Multi-Canal</div>
+            <div class="page-subtitle">Estado de conexión con cada plataforma</div>
+          </div>
+        </div>
+        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="stat-card"><div class="label"><i class="fa-brands fa-whatsapp" style="color:#25D366"></i> WhatsApp Oficial</div><div class="value" style="font-size:1rem;color:var(--teal)">Conectado +598 92 360 151</div></div>
+          <div class="stat-card"><div class="label"><i class="fa-brands fa-instagram" style="color:#E1306C"></i> Instagram Oficial</div><div class="value" style="font-size:1rem;color:var(--teal)">Conectado @nuestravoz_uy</div></div>
+          <div class="stat-card"><div class="label"><i class="fa-brands fa-facebook" style="color:#1877F2"></i> Facebook Oficial</div><div class="value" style="font-size:1rem;color:var(--teal)">Página Nuestra Voz UY</div></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ═══════ MODAL: New Operator ═══════ -->
+  <div class="modal-bg" id="newOperatorModal">
+    <div class="modal">
+      <h3 id="operatorModalTitle">👤 Crear Nuevo Operador</h3>
+      <input type="hidden" id="editOpId" value="" />
+      <div class="form-group">
+        <label class="form-label">Nombre completo *</label>
+        <input class="form-input" id="opNombre" placeholder="Ej: María Rodríguez" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input class="form-input" type="email" id="opEmail" placeholder="operador@email.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">WhatsApp</label>
+        <input class="form-input" id="opTel" placeholder="+598 9X XXX XXX" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Especialidad / Área *</label>
+        <select class="form-input" id="opEspecialidad">
+          <option>Adicciones</option>
+          <option>Salud Mental</option>
+          <option>Abuso y Violencia</option>
+          <option>Duelo y Pérdida</option>
+          <option>Bienestar Emocional</option>
+          <option>Terapia Familiar</option>
+          <option>Otra</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Plan</label>
+        <select class="form-input" id="opPlan">
+          <option value="basico">Básico ($15/mes)</option>
+          <option value="profesional" selected>Profesional ($35/mes)</option>
+          <option value="elite">Elite ($75/mes)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Estado de la cuenta</label>
+        <select class="form-input" id="opEstado">
+          <option value="pendiente_pago" selected>Pendiente de Aprobación</option>
+          <option value="activo">Activo (Visible en el Frontend)</option>
+          <option value="inactivo">Dado de Baja (Oculto del Front)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Puntaje / Valoración (⭐ Score)</label>
+        <select class="form-input" id="opScore">
+          <option value="5.0">⭐ 5.0 - Excelente (Destacado Elite)</option>
+          <option value="4.9" selected>⭐ 4.9 - Muy Bueno</option>
+          <option value="4.8">⭐ 4.8 - Bueno</option>
+          <option value="4.7">⭐ 4.7 - Estándar</option>
+          <option value="4.5">⭐ 4.5</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Forma de Pago</label>
+        <select class="form-input" id="opPago">
+          <option>Transferencia Bancaria (Santander)</option>
+          <option>Stripe</option>
+          <option>MercadoPago</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px">
+        <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="saveOperatorFromModal()">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Operador
+        </button>
+        <button class="btn btn-ghost" onclick="closeNewOperatorModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_PASS = 'nuestravoz2024';
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDRIsJDO2zM1E2WK8tmOykVf47VKq1cqDI",
+      authDomain: "nuestravoz-uy.firebaseapp.com",
+      projectId: "nuestravoz-uy",
+      storageBucket: "nuestravoz-uy.firebasestorage.app",
+      messagingSenderId: "499775575806",
+      appId: "1:499775575806:web:d758b5e7e09743cff377af"
+    };
+
+    // ── Firebase init ──────────────────────────────────────────
+    let db = null;
+    let unsubscribe = null; // Firestore real-time listener
+
+    function initFirebase() {
+      if (typeof firebase === 'undefined') { console.warn('Firebase SDK no cargado'); return; }
+      try {
+        const app = firebase.apps && firebase.apps.length ? firebase.app() : firebase.initializeApp(FIREBASE_CONFIG);
+        db = firebase.firestore();
+      } catch(e) { console.error('Firebase init error:', e); }
+    }
+
+    // ── Admin login ────────────────────────────────────────────
+    function doAdminLogin() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === ADMIN_PASS) {
+        localStorage.setItem('nv_admin', 'true');
+        showAdminPanel();
+      } else {
+        alert('Contraseña incorrecta');
+      }
+    }
+
+    document.getElementById('adminPass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doAdminLogin();
+    });
+
+    function adminLogout() {
+      localStorage.removeItem('nv_admin');
+      if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+      location.reload();
+    }
+
+    function showAdminPanel() {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'flex';
+      initFirebase();
+      startRealtimeListener();
+    }
+
+    // Esperar a que todo el DOM y Firebase estén listos
+    if (localStorage.getItem('nv_admin') === 'true') {
+      // Firebase ya está cargado (script en <head>), podemos inicializar directamente
+      showAdminPanel();
+    }
+
+    function showSection(name) {
+      document.querySelectorAll('[id^="sec-"]').forEach(s => s.style.display = 'none');
+      document.getElementById('sec-' + name).style.display = '';
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      event.target.closest('a')?.classList.add('active');
+    }
+
+    // ── Firestore real-time listener ───────────────────────────
+    // Se activa una sola vez y re-renderiza la tabla cuando hay cambios en Firestore
+    let cachedOps = [];
+
+    function startRealtimeListener() {
+      if (!db) { renderWithOps([]); return; }
+      if (unsubscribe) unsubscribe();
+
+      const tbody = document.getElementById('operatorsTableBody');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-spinner fa-spin"></i> Cargando operadores desde Firestore...</td></tr>';
+
+      unsubscribe = db.collection('operadores')
+        .orderBy('creado', 'desc')
+        .onSnapshot(snapshot => {
+          cachedOps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          renderWithOps(cachedOps);
+        }, err => {
+          console.error('Firestore error:', err);
+          document.getElementById('operatorsTableBody').innerHTML =
+            `<tr><td colspan="7" class="empty" style="color:var(--red)">Error Firestore: ${err.message}. Verificá las reglas de seguridad.</td></tr>`;
+        });
+
+      // Escuchar solicitudes de publicación enviadas por los operadores
+      db.collection('publicaciones')
+        .onSnapshot(snapshot => {
+          const pubs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          // Ordenar cliente-side por creado descendente
+          pubs.sort((a, b) => new Date(b.creado || 0) - new Date(a.creado || 0));
+          renderMaterialsList(pubs);
+        }, err => console.warn('Publicaciones listener error:', err));
+    }
+
+    function renderMaterialsList(pubs) {
+      const container = document.getElementById('materialsListContainer');
+      if (!container) return;
+      if (!pubs || pubs.length === 0) {
+        container.innerHTML = `
+          <div class="empty">
+            <i class="fa-solid fa-file-lines"></i>
+            No hay publicaciones pendientes.<br>
+            <small style="color:var(--text-3)">Las publicaciones que los operadores envíen desde "Mi Panel" aparecerán acá para su aprobación y difusión en los 4 canales.</small>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <table style="width:100%">
+          <thead>
+            <tr>
+              <th>Operador</th>
+              <th>Título y Contenido</th>
+              <th>Canales de Difusión</th>
+              <th>Estado</th>
+              <th>Acción Multi-Canal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${pubs.map(p => `
+              <tr>
+                <td><strong>${p.operadorNombre || 'Operador'}</strong><br><small style="color:var(--text-3)">${p.operadorEmail || ''}</small></td>
+                <td><strong>${p.titulo}</strong><br><small style="color:var(--text-2)">${(p.texto || '').substring(0,80)}...</small></td>
+                <td><small style="color:var(--teal)">🌐 WEB, 📲 WA, 📸 IG, 📘 FB</small></td>
+                <td>
+                  <span class="badge ${p.estado === 'Publicado en Redes' ? 'badge-active' : 'badge-pending'}">
+                    ${p.estado || 'Enviado a Cecilia'}
+                  </span>
+                </td>
+                <td>
+                  ${p.estado !== 'Publicado en Redes' ? `
+                    <button class="btn btn-sm btn-primary" onclick="publishToAllChannels('${p.id}')">
+                      <i class="fa-solid fa-share-nodes"></i> Difundir en Redes Oficiales
+                    </button>
+                  ` : `
+                    <small style="color:var(--teal)"><i class="fa-solid fa-circle-check"></i> Difundido</small>
+                  `}
+                  <button class="btn btn-sm" style="background:#25D366;color:#fff;margin-left:6px;border:none;cursor:pointer" onclick="shareToWhatsApp('${encodeURIComponent(p.titulo || '')}', '${encodeURIComponent(p.texto || '')}', '${encodeURIComponent(p.imagenUrl || '')}')">
+                      <i class="fa-brands fa-whatsapp"></i> Compartir WA
+                  </button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    function shareToWhatsApp(rawTitle, rawText, rawImageUrl) {
+        const title = decodeURIComponent(rawTitle || '');
+        const text = decodeURIComponent(rawText || '');
+        const imageUrl = decodeURIComponent(rawImageUrl || '');
+        
+        let msg = `*${title}*\n\n${text}`;
+        if (imageUrl) {
+          msg += `\n\n📷 Imagen: ${imageUrl}`;
+        }
+        const encoded = encodeURIComponent(msg);
+        window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    }
+
+    async function publishToAllChannels(pubId) {
+      try {
+        if (!db) return;
+        await db.collection('publicaciones').doc(String(pubId)).update({
+          estado: 'Publicado en Redes',
+          difundidoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert('✅ ¡Publicación aprobada y difundida con éxito en el Directorio, WhatsApp, Instagram y Facebook Oficial!');
+      } catch(err) { alert('Error al difundir: ' + err.message); }
+    }
+
+    // ── Upsert un operador en Firestore ─────────────────────────
+    async function saveOperatorToFS(op) {
+      if (!db) throw new Error('Firestore no está inicializado');
+      const docId = String(op.id);
+      await db.collection('operadores').doc(docId).set({
+        nombre:       op.nombre       || '',
+        email:        op.email        || '',
+        telefono:     op.telefono     || '',
+        especialidad: op.especialidad || '',
+        plan:         op.plan         || 'profesional',
+        estado:       op.estado       || 'pendiente_pago',
+        score:        op.score        || '4.9',
+        pago:         op.pago         || '',
+        ciudad:       op.ciudad       || 'Uruguay',
+        foto:         op.foto         || '',
+        creado:       op.creado       || new Date().toISOString(),
+        actualizadoEn: firebase.firestore.FieldValue.serverTimestamp(),
+      }, { merge: true });
+    }
+
+    // ── Eliminar de Firestore ─────────────────────────────────
+    async function deleteFromFS(id) {
+      if (!db) throw new Error('Firestore no está inicializado');
+      await db.collection('operadores').doc(String(id)).delete();
+    }
+
+    // ── Modales ────────────────────────────────────────────────
+    function openNewOperatorModal() {
+      document.getElementById('editOpId').value = '';
+      document.getElementById('operatorModalTitle').textContent = '👤 Crear Nuevo Operador';
+      document.getElementById('opNombre').value = '';
+      document.getElementById('opEmail').value = '';
+      document.getElementById('opTel').value = '';
+      document.getElementById('opEspecialidad').value = 'Adicciones';
+      document.getElementById('opPlan').value = 'profesional';
+      document.getElementById('opEstado').value = 'pendiente_pago';
+      document.getElementById('opScore').value = '4.9';
+      document.getElementById('opPago').value = 'Transferencia Bancaria';
+      document.getElementById('newOperatorModal').classList.add('open');
+    }
+
+    function openEditOperatorModal(id) {
+      const op = cachedOps.find(o => String(o.id) === String(id));
+      if (!op) return;
+      document.getElementById('editOpId').value = op.id;
+      document.getElementById('operatorModalTitle').textContent = '✏️ Editar Operador · ABM SuperAdmin';
+      document.getElementById('opNombre').value = op.nombre || '';
+      document.getElementById('opEmail').value = op.email || '';
+      document.getElementById('opTel').value = op.telefono || '';
+      document.getElementById('opEspecialidad').value = op.especialidad || 'Adicciones';
+      document.getElementById('opPlan').value = op.plan || 'profesional';
+      document.getElementById('opEstado').value = op.estado || 'pendiente_pago';
+      document.getElementById('opScore').value = op.score || '4.9';
+      document.getElementById('opPago').value = op.pago || 'Stripe';
+      document.getElementById('newOperatorModal').classList.add('open');
+    }
+
+    function closeNewOperatorModal() {
+      document.getElementById('newOperatorModal').classList.remove('open');
+    }
+
+    async function saveOperatorFromModal() {
+      const id     = document.getElementById('editOpId').value;
+      const nombre = document.getElementById('opNombre').value.trim();
+      const email  = document.getElementById('opEmail').value.trim();
+      if (!nombre || !email) { alert('Nombre y email son obligatorios'); return; }
+
+      const btnSave = document.querySelector('#newOperatorModal .btn-primary');
+      if (btnSave) { btnSave.disabled = true; btnSave.textContent = 'Guardando...'; }
+
+      try {
+        const op = {
+          id:           id || String(Date.now()),
+          nombre,
+          email,
+          telefono:     document.getElementById('opTel').value.trim(),
+          especialidad: document.getElementById('opEspecialidad').value,
+          plan:         document.getElementById('opPlan').value,
+          estado:       document.getElementById('opEstado').value,
+          score:        document.getElementById('opScore').value,
+          pago:         document.getElementById('opPago').value,
+          ciudad:       'Uruguay',
+          foto:         '',
+          creado:       id ? (cachedOps.find(o => String(o.id) === String(id))?.creado || new Date().toISOString()) : new Date().toISOString(),
+        };
+        await saveOperatorToFS(op);
+        closeNewOperatorModal();
+        // El listener onSnapshot actualiza la tabla automáticamente
+      } catch(err) {
+        alert('Error al guardar: ' + err.message);
+      } finally {
+        if (btnSave) { btnSave.disabled = false; btnSave.textContent = 'Guardar'; }
+      }
+    }
+
+    // ── Toggle activar / dar de baja ───────────────────────────
+    async function toggleOperatorStatus(id) {
+      const op = cachedOps.find(o => String(o.id) === String(id));
+      if (!op) return;
+      const nuevoEstado = op.estado === 'activo' ? 'inactivo' : 'activo';
+      try {
+        await db.collection('operadores').doc(String(id)).update({
+          estado: nuevoEstado,
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        // onSnapshot actualiza la tabla
+      } catch(err) { alert('Error: ' + err.message); }
+    }
+
+    async function setOperatorStatus(id, newStatus) {
+      try {
+        await db.collection('operadores').doc(String(id)).update({
+          estado: newStatus,
+          actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch(err) { alert('Error: ' + err.message); }
+    }
+
+    async function deleteOperator(id) {
+      if (!confirm('⚠️ SuperAdmin: ¿Eliminar permanentemente este operador?')) return;
+      try {
+        await deleteFromFS(id);
+        // onSnapshot actualiza la tabla
+      } catch(err) { alert('Error al eliminar: ' + err.message); }
+    }
+
+    // ── Render tabla con los operadores recibidos de Firestore ──
+    function renderWithOps(ops) {
+      const search       = (document.getElementById('searchOpInput')?.value || '').toLowerCase();
+      const statusFilter = document.getElementById('filterStatusSelect')?.value || 'todos';
+      const planFilter   = document.getElementById('filterPlanSelect')?.value || 'todos';
+
+      // Stats
+      const activeOps  = ops.filter(o => o.estado === 'activo');
+      const pendingOps = ops.filter(o => o.estado === 'pendiente_pago');
+      document.getElementById('statOperators').textContent = activeOps.length;
+      document.getElementById('statMaterials').textContent = ops.length;
+      document.getElementById('statPublished').textContent = activeOps.length * 4;
+      const prices = { basico: 15, profesional: 35, elite: 75 };
+      document.getElementById('statRevenue').textContent = '$' + activeOps.reduce((s, o) => s + (prices[o.plan] || 15), 0) + ' USD /mes';
+
+      // Filter
+      let filtered = ops.filter(o => {
+        const matchesSearch  = (o.nombre || '').toLowerCase().includes(search) || (o.email || '').toLowerCase().includes(search) || (o.telefono || '').includes(search);
+        const matchesStatus  = statusFilter === 'todos' || o.estado === statusFilter;
+        const matchesPlan    = planFilter === 'todos' || o.plan === planFilter;
+        return matchesSearch && matchesStatus && matchesPlan;
+      });
+
+      // Render ABM Table
+      const tbody = document.getElementById('operatorsTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-filter"></i> No se encontraron operadores.</td></tr>';
+      } else {
+        tbody.innerHTML = filtered.map(o => {
+          const planLabel = o.plan === 'elite' ? '👑 Elite ($75)' : (o.plan === 'profesional' ? '⭐ Pro ($35)' : 'Básico ($15)');
+          const statusBg = o.estado === 'activo' ? 'rgba(64,196,176,0.15)' : (o.estado === 'pendiente_pago' ? 'rgba(245,197,66,0.15)' : 'rgba(239,68,68,0.15)');
+          const statusColor = o.estado === 'activo' ? 'var(--teal)' : (o.estado === 'pendiente_pago' ? 'var(--gold)' : 'var(--red)');
+          
+          return `
+            <tr>
+              <td><strong>${o.nombre}</strong><br><small style="color:var(--text-3)">${o.especialidad || '—'}</small></td>
+              <td>
+                <div><i class="fa-solid fa-envelope" style="color:var(--text-3)"></i> ${o.email}</div>
+                <small style="color:var(--teal)"><i class="fa-brands fa-whatsapp"></i> ${o.telefono || 'Sin tel'}</small>
+              </td>
+              <td><span class="badge badge-${o.plan}">${planLabel}</span></td>
+              <td><small style="color:var(--text-2)">${o.pago || '—'}</small></td>
+              <td>
+                <select onchange="setOperatorStatus('${o.id}', this.value)" 
+                        style="padding:6px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;background:${statusBg};color:${statusColor};border:1px solid ${statusColor};cursor:pointer;outline:none">
+                  <option value="activo" ${o.estado === 'activo' ? 'selected' : ''} style="background:#16161f;color:var(--teal)">🟢 Activo (Front)</option>
+                  <option value="pendiente_pago" ${o.estado === 'pendiente_pago' ? 'selected' : ''} style="background:#16161f;color:var(--gold)">🟡 Pendiente Aprobación</option>
+                  <option value="inactivo" ${o.estado === 'inactivo' ? 'selected' : ''} style="background:#16161f;color:var(--red)">🔴 Dado de Baja</option>
+                </select>
+              </td>
+              <td><strong style="color:var(--gold)">⭐ ${o.score || '4.9'}</strong></td>
+              <td>
+                <div style="display:flex;gap:6px">
+                  <button class="btn btn-sm btn-ghost" onclick="openEditOperatorModal('${o.id}')" title="Editar">
+                    <i class="fa-solid fa-pen-to-square"></i> Editar
+                  </button>
+                  <button class="btn btn-sm btn-danger" onclick="deleteOperator('${o.id}')" title="Eliminar">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>`;
+        }).join('');
+      }
+
+      // Recent Dashboard Table
+      const recent = document.getElementById('recentOperators');
+      if (recent) {
+        if (ops.length === 0) {
+          recent.innerHTML = '<div class="empty"><i class="fa-solid fa-users"></i> No hay registros todavía.</div>';
+        } else {
+          recent.innerHTML = '<table><thead><tr><th>Operador</th><th>Plan</th><th>Estado / Cambio Rápido</th><th>Editar</th></tr></thead><tbody>' +
+            ops.slice(0, 5).map(o => `
+              <tr>
+                <td><strong>${o.nombre}</strong><br><small style="color:var(--text-3)">${o.email}</small></td>
+                <td><span class="badge badge-${o.plan}">${o.plan}</span></td>
+                <td>
+                  <select onchange="setOperatorStatus('${o.id}', this.value)" 
+                          style="padding:4px 8px;border-radius:16px;font-size:0.75rem;font-weight:700;background:var(--surface-2);color:var(--text);border:1px solid var(--border);cursor:pointer">
+                    <option value="activo" ${o.estado === 'activo' ? 'selected' : ''}>🟢 Activo</option>
+                    <option value="pendiente_pago" ${o.estado === 'pendiente_pago' ? 'selected' : ''}>🟡 Pendiente</option>
+                    <option value="inactivo" ${o.estado === 'inactivo' ? 'selected' : ''}>🔴 Dado de Baja</option>
+                  </select>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-ghost" onclick="openEditOperatorModal('${o.id}')"><i class="fa-solid fa-pen"></i></button>
+                </td>
+              </tr>`).join('') +
+            '</tbody></table>';
+        }
+      }
+
+      // Payments Overview
+      const payOverview = document.getElementById('paymentsOverview');
+      if (payOverview) {
+        payOverview.innerHTML = `
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+            <div class="stat-card"><div class="label">Pendientes de Pago</div><div class="value" style="color:var(--teal)">${pendingOps.length}</div></div>
+            <div class="stat-card"><div class="label">Suscripciones Stripe</div><div class="value">${ops.filter(o => o.pago === 'Stripe').length} activas</div></div>
+            <div class="stat-card"><div class="label">Suscripciones MercadoPago</div><div class="value">${ops.filter(o => o.pago === 'MercadoPago').length} activas</div></div>
+          </div>`;
+      }
+    }
+
+    // ── Compatibilidad: refreshData() llama renderWithOps con cache ──
+    function refreshData() { renderWithOps(cachedOps); }
+
+    document.getElementById('newOperatorModal').addEventListener('click', e => {
+      if (e.target.id === 'newOperatorModal') closeNewOperatorModal();
+    });
+  </script>
+
+</body>
+</html>
+

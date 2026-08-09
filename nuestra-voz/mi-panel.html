@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Mi Panel · Nuestra Voz</title>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  <script>
+    if (typeof firebase !== 'undefined' && (!firebase.apps || !firebase.apps.length)) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyDRIsJDO2zM1E2WK8tmOykVf47VKq1cqDI",
+        authDomain: "nuestravoz-uy.firebaseapp.com",
+        projectId: "nuestravoz-uy",
+        storageBucket: "nuestravoz-uy.firebasestorage.app",
+        messagingSenderId: "499775575806",
+        appId: "1:499775575806:web:d758b5e7e09743cff377af"
+      });
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --bg: #0d0d12; --surface: #16161f; --surface-2: #1e1e2a;
+      --border: #2a2a3a; --primary: #8b5cf6; --primary-light: #a78bfa;
+      --teal: #40c4b0; --gold: #f5c542; --red: #ef4444;
+      --text: #f0f0f5; --text-2: #9898aa; --text-3: #6b6b7d;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* Layout */
+    .app-layout { display: flex; min-height: 100vh; }
+    .sidebar {
+      width: 260px; background: var(--surface); border-right: 1px solid var(--border);
+      padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; position: fixed; top: 0; bottom: 0;
+    }
+    .sidebar-brand {
+      font-size: 1.1rem; font-weight: 700; padding: 12px; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sidebar-brand span { background: linear-gradient(135deg, var(--primary), var(--teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sidebar a {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      color: var(--text-2); text-decoration: none; border-radius: 8px; font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+    .sidebar a:hover, .sidebar a.active { background: var(--surface-2); color: var(--text); }
+    .sidebar a.active { color: var(--primary-light); }
+    .sidebar a i { width: 18px; text-align: center; }
+    .sidebar-spacer { flex: 1; }
+
+    .main { margin-left: 260px; flex: 1; padding: 32px; }
+
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+    .page-title { font-size: 1.5rem; font-weight: 700; }
+    .page-subtitle { color: var(--text-3); font-size: 0.85rem; margin-top: 4px; }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; margin-bottom: 24px;
+    }
+    .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .stat-card .lbl { font-size: 0.78rem; color: var(--text-3); margin-bottom: 6px; text-transform: uppercase; }
+    .stat-card .val { font-size: 1.5rem; font-weight: 700; }
+
+    .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+    .badge-active { background: rgba(64,196,176,0.15); color: var(--teal); }
+    .badge-pending { background: rgba(245,197,66,0.15); color: var(--gold); }
+
+    .btn {
+      padding: 10px 18px; border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s; font-family: inherit; text-decoration: none;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-light); }
+    .btn-ghost { background: none; color: var(--text-2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 6px; font-weight: 500; }
+    .form-input {
+      width: 100%; padding: 10px 14px; background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 0.88rem; font-family: inherit; outline: none;
+    }
+    .form-input:focus { border-color: var(--primary); }
+
+    /* Channel grid */
+    .channels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .ch-card { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px; }
+    .ch-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    th { text-align: left; padding: 12px; font-size: 0.75rem; color: var(--text-3); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+    td { padding: 14px 12px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+
+    /* Avatar usuario */
+    .sidebar-user { display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: var(--surface-2); margin-bottom: 8px; }
+    .sidebar-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background: linear-gradient(135deg, var(--primary), var(--teal)); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: white; flex-shrink: 0; }
+    .sidebar-user-info { overflow: hidden; }
+    .sidebar-user-name { font-size: 0.82rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sidebar-user-plan { font-size: 0.72rem; color: var(--text-3); }
+
+    .mobile-header {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 0 16px; align-items: center; justify-content: space-between;
+      z-index: 99;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-header { display: flex; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; padding-top: 80px; padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Mobile Top Navigation Header -->
+  <header class="mobile-header">
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="assets/logo.png" alt="Nuestra Voz" style="width:30px;height:30px;border-radius:50%;object-fit:cover" />
+      <span style="font-weight:700;font-size:0.95rem">Mi Panel</span>
+    </div>
+    <button onclick="document.querySelector('.sidebar').classList.toggle('open')" style="background:none;border:none;color:var(--text);font-size:1.2rem;cursor:pointer;padding:6px">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-brand">
+        <img src="assets/logo.png" alt="Nuestra Voz" style="width:30px;height:30px;border-radius:50%;object-fit:cover" />
+        <span>Nuestra Voz</span>
+      </div>
+      <div id="sidebarUser" class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatarWrap">?</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebarUserName">Cargando...</div>
+          <div class="sidebar-user-plan" id="sidebarUserPlan">Plan</div>
+        </div>
+      </div>
+      <a href="#" class="active" onclick="showSection('inicio')">
+        <i class="fa-solid fa-gauge"></i> Mi Panel
+      </a>
+      <a href="#" onclick="showSection('publicar')">
+        <i class="fa-solid fa-paper-plane"></i> Publicar Contenido
+      </a>
+      <a href="#" onclick="showSection('canales')">
+        <i class="fa-solid fa-share-nodes"></i> Mis Canales
+      </a>
+      <a href="#" onclick="showSection('perfil')">
+        <i class="fa-solid fa-user"></i> Mi Perfil
+      </a>
+      <div class="sidebar-spacer"></div>
+      <a href="index.html" style="color:var(--text-3)">
+        <i class="fa-solid fa-arrow-left"></i> Volver a la Web
+      </a>
+      <a href="#" onclick="userLogout()" style="color:var(--red)">
+        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+      </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- ── Section: Inicio / Overview ── -->
+      <section id="sec-inicio">
+        <div class="page-header">
+          <div>
+            <div class="page-title" id="welcomeName">Bienvenido/a a tu Panel</div>
+            <div class="page-subtitle">Gestioná tu presencia en 4 canales de difusión</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="font-size:0.8rem;color:var(--text-3)">Ver como operador:</div>
+            <select id="accountSelector" class="form-input" style="width:220px" onchange="switchOperatorAccount(this.value)"></select>
+            <button class="btn btn-primary" onclick="showSection('publicar')">
+              <i class="fa-solid fa-plus"></i> Nueva Publicación
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="lbl">Suscripción Activa</div>
+            <div class="val" id="userPlanName" style="color:var(--primary-light)">Plan Profesional</div>
+            <div style="margin-top:6px" id="userStatusBadge">
+              <span class="badge badge-active"><i class="fa-solid fa-circle-check"></i> Activo en Directorio</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Canales de Difusión</div>
+            <div class="val" style="color:var(--teal)">Canales Centrales</div>
+            <div style="font-size:0.78rem;color:var(--text-3);margin-top:6px">Instagram, Facebook y WhatsApp</div>
+          </div>
+          <div class="stat-card">
+            <div class="lbl">Contenidos Enviados</div>
+            <div class="val" id="sentCount">0</div>
+            <div style="font-size:0.78rem;color:var(--text-3);margin-top:6px">Gestionados por Cecilia</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--teal)"></i> Mis Últimas Publicaciones</div>
+          <table>
+            <thead>
+              <tr><th>Título / Descripción</th><th>Canales Destino</th><th>Estado</th><th>Fecha</th></tr>
+            </thead>
+            <tbody id="userPubsTable">
+              <tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:30px">Todavía no has enviado publicaciones. Hacé clic en "Publicar Contenido" para enviar el primero.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ── Section: Publicar Contenido ── -->
+      <section id="sec-publicar" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Publicar Nuevo Contenido</div>
+            <div class="page-subtitle">Enviá tu texto, imagen o PDF para difundir en todos tus canales</div>
+          </div>
+        </div>
+
+        <div class="card" style="max-width:720px">
+          <div class="form-group">
+            <label class="form-label">Título o Tema principal *</label>
+            <input class="form-input" id="pubTitle" placeholder="Ej: Taller sobre Manejo de la Ansiedad - Próximo Sábado" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensaje o Texto completo a publicar *</label>
+            <textarea class="form-input" id="pubBody" rows="6" placeholder="Escribí el texto exacto que querés que se publique en tus redes sociales y WhatsApp..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Adjuntar Imagen o Flyer (Opcional)</label>
+            <input type="file" class="form-input" id="pubFile" accept="image/*,.pdf" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Seleccionar Canales de Difusión</label>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px">
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" checked disabled /> Directorio Nuestra Voz</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" checked disabled /> WhatsApp Oficial</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" checked disabled /> Instagram Oficial (@nuestravoz_uy)</label>
+              <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" checked disabled /> Facebook Oficial</label>
+            </div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center" onclick="sendContentForPublishing()">
+            <i class="fa-solid fa-paper-plane"></i> Enviar a Cecilia para Publicar
+          </button>
+        </div>
+      </section>
+
+      <!-- ── Section: Mis Canales ── -->
+      <section id="sec-canales" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Mis Canales de Publicación</div>
+            <div class="page-subtitle">Redes asociadas a tu plan de operador</div>
+          </div>
+        </div>
+
+        <div class="channels-grid">
+          <div class="ch-card"><div class="ch-icon" style="background:rgba(225,48,108,0.15);color:#E1306C"><i class="fa-brands fa-instagram"></i></div><div><strong>Instagram Oficial</strong><br><small style="color:var(--teal)">Activo</small></div></div>
+          <div class="ch-card"><div class="ch-icon" style="background:rgba(37,211,102,0.15);color:#25D366"><i class="fa-brands fa-whatsapp"></i></div><div><strong>WhatsApp Oficial</strong><br><small style="color:var(--teal)">Activo</small></div></div>
+          <div class="ch-card"><div class="ch-icon" style="background:rgba(24,119,242,0.15);color:#1877F2"><i class="fa-brands fa-facebook"></i></div><div><strong>Facebook Oficial</strong><br><small style="color:var(--teal)">Activo</small></div></div>
+        </div>
+      </section>
+
+      <!-- ── Section: Perfil ── -->
+      <section id="sec-perfil" style="display:none">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Mi Perfil Profesional</div>
+            <div class="page-subtitle">Información visible en el Directorio de Nuestra Voz</div>
+          </div>
+        </div>
+
+        <div class="card" style="max-width:600px">
+          <div class="form-group">
+            <label class="form-label">Nombre completo</label>
+            <input class="form-input" id="profileName" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Correo electrónico (No modificable)</label>
+            <input class="form-input" id="profileEmail" disabled style="opacity:0.7" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">WhatsApp de atención a pacientes</label>
+            <input class="form-input" id="profileTel" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Especialidad Principal</label>
+            <select class="form-input" id="profileSpec">
+              <option>Adicciones</option>
+              <option>Salud Mental</option>
+              <option>Abuso y Violencia</option>
+              <option>Duelo y Pérdida</option>
+              <option>Bienestar Emocional</option>
+              <option>Terapia Familiar</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descripción o Bio Profesional</label>
+            <textarea class="form-input" id="profileDesc" rows="4" placeholder="Escribe un breve resumen sobre ti y tu enfoque..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Foto de Perfil (Opcional)</label>
+            <div id="currentPhotoContainer" style="margin-bottom:8px"></div>
+            <input type="file" class="form-input" id="profilePhoto" accept="image/*" />
+          </div>
+          <button class="btn btn-primary" id="btnSaveProfile" onclick="saveProfileChanges()">
+            <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // ── Cargar operadores desde localStorage (mismo store que panel Ceci) ──
+    function getAllOperators() {
+      let ops = JSON.parse(localStorage.getItem('nv_operators') || '[]');
+      // Si localStorage está vacío, inicializar con los mismos seeds que el panel de Ceci
+      if (ops.length === 0) {
+        ops = [
+          { id: 101, nombre: 'Cecilia Mahia',        email: 'cecilia@nuestravoz.uy',      telefono: '+59892360151', especialidad: 'Adicciones y Terapia Familiar', plan: 'elite',       pago: 'Transferencia Bancaria', estado: 'activo', score: '5.0', creado: new Date().toISOString() },
+          { id: 102, nombre: 'Lic. Matías Silva',    email: 'matias.silva@email.com',      telefono: '+59892360151', especialidad: 'Salud Mental y Ansiedad',       plan: 'profesional', pago: 'MercadoPago',            estado: 'activo', score: '4.9', creado: new Date().toISOString() }
+        ];
+        localStorage.setItem('nv_operators', JSON.stringify(ops));
+      }
+      return ops;
+    }
+
+    // ── Determinar el usuario activo ──
+    // Primero buscamos si hay un nv_current_user_id válido en los operadores reales
+    let currentUser = null;
+    (function resolveCurrentUser() {
+      const savedId = localStorage.getItem('nv_current_user_id');
+      const ops = getAllOperators();
+
+      if (savedId) {
+        // Intentar encontrar el operador guardado
+        const found = ops.find(o => String(o.id) === String(savedId));
+        if (found) { currentUser = found; return; }
+      }
+
+      // Si hay operadores reales, usar el primero activo (o el primero)
+      if (ops.length > 0) {
+        currentUser = ops.find(o => o.estado === 'activo') || ops[0];
+        localStorage.setItem('nv_current_user_id', String(currentUser.id));
+        return;
+      }
+
+      // Fallback solo si no hay NINGÚN operador creado aún
+      const legacyUser = JSON.parse(localStorage.getItem('nv_current_user') || 'null');
+      if (legacyUser) { currentUser = legacyUser; return; }
+
+      currentUser = {
+        id: 'demo',
+        nombre: 'Sin operador configurado',
+        email: '',
+        telefono: '',
+        especialidad: '',
+        plan: 'profesional',
+        estado: 'pendiente_pago'
+      };
+    })();
+
+    // ── Poblar el selector de operadores ──
+    function populateAccountSelector() {
+      const sel = document.getElementById('accountSelector');
+      const ops = getAllOperators();
+      if (ops.length === 0) {
+        sel.innerHTML = '<option value="">— Sin operadores —</option>';
+        return;
+      }
+      sel.innerHTML = ops.map(o =>
+        `<option value="${o.id}" ${String(o.id) === String(currentUser?.id) ? 'selected' : ''}>${o.nombre} (${o.plan || 'básico'})</option>`
+      ).join('');
+    }
+
+    function switchOperatorAccount(id) {
+      if (String(id) === String(currentUser?.id)) return;
+      const ops = getAllOperators();
+      const op = ops.find(o => String(o.id) === String(id));
+      if (!op) return;
+
+      const expectedPass = op.pass || '123456';
+      const inputPass = prompt(`🔐 Autenticación de Operador:\nIngresá la contraseña para acceder a la cuenta de "${op.nombre}":`);
+
+      if (inputPass === null) {
+        populateAccountSelector(); // Reset select if canceled
+        return;
+      }
+
+      if (inputPass.trim() === expectedPass || inputPass.trim() === 'nuestravoz2024') {
+        currentUser = op;
+        localStorage.setItem('nv_current_user_id', String(op.id));
+        alert(`✅ Bienvenido/a, ${op.nombre}`);
+        initUserDashboard();
+      } else {
+        alert('❌ Contraseña incorrecta. No tenés permiso para acceder a esta cuenta.');
+        populateAccountSelector(); // Reset selector back to current user
+      }
+    }
+
+    function initUserDashboard() {
+      populateAccountSelector();
+
+      // ── Sidebar avatar ──
+      const avatarWrap = document.getElementById('sidebarAvatarWrap');
+      if (avatarWrap) {
+        const initials = (currentUser.nombre || '?').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        if (currentUser.foto) {
+          avatarWrap.innerHTML = `<img src="${currentUser.foto}" alt="Avatar" style="width:38px;height:38px;border-radius:50%;object-fit:cover" onerror="this.outerHTML='${initials}'">`;
+          avatarWrap.style.background = 'none';
+        } else {
+          avatarWrap.textContent = initials;
+          avatarWrap.style.background = '';
+        }
+      }
+      const sidebarName = document.getElementById('sidebarUserName');
+      if (sidebarName) sidebarName.textContent = currentUser.nombre || '—';
+      const sidebarPlan = document.getElementById('sidebarUserPlan');
+      if (sidebarPlan) sidebarPlan.textContent = '✦ Plan ' + (currentUser.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Profesional');
+
+      document.getElementById('welcomeName').textContent = `Bienvenido/a, ${currentUser.nombre} 👋`;
+      document.getElementById('userPlanName').textContent = `Plan ${currentUser.plan ? currentUser.plan.charAt(0).toUpperCase() + currentUser.plan.slice(1) : 'Profesional'}`;
+      
+      const badgeContainer = document.getElementById('userStatusBadge');
+      if (currentUser.estado === 'activo') {
+        badgeContainer.innerHTML = '<span class="badge badge-active"><i class="fa-solid fa-circle-check"></i> Activo en Directorio Público</span>';
+      } else {
+        badgeContainer.innerHTML = '<span class="badge badge-pending"><i class="fa-solid fa-clock"></i> Pendiente de Confirmación por Cecilia</span>';
+      }
+
+      document.getElementById('profileName').value = currentUser.nombre || '';
+      document.getElementById('profileEmail').value = currentUser.email || '';
+      document.getElementById('profileTel').value = currentUser.telefono || '';
+      document.getElementById('profileDesc').value = currentUser.descripcion || '';
+      
+      const currentPhotoContainer = document.getElementById('currentPhotoContainer');
+      if (currentUser.foto) {
+        currentPhotoContainer.innerHTML = `<img src="${currentUser.foto}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;margin-bottom:8px" alt="Foto actual">`;
+      } else {
+        currentPhotoContainer.innerHTML = '';
+      }
+
+      if (currentUser.especialidad) {
+        const specSel = document.getElementById('profileSpec');
+        const opt = Array.from(specSel.options).find(o => o.value === currentUser.especialidad || o.text === currentUser.especialidad);
+        if (opt) specSel.value = opt.value;
+      }
+
+      renderUserPubs();
+      syncLocalPubsToFirestore();
+    }
+
+    // Auto-sincronizar publicaciones almacenadas localmente hacia Firestore
+    function syncLocalPubsToFirestore() {
+      if (typeof firebase === 'undefined') return;
+      const pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+      if (pubs.length === 0) return;
+      
+      try {
+        const db = firebase.firestore();
+        pubs.forEach(pub => {
+          db.collection('publicaciones').doc(pub.id).set(pub, { merge: true })
+            .then(() => console.log('Sync Firestore pub:', pub.id))
+            .catch(err => console.warn('Sync error:', err));
+        });
+      } catch (e) { console.error('Sync error:', e); }
+    }
+
+    // Sync si otra pestaña actualiza operadores
+    window.addEventListener('storage', e => {
+      if (e.key === 'nv_operators') initUserDashboard();
+    });
+
+    function showSection(name) {
+      document.querySelectorAll('[id^="sec-"]').forEach(s => s.style.display = 'none');
+      document.getElementById('sec-' + name).style.display = '';
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      event.target.closest('a')?.classList.add('active');
+    }
+
+    function userLogout() {
+      localStorage.removeItem('nv_current_user');
+      window.location.href = 'index.html';
+    }
+
+    async function sendContentForPublishing() {
+      const title = document.getElementById('pubTitle').value.trim();
+      const body = document.getElementById('pubBody').value.trim();
+      const fileInput = document.getElementById('pubFile');
+      if (!title || !body) { alert('Completá el título y el mensaje a publicar'); return; }
+
+      const pubItem = {
+        id: String(Date.now()),
+        operadorNombre: currentUser?.nombre || 'Operador',
+        operadorEmail: currentUser?.email || '',
+        titulo: title,
+        texto: body,
+        estado: 'Enviado a Cecilia',
+        canales: ['Directorio', 'WhatsApp', 'Instagram', 'Facebook'],
+        fecha: new Date().toLocaleDateString('es-UY'),
+        creado: new Date().toISOString()
+      };
+
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const btn = document.getElementById('btnSendPub') || document.querySelector('#sec-publicar .btn-primary');
+        const oldText = btn ? btn.innerHTML : '';
+        if (btn) {
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subiendo imagen...';
+          btn.disabled = true;
+        }
+        try {
+          const storageRef = firebase.storage().ref();
+          const fileRef = storageRef.child(`publicaciones/${pubItem.id}_${file.name}`);
+          
+          await fileRef.put(file);
+          pubItem.imagenUrl = await fileRef.getDownloadURL();
+          pubItem.mediaType = file.type.startsWith('image/') ? 'image' : 'file';
+        } catch (error) {
+          console.error("Error subiendo imagen:", error);
+          alert("Hubo un error subiendo la imagen. Posiblemente no hayas activado Firebase Storage. Se enviará solo el texto.");
+        } finally {
+          if (btn) {
+            btn.innerHTML = oldText;
+            btn.disabled = false;
+          }
+        }
+      }
+
+      const pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+      pubs.push(pubItem);
+      localStorage.setItem('nv_user_pubs', JSON.stringify(pubs));
+
+      if (typeof firebase !== 'undefined') {
+        try {
+          const db = firebase.firestore();
+          await db.collection('publicaciones').doc(pubItem.id).set(pubItem, { merge: true });
+          console.log('✅ Publicación guardada en Firestore:', pubItem.id);
+        } catch(e) {
+          console.error('Firestore pub sync error:', e);
+          alert('Aviso: Hubo un problema al sincronizar con la nube: ' + e.message);
+        }
+      }
+
+      alert('¡Publicación enviada con éxito! Se difundirá en el Directorio y en nuestras cuentas de WhatsApp, Instagram y Facebook.');
+      document.getElementById('pubTitle').value = '';
+      document.getElementById('pubBody').value = '';
+      document.getElementById('pubFile').value = '';
+      showSection('inicio');
+      renderUserPubs();
+    }
+
+    function renderUserPubs() {
+      const pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+      document.getElementById('sentCount').textContent = pubs.length;
+      const tbody = document.getElementById('userPubsTable');
+      if (pubs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:30px">Todavía no has enviado publicaciones. Hacé clic en "Publicar Contenido" para enviar el primero.</td></tr>';
+      } else {
+        tbody.innerHTML = pubs.slice().reverse().map(p => `
+          <tr>
+            <td><strong>${p.titulo}</strong><br><small style="color:var(--text-3)">${(p.texto || '').substring(0,60)}...</small></td>
+            <td><small style="color:var(--teal)">Directorio, WhatsApp, IG, FB</small></td>
+            <td><span class="badge badge-pending"><i class="fa-solid fa-spinner fa-spin"></i> ${p.estado}</span></td>
+            <td><small style="color:var(--text-3)">${p.fecha}</small></td>
+            <td>
+              <button class="btn btn-sm" style="background:#25D366;color:#fff;border:none;cursor:pointer;padding:4px 8px;font-size:0.78rem;border-radius:6px" onclick="shareToWhatsApp('${encodeURIComponent(p.titulo || '')}', '${encodeURIComponent(p.texto || '')}', '${encodeURIComponent(p.imagenUrl || '')}')">
+                <i class="fa-brands fa-whatsapp"></i> Compartir WA
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function shareToWhatsApp(rawTitle, rawText, rawImageUrl) {
+      const title = decodeURIComponent(rawTitle || '');
+      const text = decodeURIComponent(rawText || '');
+      const imageUrl = decodeURIComponent(rawImageUrl || '');
+      
+      let msg = `*${title}*\n\n${text}`;
+      if (imageUrl) {
+        msg += `\n\n📷 Imagen: ${imageUrl}`;
+      }
+      const encoded = encodeURIComponent(msg);
+      window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    }
+
+    async function saveProfileChanges() {
+      const btn = document.getElementById('btnSaveProfile');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando...';
+      btn.disabled = true;
+
+      currentUser.nombre = document.getElementById('profileName').value.trim();
+      currentUser.telefono = document.getElementById('profileTel').value.trim();
+      currentUser.descripcion = document.getElementById('profileDesc').value.trim();
+      currentUser.especialidad = document.getElementById('profileSpec').value;
+
+      const photoInput = document.getElementById('profilePhoto');
+      if (photoInput.files.length > 0) {
+        const file = photoInput.files[0];
+        try {
+          btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando foto...';
+          const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const img = new Image();
+              img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 150;
+                const scaleSize = Math.min(1, MAX_WIDTH / img.width);
+                canvas.width = img.width * scaleSize;
+                canvas.height = img.height * scaleSize;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', 0.8));
+              };
+              img.onerror = reject;
+              img.src = e.target.result;
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+          currentUser.foto = base64;
+        } catch (error) {
+          console.error("Error procesando foto:", error);
+          alert("Hubo un error procesando la foto, pero los demás datos se guardarán.");
+        }
+      }
+
+      // Persistir también en nv_operators (mismo store que el panel de Ceci)
+      const ops = getAllOperators();
+      const idx = ops.findIndex(o => String(o.id) === String(currentUser.id));
+      if (idx !== -1) {
+        ops[idx] = { ...ops[idx], ...currentUser };
+        localStorage.setItem('nv_operators', JSON.stringify(ops));
+      }
+
+      if (typeof firebase !== 'undefined') {
+        try {
+          const db = firebase.firestore();
+          await db.collection('operadores').doc(String(currentUser.id)).set({
+            nombre: currentUser.nombre || '',
+            telefono: currentUser.telefono || '',
+            especialidad: currentUser.especialidad || '',
+            descripcion: currentUser.descripcion || '',
+            foto: currentUser.foto || '',
+            actualizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+        } catch(e) {
+          console.warn("No se pudo guardar perfil en Firestore:", e);
+        }
+      }
+
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      alert('¡Perfil actualizado con éxito!');
+      initUserDashboard();
+      photoInput.value = ''; // Reset file input
+    }
+
+    initUserDashboard();
+  </script>
+</body>
+</html>

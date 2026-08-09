@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nuestra Voz · Plataforma para Operadores Terapéuticos · Uruguay</title>
+  <meta name="description" content="Nuestra Voz es la plataforma marketplace de Uruguay para profesionales de la salud y bienestar mental. Publicá tus servicios y contenidos en Instagram, WhatsApp y Facebook con un solo clic." />
+  <meta name="keywords" content="profesionales de la salud Uruguay, bienestar mental, adicciones Uruguay, Cecilia Mahia, marketplace terapéutico" />
+  <meta property="og:title" content="Nuestra Voz | La Plataforma de Salud y Bienestar Mental de Uruguay" />
+  <meta property="og:description" content="Publicá tus servicios terapéuticos en todos los canales con un solo clic. La plataforma líder de Uruguay para profesionales de la salud y bienestar mental." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ── Modal steps — critical overrides ─────────────────── */
+    #regStep1 { display: block; }
+    #regStep2 { display: none; }
+    #regStep3 { display: none; }
+    /* When JS sets these, !important below WILL override any conflicting rule */
+    #regStep2[style*="block"] { display: block !important; visibility: visible !important; opacity: 1 !important; }
+    #regStep1[style*="none"]  { display: none  !important; }
+    #regStep3[style*="none"]  { display: none  !important; }
+
+    /* ── Payment option cards ─────────────────────────────── */
+    .payment-option {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px; border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      cursor: pointer; margin-bottom: 12px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .payment-option:hover {
+      background: rgba(139,92,246,0.15);
+      border-color: rgba(139,92,246,0.4);
+    }
+    .payment-option-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .payment-option-info { flex: 1; }
+    .payment-option-name { font-weight: 600; font-size: 1rem; }
+    .payment-option-detail { font-size: 0.8rem; color: var(--text-muted,#888); margin-top: 2px; }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════ NAVBAR ══════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="#inicio" class="nav-logo">
+        <img src="assets/logo.png" alt="Nuestra Voz" style="width:38px;height:38px;border-radius:50%;object-fit:cover;box-shadow:0 0 12px rgba(139,92,246,0.4)" />
+        <div class="logo-text">
+          <span class="name">Nuestra Voz</span>
+          <span class="tagline-small">Uruguay · Plataforma Terapéutica</span>
+        </div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#directorio">Directorio</a></li>
+        <li><a href="#precios">Planes y Precios</a></li>
+        <li><a href="#cecilia">Sobre Ceci</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#" class="btn btn-outline" style="padding:8px 16px;font-size:0.85rem" onclick="openModal('loginModal')">
+          <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+        </a>
+        <a href="mi-panel.html" class="btn btn-outline" style="padding:8px 16px;font-size:0.85rem;border-color:var(--primary-light);color:var(--primary-light)">
+          <i class="fa-solid fa-gauge"></i> Mi Panel
+        </a>
+        <a href="#" class="btn btn-primary" id="btnRegistroNav" style="padding:8px 18px;font-size:0.85rem" onclick="openRegisterModal('profesional')">
+          <i class="fa-solid fa-rocket"></i> Publicar Ahora
+        </a>
+      </div>
+
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════ HERO ══════════════════════ -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Plataforma N°1 para Operadores Terapéuticos en Uruguay
+        </div>
+
+        <h1 class="hero-title">
+          <span class="gradient-text">Nuestra Voz</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Profesionales altamente capacitados para presentarte las <strong>herramientas para comenzar tu sanación</strong>. Publicamos tus servicios y contenidos en Instagram, WhatsApp y Facebook — con <strong>un solo clic</strong>.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#registro" class="btn btn-primary btn-lg" id="btnHeroRegister">
+            <i class="fa-solid fa-store"></i> Publicar mis Servicios
+          </a>
+          <a href="#plataforma" class="btn btn-outline btn-lg">
+            <i class="fa-solid fa-play-circle"></i> Conocer la Plataforma
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number" style="color:var(--gold)">Nro 1</span>
+            <span class="stat-label">Plataforma en Uruguay</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">3</span>
+            <span class="stat-label">Canales de publicación</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">1</span>
+            <span class="stat-label">Clic para publicar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating orb decoration -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </section>
+
+  <!-- ══════════════════════ DIRECTORIO DE PROFESIONALES ══════════════════════ -->
+  <section class="section directory-section" id="directorio">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;max-width:650px;margin:0 auto">
+        <span class="section-label">Directorio Profesional</span>
+        <h2 class="section-title">Nuestros <span>Profesionales Terapéuticos</span></h2>
+        <p class="section-subtitle">
+          Encontrá profesionales verificados en Uruguay ordenados por especialidad y valoración.
+        </p>
+      </div>
+
+      <!-- Filtros por Área -->
+      <div class="directory-filters fade-in" id="dirFilterContainer">
+        <button class="dir-filter-btn active" onclick="filterOperatorsByArea('todas', this)">Todas las áreas</button>
+        <button class="dir-filter-btn" onclick="filterOperatorsByArea('Adicciones', this)">Adicciones</button>
+        <button class="dir-filter-btn" onclick="filterOperatorsByArea('Salud Mental', this)">Salud Mental</button>
+        <button class="dir-filter-btn" onclick="filterOperatorsByArea('Abuso y Violencia', this)">Abuso y Violencia</button>
+        <button class="dir-filter-btn" onclick="filterOperatorsByArea('Duelo y Pérdida', this)">Duelo y Pérdida</button>
+        <button class="dir-filter-btn" onclick="filterOperatorsByArea('Bienestar Emocional', this)">Bienestar Emocional</button>
+        <button class="dir-filter-btn" onclick="filterOperatorsByArea('Terapia Familiar', this)">Terapia Familiar</button>
+      </div>
+
+      <!-- Grid de Operadores (Sincronizado dinámicamente desde Firestore) -->
+      <div class="directory-grid" id="publicDirectoryGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">
+          <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;margin-bottom:12px;display:block;color:var(--primary-light)"></i>
+          Cargando directorio de profesionales...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ PLATAFORMA ══════════════════════ -->
+  <section class="section value-section" id="plataforma">
+    <div class="container">
+      <div class="fade-in">
+        <span class="section-label">La Plataforma</span>
+        <h2 class="section-title">El puente entre profesionales de la salud y <span>quienes necesitan ayuda</span></h2>
+        <p class="section-subtitle">
+          Nuestra Voz conecta profesionales de la salud y bienestar mental de Uruguay con personas que buscan apoyo en adicciones, abuso y salud emocional.
+        </p>
+      </div>
+
+      <div class="value-grid">
+        <div class="value-card fade-in" style="--card-accent: linear-gradient(90deg, hsl(265,60%,62%), hsl(340,68%,55%))">
+          <div class="card-icon" style="background: rgba(107,63,160,0.2); color: hsl(265,60%,72%)">
+            <i class="fa-solid fa-shield-heart"></i>
+          </div>
+          <h3>Confianza Verificada</h3>
+          <p>Todos los profesionales pasan por un proceso de verificación de credenciales. Tus clientes saben que están en manos de profesionales certificados.</p>
+        </div>
+
+        <div class="value-card fade-in" style="--card-accent: linear-gradient(90deg, hsl(340,68%,55%), hsl(42,88%,58%))">
+          <div class="card-icon" style="background: rgba(224,85,128,0.15); color: hsl(340,68%,68%)">
+            <i class="fa-solid fa-broadcast-tower"></i>
+          </div>
+          <h3>Alcance Centralizado</h3>
+          <p>Publicá en el Directorio, WhatsApp, Instagram y Facebook simultáneamente desde un solo panel. Aprovechá nuestro posicionamiento SEO para llegar a más pacientes.</p>
+        </div>
+
+        <div class="value-card fade-in" style="--card-accent: linear-gradient(90deg, hsl(42,88%,58%), hsl(175,65%,42%))">
+          <div class="card-icon" style="background: rgba(218,165,32,0.15); color: hsl(42,88%,68%)">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3>Crecimiento Real</h3>
+          <p>Herramientas de analítica, gestión de reservas y pagos integrados para que te concentres en lo que más importa: acompañar a tus pacientes.</p>
+        </div>
+
+        <div class="value-card fade-in" style="--card-accent: linear-gradient(90deg, hsl(175,65%,42%), hsl(265,60%,62%))">
+          <div class="card-icon" style="background: rgba(64,196,176,0.15); color: hsl(175,65%,55%)">
+            <i class="fa-solid fa-uruguay"></i>
+          </div>
+          <h3>Hecho en Uruguay</h3>
+          <p>Diseñado específicamente para el mercado terapéutico uruguayo, con pagos en UYU/USD, soporte local y cumplimiento de normativas nacionales.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ PUBLICACIÓN MULTI-CANAL ══════════════════════ -->
+  <section class="section publish-section" id="publicar">
+    <div class="container">
+      <div class="publish-wrapper">
+        <!-- Info lado izquierdo -->
+        <div class="publish-info fade-in">
+          <span class="section-label">Publicación Centralizada</span>
+          <h2 class="section-title">Difusión Automática,<br/><span>1 solo clic</span></h2>
+          <p class="section-subtitle">
+            Tus publicaciones se difunden automáticamente en las cuentas oficiales de Nuestra Voz en Instagram, Facebook y canales de WhatsApp, aprovechando el tráfico de la plataforma. Sin repetir trabajo, sin perder tiempo.
+          </p>
+
+          <!-- Grilla de canales -->
+          <div class="channel-grid" id="channelGrid">
+            <div class="channel-chip active" data-channel="instagram" style="--chip-color: #E1306C" title="Instagram">
+              <div class="channel-check"><i class="fa-solid fa-check"></i></div>
+              <i class="fa-brands fa-instagram" style="color:#E1306C"></i>
+              <span>Instagram</span>
+            </div>
+            <div class="channel-chip active" data-channel="whatsapp" style="--chip-color: #25D366" title="WhatsApp">
+              <div class="channel-check"><i class="fa-solid fa-check"></i></div>
+              <i class="fa-brands fa-whatsapp" style="color:#25D366"></i>
+              <span>WhatsApp</span>
+            </div>
+            <div class="channel-chip active" data-channel="facebook" style="--chip-color: #1877F2" title="Facebook">
+              <div class="channel-check"><i class="fa-solid fa-check"></i></div>
+              <i class="fa-brands fa-facebook" style="color:#1877F2"></i>
+              <span>Facebook</span>
+            </div>
+          </div>
+
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 24px;">
+            <i class="fa-solid fa-circle-info"></i> Hacé clic en cada canal para activar o desactivar la publicación
+          </p>
+
+          <div class="publish-btn-wrapper">
+            <button class="mega-publish-btn" id="megaPublishBtn">
+              <span class="btn-shine"></span>
+              <i class="fa-solid fa-paper-plane"></i>
+              Publicar en Todos los Canales
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel visual lado derecho -->
+        <div class="publish-panel fade-in">
+          <div class="panel-header">
+            <div class="card-icon" style="width:36px;height:36px;border-radius:8px;background:rgba(107,63,160,0.2);color:var(--primary-light);font-size:0.9rem;display:flex;align-items:center;justify-content:center">
+              <i class="fa-solid fa-satellite-dish"></i>
+            </div>
+            <div>
+              <div class="panel-title">Estado de Publicaciones</div>
+              <div style="font-size:0.75rem;color:var(--text-muted)">Sesión "Superando el Miedo" — hoy 14:30</div>
+            </div>
+            <div class="panel-badge">En vivo</div>
+          </div>
+
+          <div class="publish-item">
+            <div class="publish-item-icon" style="background:rgba(225,48,108,0.15)">
+              <i class="fa-brands fa-instagram" style="color:#E1306C"></i>
+            </div>
+            <div class="publish-item-info">
+              <div class="publish-item-name">Instagram</div>
+              <div class="publish-item-status"><span class="status-dot">Publicado exitosamente</span></div>
+            </div>
+            <i class="fa-solid fa-circle-check" style="color:var(--teal)"></i>
+          </div>
+
+          <div class="publish-item">
+            <div class="publish-item-icon" style="background:rgba(37,211,102,0.12)">
+              <i class="fa-brands fa-whatsapp" style="color:#25D366"></i>
+            </div>
+            <div class="publish-item-info">
+              <div class="publish-item-name">WhatsApp Business</div>
+              <div class="publish-item-status"><span class="status-dot">Broadcast enviado · 847 contactos</span></div>
+            </div>
+            <i class="fa-solid fa-circle-check" style="color:var(--teal)"></i>
+          </div>
+
+          <div class="publish-item">
+            <div class="publish-item-icon" style="background:rgba(24,119,242,0.12)">
+              <i class="fa-brands fa-facebook" style="color:#1877F2"></i>
+            </div>
+            <div class="publish-item-info">
+              <div class="publish-item-name">Facebook</div>
+              <div class="publish-item-status"><span class="status-dot">Publicado en página</span></div>
+            </div>
+            <i class="fa-solid fa-circle-check" style="color:var(--teal)"></i>
+          </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ DASHBOARD PREVIEW ══════════════════════ -->
+  <section class="section dashboard-section">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto">
+        <span class="section-label">Panel de Operador</span>
+        <h2 class="section-title">Tu centro de <span>control total</span></h2>
+        <p class="section-subtitle">
+          Configurá cada canal, administrá tus servicios y monitoreá tus publicaciones desde un panel intuitivo.
+        </p>
+      </div>
+
+      <div class="dashboard-mock fade-in">
+        <!-- Top bar -->
+        <div class="dashboard-topbar">
+          <div class="db-dots">
+            <span style="background:#FF5F57"></span>
+            <span style="background:#FEBC2E"></span>
+            <span style="background:#28C840"></span>
+          </div>
+          <span style="font-size:0.82rem;color:var(--text-muted);margin-left:8px">
+            nuestravoz.humaniskind.com/panel
+          </span>
+        </div>
+
+        <!-- Body -->
+        <div class="dashboard-body">
+          <!-- Sidebar -->
+          <div class="dashboard-sidebar">
+            <ul class="sidebar-menu">
+              <li class="active"><i class="fa-solid fa-gauge"></i> Dashboard</li>
+              <li><i class="fa-solid fa-satellite-dish"></i> Mis Canales</li>
+              <li><i class="fa-solid fa-store"></i> Mis Servicios</li>
+              <li><i class="fa-solid fa-paper-plane"></i> Publicaciones</li>
+              <li><i class="fa-solid fa-calendar"></i> Agenda</li>
+              <li><i class="fa-solid fa-chart-bar"></i> Analítica</li>
+              <li><i class="fa-solid fa-credit-card"></i> Pagos</li>
+              <li><i class="fa-solid fa-gear"></i> Configuración</li>
+            </ul>
+          </div>
+
+          <!-- Main -->
+          <div class="dashboard-main">
+            <!-- Stats -->
+            <div class="db-section-title">Resumen de hoy</div>
+            <div class="db-stats" style="margin-bottom:28px">
+              <div class="db-stat-box">
+                <div class="db-stat-val">12</div>
+                <div class="db-stat-lbl">Nuevas consultas</div>
+              </div>
+              <div class="db-stat-box">
+                <div class="db-stat-val">$4.2k</div>
+                <div class="db-stat-lbl">Ingresos UYU</div>
+              </div>
+              <div class="db-stat-box">
+                <div class="db-stat-val">847</div>
+                <div class="db-stat-lbl">Alcance total</div>
+              </div>
+              <div class="db-stat-box">
+                <div class="db-stat-val">3/3</div>
+                <div class="db-stat-lbl">Canales activos</div>
+              </div>
+            </div>
+
+            <!-- Canales integrados -->
+            <div class="db-section-title">Canales de difusión de Nuestra Voz</div>
+            <div class="config-cards">
+              <div class="config-card">
+                <div class="config-card-top">
+                  <div class="config-card-icon" style="background:rgba(225,48,108,0.15)">
+                    <i class="fa-brands fa-instagram" style="color:#E1306C"></i>
+                  </div>
+                  <div class="toggle active" id="toggle-instagram"></div>
+                </div>
+                <div class="config-card-name">Instagram Oficial</div>
+                <div class="config-card-detail">@nuestravoz_uy</div>
+              </div>
+
+
+
+              <div class="config-card">
+                <div class="config-card-top">
+                  <div class="config-card-icon" style="background:rgba(37,211,102,0.12)">
+                    <i class="fa-brands fa-whatsapp" style="color:#25D366"></i>
+                  </div>
+                  <div class="toggle active" id="toggle-whatsapp"></div>
+                </div>
+                <div class="config-card-name">WhatsApp Oficial</div>
+                <div class="config-card-detail">+598 92 360 151</div>
+              </div>
+
+              <div class="config-card">
+                <div class="config-card-top">
+                  <div class="config-card-icon" style="background:rgba(24,119,242,0.12)">
+                    <i class="fa-brands fa-facebook" style="color:#1877F2"></i>
+                  </div>
+                  <div class="toggle active" id="toggle-facebook"></div>
+                </div>
+                <div class="config-card-name">Facebook Oficial</div>
+                <div class="config-card-detail">Página Nuestra Voz UY</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ══════════════════════ PRECIOS ══════════════════════ -->
+  <section class="section pricing-section" id="precios">
+    <div class="container">
+      <div class="fade-in" style="text-align:center;max-width:600px;margin:0 auto">
+        <span class="section-label">Planes y Precios</span>
+        <h2 class="section-title">Elegí el plan que <span>impulsa tu carrera</span></h2>
+        <p class="section-subtitle">
+          Todos los planes incluyen acceso a la plataforma, publicación multi-canal y soporte. Sin costos ocultos.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Plan Básico -->
+        <div class="plan-card fade-in">
+          <div class="plan-name">Básico</div>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount">15</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <div class="plan-uyu">≈ UYU 620 /mes</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> Hasta 3 servicios publicados</li>
+            <li><i class="fa-solid fa-check"></i> Publicación en 3 canales</li>
+            <li><i class="fa-solid fa-check"></i> WhatsApp Business básico</li>
+            <li><i class="fa-solid fa-check"></i> Perfil verificado</li>
+            <li><i class="fa-solid fa-check"></i> Pago con MercadoPago o Stripe</li>
+            <li class="disabled"><i class="fa-solid fa-xmark"></i> Analítica avanzada</li>
+
+            <li class="disabled"><i class="fa-solid fa-xmark"></i> Soporte prioritario</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openRegisterModal('basico')">Elegir Plan Básico</button>
+        </div>
+
+        <!-- Plan Profesional (destacado) -->
+        <div class="plan-card featured fade-in">
+          <div class="plan-badge">⭐ Más popular</div>
+          <div class="plan-name" style="color:var(--accent-light)">Profesional</div>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount">35</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <div class="plan-uyu">≈ UYU 1.450 /mes</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> Hasta 15 servicios publicados</li>
+            <li><i class="fa-solid fa-check"></i> <strong>Todos los 4 canales</strong></li>
+            <li><i class="fa-solid fa-check"></i> WhatsApp Business configurable</li>
+
+            <li><i class="fa-solid fa-check"></i> Analítica completa</li>
+
+            <li><i class="fa-solid fa-check"></i> Agenda y reservas online</li>
+            <li class="disabled"><i class="fa-solid fa-xmark"></i> Badge "Operador Elite"</li>
+          </ul>
+          <button class="btn btn-primary" onclick="openRegisterModal('profesional')">
+            <i class="fa-solid fa-rocket"></i> Comenzar Ahora
+          </button>
+        </div>
+
+        <!-- Plan Elite -->
+        <div class="plan-card fade-in">
+          <div class="plan-name" style="color:var(--gold)">Elite</div>
+          <div class="plan-price">
+            <span class="plan-currency">$</span>
+            <span class="plan-amount">75</span>
+            <span class="plan-period">/mes</span>
+          </div>
+          <div class="plan-uyu">≈ UYU 3.100 /mes</div>
+          <div class="plan-divider"></div>
+          <ul class="plan-features">
+            <li><i class="fa-solid fa-check"></i> Servicios ilimitados</li>
+            <li><i class="fa-solid fa-check"></i> <strong>Todos los 4 canales</strong></li>
+            <li><i class="fa-solid fa-check"></i> WhatsApp Business premium</li>
+
+            <li><i class="fa-solid fa-check"></i> Analítica e informes avanzados</li>
+            <li><i class="fa-solid fa-check"></i> Badge "Operador Elite"</li>
+            <li><i class="fa-solid fa-check"></i> Soporte prioritario 24/7</li>
+            <li><i class="fa-solid fa-check"></i> Sesiones grupales y webinars</li>
+          </ul>
+          <button class="btn btn-gold" onclick="openRegisterModal('elite')">
+            <i class="fa-solid fa-crown"></i> Ser Elite
+          </button>
+        </div>
+      </div>
+
+      <!-- Payment logos -->
+      <div class="payment-logos fade-in">
+        <span>Pagos seguros con:</span>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:8px">
+          <i class="fa-solid fa-credit-card" style="color:hsl(220,85%,60%)"></i>
+          <span style="font-weight:700;font-size:0.9rem;color:var(--text-primary)">MercadoPago</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:8px">
+          <i class="fa-brands fa-stripe" style="color:#635BFF;font-size:1.3rem"></i>
+          <span style="font-weight:700;font-size:0.9rem;color:var(--text-primary)">Stripe</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);padding:8px 16px;border-radius:8px">
+          <i class="fa-solid fa-building-columns" style="color:var(--teal)"></i>
+          <span style="font-weight:700;font-size:0.9rem;color:var(--text-primary)">Transferencia</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--text-muted)">
+          <i class="fa-solid fa-lock"></i> SSL 256-bit
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ SOBRE CECILIA ══════════════════════ -->
+  <section class="section about-section" id="cecilia">
+    <div class="container">
+      <div class="about-wrapper">
+        <!-- Imagen -->
+        <div class="about-image-wrap fade-in">
+          <div class="about-image-frame"></div>
+          <img src="assets/cecilia.png?v=2" alt="Paisaje terapéutico Uruguay - Nuestra Voz" class="about-image" />
+          <div class="about-badge-float">
+            <div class="val">+10</div>
+            <div class="lbl">Años de experiencia</div>
+          </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="about-content fade-in">
+          <span class="section-label">Fundadora</span>
+          <h2 class="section-title">Cecilia Mahia,<br/><span>Operadora Terapéutica</span></h2>
+          <p class="section-subtitle">
+            Especializada en adicciones y situaciones de abuso, Cecilia creó <strong>Nuestra Voz</strong> con una misión clara: que ningún operador terapéutico de Uruguay se quede sin las herramientas digitales para llegar a quien más lo necesita.
+          </p>
+          <p style="color:var(--text-secondary);line-height:1.75;margin-bottom:24px">
+            "Trabajar en adicciones me enseñó que el acompañamiento no termina en el consultorio. La presencia digital responsable es parte del tratamiento moderno."
+          </p>
+
+          <div class="credentials">
+            <div class="credential-item">
+              <div class="cred-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div>
+                <div class="cred-title">Operadora Terapéutica Certificada</div>
+                <div class="cred-sub">Especialización en Adicciones · Uruguay</div>
+              </div>
+            </div>
+            <div class="credential-item">
+              <div class="cred-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+              <div>
+                <div class="cred-title">Especialista en Situaciones de Abuso</div>
+                <div class="cred-sub">Acompañamiento terapéutico · 10+ años</div>
+              </div>
+            </div>
+            <div class="credential-item">
+              <div class="cred-icon"><i class="fa-solid fa-users"></i></div>
+              <div>
+                <div class="cred-title">Facilitadora de Grupos Terapéuticos</div>
+                <div class="cred-sub">Grupos de apoyo presenciales y online</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-actions">
+            <a href="https://wa.me/59892360151" target="_blank" class="btn btn-primary" id="btnContactCeci">
+              <i class="fa-brands fa-whatsapp"></i> Escribirle a Ceci
+            </a>
+
+            <a href="#registro" class="btn btn-outline" onclick="openRegisterModal('profesional')">
+              <i class="fa-solid fa-store"></i> Unirme a la Plataforma
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonios: se agregarán cuando haya operadores reales -->
+
+  <!-- ══════════════════════ CTA BANNER ══════════════════════ -->
+  <section class="cta-banner" id="contacto">
+    <div class="container cta-inner fade-in">
+      <h2>¿Listo para amplificar <em style="font-style:italic">tu voz</em>?</h2>
+      <p>La primera plataforma de Uruguay para profesionales de la salud y bienestar mental. Publicá tus servicios en 4 canales con un solo clic.</p>
+      <div class="cta-actions">
+        <button class="btn btn-gold btn-lg" onclick="openRegisterModal('profesional')" id="btnCtaRegister">
+          <i class="fa-solid fa-rocket"></i> Publicar mis Servicios Ahora
+        </button>
+        <a href="https://wa.me/59892360151?text=Hola%20Ceci%2C%20quiero%20saber%20más%20sobre%20Nuestra%20Voz" target="_blank" class="btn btn-outline btn-lg">
+          <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════ FOOTER ══════════════════════ -->
+  <footer class="footer" id="registro">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom:16px">
+            <div class="logo-icon">🎙️</div>
+            <div class="logo-text">
+              <span class="name">Nuestra Voz</span>
+              <span class="tagline-small">Uruguay · Plataforma Terapéutica</span>
+            </div>
+          </div>
+          <p>El marketplace para profesionales de la salud y bienestar mental de Uruguay. Fundada por Cecilia Mahia para amplificar el impacto del acompañamiento terapéutico.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+
+            <a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <ul>
+            <li><a href="#plataforma">¿Qué es Nuestra Voz?</a></li>
+            <li><a href="#publicar">Publicación Multi-Canal</a></li>
+            <li><a href="#precios">Planes y Precios</a></li>
+            <li><a href="#cecilia">Sobre Cecilia Mahia</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Canales</h4>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">WhatsApp Business</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col" id="contacto-footer">
+          <h4>Contacto</h4>
+          <div class="footer-contact">
+            <div class="contact-item">
+              <i class="fa-brands fa-whatsapp"></i>
+              <span>+598 92 360 151 (Ceci)</span>
+            </div>
+            <div class="contact-item">
+              <i class="fa-solid fa-envelope"></i>
+              <span>hola@nuestravoz.uy</span>
+            </div>
+            <div class="contact-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>Montevideo, Uruguay</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-social" style="text-align:center;padding:20px 0;border-top:1px solid var(--border-color);margin-top:20px;display:flex;justify-content:center;gap:16px">
+
+        <a href="https://www.instagram.com/nuestravoz_uy/" target="_blank" style="color:var(--text-secondary);font-size:1.3rem;transition:color 0.2s" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61593185456364" target="_blank" style="color:var(--text-secondary);font-size:1.3rem;transition:color 0.2s" title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://tiktok.com/@nuestravozuy" target="_blank" style="color:var(--text-secondary);font-size:1.3rem;transition:color 0.2s" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+        <a href="https://wa.me/59898409464" target="_blank" style="color:var(--text-secondary);font-size:1.3rem;transition:color 0.2s" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Nuestra Voz · Todos los derechos reservados.</span>
+        <div class="footer-links">
+          <a href="#">Términos de Uso</a>
+          <a href="#">Privacidad</a>
+          <a href="#">Cookies</a>
+        </div>
+        <div class="uy-badge">
+          🇺🇾 Hecho en Uruguay
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════ MODAL: REGISTRO ══════════════════════ -->
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal-box" style="max-width:560px">
+      <div class="modal-header">
+        <h3 class="modal-title" id="regModalTitle">🚀 Publicar mis Servicios</h3>
+        <button class="modal-close" onclick="closeModal('registerModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- STEP 1: Info -->
+      <div id="regStep1">
+        <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:20px">
+          Completá tus datos. Cecilia te creará tu cuenta una vez confirmado el pago.
+        </p>
+        <div class="form-group">
+          <label class="form-label" for="regNombre">Nombre completo *</label>
+          <input class="form-input" type="text" id="regNombre" placeholder="Ej: María Rodríguez" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regEmail">Correo electrónico *</label>
+          <input class="form-input" type="email" id="regEmail" placeholder="tu@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPass">Crear contraseña *</label>
+          <input class="form-input" type="password" id="regPass" placeholder="•••••••• (mínimo 6 caracteres)" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regTel">WhatsApp (con código país) *</label>
+          <input class="form-input" type="tel" id="regTel" placeholder="+598 92 360 151" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regEspecialidad">Especialidad terapéutica *</label>
+          <select class="form-input form-select" id="regEspecialidad">
+            <option value="">Seleccioná tu especialidad…</option>
+            <option>Adicciones</option>
+            <option>Abuso y Violencia</option>
+            <option>Salud Mental</option>
+            <option>Duelo y Pérdida</option>
+            <option>Bienestar Emocional</option>
+            <option>Terapia Familiar</option>
+            <option>Otra</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPlan">Plan seleccionado</label>
+          <select class="form-input form-select" id="regPlan">
+            <option value="basico">Básico — $15/mes (UYU ~620)</option>
+            <option value="profesional" selected>Profesional — $35/mes (UYU ~1.450)</option>
+            <option value="elite">Elite — $75/mes (UYU ~3.100)</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="event.preventDefault();goToPaymentStep()">
+          Elegir forma de pago <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- STEP 2: Payment method -->
+      <div id="regStep2" style="display:none">
+        <button type="button" onclick="event.preventDefault();goBackToStep1()" style="background:none;border:none;color:#a78bfa;font-size:0.85rem;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;gap:6px;padding:0">
+          <i class="fa-solid fa-arrow-left"></i> Volver a mis datos
+        </button>
+        <p style="color:#aaa;font-size:0.9rem;margin-bottom:20px">
+          Elegí cómo querés pagar tu suscripción. Cecilia te habilitará la cuenta dentro de las 24hs.
+        </p>
+
+        <!-- Stripe -->
+        <div onclick="payWithStripe()" id="payOptStripe" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);cursor:pointer;margin-bottom:12px;transition:background 0.2s">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(99,91,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-brands fa-stripe" style="color:#635BFF;font-size:1.5rem"></i>
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:1rem;color:#fff">Pagar con Stripe</div>
+            <div style="font-size:0.8rem;color:#888;margin-top:2px">Tarjeta de crédito/débito · Visa, Mastercard</div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color:#666"></i>
+        </div>
+
+        <!-- MercadoPago -->
+        <div onclick="payWithMercadoPago()" id="payOptMP" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);cursor:pointer;margin-bottom:12px;transition:background 0.2s">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,158,227,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-credit-card" style="color:#009EE3;font-size:1.2rem"></i>
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:1rem;color:#fff">Pagar con MercadoPago</div>
+            <div style="font-size:0.8rem;color:#888;margin-top:2px">Tarjeta · Débito · Saldo MP · Uruguay</div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color:#666"></i>
+        </div>
+
+        <!-- Transferencia Bancaria -->
+        <div onclick="showBankTransfer()" id="payOptBank" style="display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);cursor:pointer;margin-bottom:12px;transition:background 0.2s">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(64,196,176,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <i class="fa-solid fa-building-columns" style="color:#40c4b0;font-size:1.2rem"></i>
+          </div>
+          <div style="flex:1">
+            <div style="font-weight:600;font-size:1rem;color:#fff">Transferencia Bancaria</div>
+            <div style="font-size:0.8rem;color:#888;margin-top:2px">Contactar a Cecilia · Pago por depósito</div>
+          </div>
+          <i class="fa-solid fa-arrow-right" style="color:#666"></i>
+        </div>
+      </div>
+
+      <!-- STEP 3: Bank transfer details -->
+      <div id="regStep3" style="display:none">
+        <button onclick="goBackToStep2()" style="background:none;border:none;color:var(--primary-light);font-size:0.85rem;cursor:pointer;margin-bottom:16px;display:flex;align-items:center;gap:6px">
+          <i class="fa-solid fa-arrow-left"></i> Volver a formas de pago
+        </button>
+
+        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);padding:20px;margin-bottom:20px">
+          <div style="font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px">
+            <i class="fa-solid fa-building-columns" style="color:var(--teal)"></i>
+            Datos para Transferencia Bancaria
+          </div>
+
+          <div style="font-size:0.82rem;font-weight:600;color:var(--primary-light);margin-bottom:8px">Transferencias dentro de Santander</div>
+          <div style="display:grid;gap:8px;font-size:0.88rem;color:var(--text-secondary);margin-bottom:16px">
+            <div><strong style="color:var(--text-primary)">Banco:</strong> Santander</div>
+            <div><strong style="color:var(--text-primary)">Titular:</strong> Cecilia Mahia</div>
+            <div><strong style="color:var(--text-primary)">Cuenta:</strong> 5205493087</div>
+            <div><strong style="color:var(--text-primary)">Moneda:</strong> USD</div>
+            <div><strong style="color:var(--text-primary)">Sucursal:</strong> 19 - Carrasco</div>
+          </div>
+
+          <div style="font-size:0.82rem;font-weight:600;color:var(--primary-light);margin-bottom:8px">Transferencias desde otros bancos</div>
+          <div style="display:grid;gap:8px;font-size:0.88rem;color:var(--text-secondary)">
+            <div><strong style="color:var(--text-primary)">Cuenta:</strong> 0019005205493087</div>
+            <div><strong style="color:var(--text-primary)">Moneda:</strong> USD</div>
+          </div>
+
+          <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;line-height:1.6">
+            <i class="fa-solid fa-circle-info"></i> 
+            Realizá la transferencia y enviá el comprobante por WhatsApp. Cecilia te habilitará la cuenta dentro de las 24hs hábiles.
+          </p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a href="https://wa.me/59892360151?text=Hola%20Ceci%2C%20hice%20una%20transferencia%20para%20el%20plan%20de%20Nuestra%20Voz.%20Te%20paso%20el%20comprobante." 
+             target="_blank" class="btn btn-primary" style="width:100%;justify-content:center" onclick="setTimeout(completeTransferAndGoToPanel, 1000)">
+            <i class="fa-brands fa-whatsapp"></i> Enviar comprobante por WhatsApp e Ir a Mi Panel
+          </a>
+          <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="completeTransferAndGoToPanel()">
+            <i class="fa-solid fa-gauge"></i> Ir a Mi Panel de Operador
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ MODAL: LOGIN (para operadores ya creados) ══════════════════════ -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">🔑 Ingresar al Panel</h3>
+        <button class="modal-close" onclick="closeModal('loginModal')">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:20px">
+        Ingresá con las credenciales que Cecilia te envió.
+      </p>
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Correo electrónico</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="tu@email.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="loginPass">Contraseña</label>
+        <input class="form-input" type="password" id="loginPass" placeholder="••••••••" />
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:4px" onclick="doLogin()">
+        <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+      </button>
+      <div style="text-align:center;margin-top:14px">
+        <button onclick="doGoogleLogin()" style="background:none;border:1px solid var(--border);border-radius:var(--radius-full);padding:10px 20px;color:var(--text-secondary);font-size:0.88rem;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:var(--transition);width:100%;justify-content:center">
+          <i class="fa-brands fa-google"></i> Ingresar con Google
+        </button>
+      </div>
+      <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);margin-top:16px">
+        ¿No tenés cuenta? <a href="#" onclick="closeModal('loginModal');openRegisterModal('profesional')" style="color:var(--primary-light);text-decoration:underline">Registrate acá</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ MODAL: CONFIGURAR CANAL ══════════════════════ -->
+  <!-- Modales eliminados debido a publicacion centralizada -->
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <div class="toast-text">
+      <strong id="toastTitle">¡Publicado!</strong>
+      <span id="toastSub">Contenido enviado a todos los canales</span>
+    </div>
+  </div>
+
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+
+  <script src="js/firebase-app.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
