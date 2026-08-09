@@ -19,12 +19,13 @@
     "ignore": [
       "firebase.json",
       ".firebaserc",
-      "deploy.sh",
-      "Dockerfile",
-      "nginx.conf",
+      ".firebase/**",
       ".git/**",
       "node_modules/**",
-      "whatsapp-bot/**"
+      "functions/**",
+      "*.rules",
+      "*.json",
+      ".gitignore"
     ],
     "rewrites": [],
     "headers": [

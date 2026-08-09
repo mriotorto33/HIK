@@ -31,6 +31,7 @@ function formatMetaError(error, serviceName) {
  */
 async function getInstagramToken() {
   if (!secretClient) {
+    const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
     secretClient = new SecretManagerServiceClient();
   }
   try {
@@ -179,6 +180,7 @@ exports.publishToMeta = functions.firestore
  */
 exports.refreshInstagramToken = functions.pubsub.schedule("every 168 hours").onRun(async () => {
   if (!secretClient) {
+    const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
     secretClient = new SecretManagerServiceClient();
   }
   try {
