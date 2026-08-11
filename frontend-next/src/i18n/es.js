@@ -273,9 +273,10 @@ export const es = {
     vnDesc: "Microservicio independiente en Go para veredictos de deepfakes por fragmento. Incluye proxy HTTP Modo A, store Durable Object Modo B y quórum N-de-M.",
     battleTag: "REPO PRIVADO (FCL-1.0)",
     battleLabel: "Middleware Central",
-    battleTitle: "Prueba de Batalla (3.040 Consultas)",
-    battleDesc: "Resultados de la auditoría de normalización L1.5 para la plataforma central privada (FCL-1.0): 94,37% de neutralización en 3.000 sondas de amenazas."
+    battleTitle: "HumanIsKind Core",
+    battleDesc: "Plataforma central privada (FCL-1.0): 94,37% de neutralización de ataques en 3.000 sondas de prueba de batalla L1.5."
   }
 };
+
 
 

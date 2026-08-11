@@ -291,9 +291,10 @@ export const en = {
     vnDesc: "Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum.",
     battleTag: "PRIVATE REPO (FCL-1.0)",
     battleLabel: "Core Middleware",
-    battleTitle: "3,040 Battle Test",
-    battleDesc: "Comprehensive L1.5 normalization audit results for the private core platform (FCL-1.0): 94.37% attack neutralization across 3,000 security threat probes."
+    battleTitle: "HumanIsKind Core",
+    battleDesc: "Private core platform (FCL-1.0): 94.37% attack neutralization across 3,000 security threat probes in L1.5 normalization audit."
   }
 };
+
 
 

@@ -209,7 +209,7 @@ const HomePageClient = () => {
                 </div>
                 <span className="text-[11px] font-bold tracking-wider text-[#38BDF8] uppercase block mb-1">{t.openRepos?.sdkLabel || "SDK & Edge Gate"}</span>
                 <h3 className="text-xl font-black text-white mb-2">{t.openRepos?.sdkTitle || "HIK SDK"}</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                <p className="text-xs text-gray-400 leading-relaxed mb-4 min-h-[48px]">
                   {t.openRepos?.sdkDesc || "Real-time C2PA 2.3 stream integrity & fail-closed CDN edge enforcement. Isomorphic zero-dependency edge bundle with mechanical claims verification gate."}
                 </p>
                 <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
@@ -232,7 +232,7 @@ const HomePageClient = () => {
                 </div>
                 <span className="text-[11px] font-bold tracking-wider text-[#A855F7] uppercase block mb-1">{t.openRepos?.vnLabel || "Verification Node"}</span>
                 <h3 className="text-xl font-black text-white mb-2">{t.openRepos?.vnTitle || "HIK-VN"}</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                <p className="text-xs text-gray-400 leading-relaxed mb-4 min-h-[48px]">
                   {t.openRepos?.vnDesc || "Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum."}
                 </p>
                 <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
@@ -255,7 +255,7 @@ const HomePageClient = () => {
                 </div>
                 <span className="text-[11px] font-bold tracking-wider text-[#10B981] uppercase block mb-1">{t.openRepos?.battleLabel || "Enterprise Middleware"}</span>
                 <h3 className="text-xl font-black text-white mb-2">{t.openRepos?.battleTitle || "3,040 Battle Test"}</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                <p className="text-xs text-gray-400 leading-relaxed mb-4 min-h-[48px]">
                   {t.openRepos?.battleDesc || "Comprehensive L1.5 normalization audit results: 94.37% attack neutralization across 3,000 security threat probes and 95.0% clean legal query pass rate."}
                 </p>
                 <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
