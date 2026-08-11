@@ -222,8 +222,37 @@ const TechnologyPageClient = () => {
                 <h2 className="text-2xl sm:text-3xl font-bold text-[#111111]">{t.integrationTab.title}</h2>
                 <p className="text-[#555555] mt-3 text-sm sm:text-base leading-relaxed">{t.integrationTab.desc}</p>
               </div>
-              <div className="reveal-scale code-block p-5 sm:p-6">
+              <div className="reveal-scale code-block p-5 sm:p-6 mb-8">
                 <pre className="whitespace-pre-wrap text-[#CCCCCC] text-xs sm:text-sm">{t.sdkCode}</pre>
+              </div>
+
+              {/* Public Repositories Box */}
+              <div className="reveal pro-card p-6 border-l-4 border-l-[#E8761D] bg-[#F8FAFC]">
+                <h3 className="text-lg font-bold text-[#111111] mb-2 flex items-center gap-2">
+                  <span>🌐 Public Open Repositories & SDKs (v2.7.0)</span>
+                </h3>
+                <p className="text-xs text-[#64748B] mb-4">
+                  Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <a href="https://github.com/mriotorto33/hik-sdk" target="_blank" rel="noopener noreferrer" className="p-4 rounded-xl border border-[#E2E8F0] bg-white hover:border-[#38BDF8] transition-all block text-decoration-none">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-sm text-[#0F172A]">HIK SDK (v2.7.0)</span>
+                      <span className="text-[10px] font-mono font-bold text-[#0284C7] bg-[#E0F2FE] px-2 py-0.5 rounded">104kb Edge</span>
+                    </div>
+                    <p className="text-xs text-[#64748B] mb-2">Isomorphic Web Crypto C2PA 2.3 edge enforcer & VSI chain verifier (26/26 tests green).</p>
+                    <span className="text-xs font-mono text-[#0284C7] font-semibold">github.com/mriotorto33/hik-sdk ↗</span>
+                  </a>
+
+                  <a href="https://github.com/mriotorto33/hik-vn" target="_blank" rel="noopener noreferrer" className="p-4 rounded-xl border border-[#E2E8F0] bg-white hover:border-[#A855F7] transition-all block text-decoration-none">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-sm text-[#0F172A]">HIK-VN (v2.7.0)</span>
+                      <span className="text-[10px] font-mono font-bold text-[#7E22CE] bg-[#F3E8FF] px-2 py-0.5 rounded">Go Microservice</span>
+                    </div>
+                    <p className="text-xs text-[#64748B] mb-2">Independent Verification Node with Mode A/B proxy, Durable Object store & Quorum gate.</p>
+                    <span className="text-xs font-mono text-[#7E22CE] font-semibold">github.com/mriotorto33/hik-vn ↗</span>
+                  </a>
+                </div>
               </div>
             </div>
           </section>

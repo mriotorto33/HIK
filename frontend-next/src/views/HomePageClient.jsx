@@ -184,6 +184,94 @@ const HomePageClient = () => {
         </div>
       </section>
 
+      {/* ===== PUBLIC OPEN INFRASTRUCTURE REPOSITORIES ===== */}
+      <section className="section-spacing bg-[#0D1117] text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
+          <div className="reveal text-center mb-10 sm:mb-14">
+            <span className="px-3.5 py-1 text-[11px] font-bold tracking-widest text-[#38BDF8] uppercase bg-[#38BDF8]/10 border border-[#38BDF8]/30 rounded-full mb-3 inline-block">
+              Open Source Ecosystem v2.7.0
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
+              Public Verified Infrastructure Repositories
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
+              Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* HIK SDK Card */}
+            <div className="pro-card bg-[#161B22] border border-[#30363D] p-6 rounded-2xl flex flex-col justify-between hover:border-[#38BDF8] transition-all">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#38BDF8]/10 text-[#38BDF8] flex items-center justify-center font-bold text-xl">⚡</div>
+                  <span className="text-[10px] font-mono font-bold text-[#38BDF8] bg-[#38BDF8]/10 px-2.5 py-1 rounded-full border border-[#38BDF8]/30">v2.7.0 VERIFIED</span>
+                </div>
+                <span className="text-[11px] font-bold tracking-wider text-[#38BDF8] uppercase block mb-1">SDK & Edge Gate</span>
+                <h3 className="text-xl font-black text-white mb-2">HIK SDK</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                  Real-time C2PA 2.3 stream integrity & fail-closed CDN edge enforcement. Isomorphic zero-dependency edge bundle with mechanical claims verification gate.
+                </p>
+                <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
+                  <div><div className="text-sm font-bold text-white">104.0kb</div><div className="text-[9px] text-gray-500 uppercase">Bundle</div></div>
+                  <div><div className="text-sm font-bold text-white">0.33ms</div><div className="text-[9px] text-gray-500 uppercase">Edge Latency</div></div>
+                  <div><div className="text-sm font-bold text-white">26/26</div><div className="text-[9px] text-gray-500 uppercase">Tests Passed</div></div>
+                </div>
+              </div>
+              <a href="https://github.com/mriotorto33/hik-sdk" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-between text-xs font-mono text-[#38BDF8] bg-[#38BDF8]/10 hover:bg-[#38BDF8]/20 px-4 py-2.5 rounded-xl transition-colors">
+                github.com/mriotorto33/hik-sdk ↗ <ChevronRight size={14} />
+              </a>
+            </div>
+
+            {/* HIK-VN Card */}
+            <div className="pro-card bg-[#161B22] border border-[#30363D] p-6 rounded-2xl flex flex-col justify-between hover:border-[#A855F7] transition-all">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#A855F7]/10 text-[#A855F7] flex items-center justify-center font-bold text-xl">🛡️</div>
+                  <span className="text-[10px] font-mono font-bold text-[#A855F7] bg-[#A855F7]/10 px-2.5 py-1 rounded-full border border-[#A855F7]/30">v2.7.0 VERIFIED</span>
+                </div>
+                <span className="text-[11px] font-bold tracking-wider text-[#A855F7] uppercase block mb-1">Verification Node</span>
+                <h3 className="text-xl font-black text-white mb-2">HIK-VN</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                  Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum.
+                </p>
+                <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
+                  <div><div className="text-sm font-bold text-white">Go 1.22</div><div className="text-[9px] text-gray-500 uppercase">Language</div></div>
+                  <div><div className="text-sm font-bold text-white">Mode A/B</div><div className="text-[9px] text-gray-500 uppercase">Proxy</div></div>
+                  <div><div className="text-sm font-bold text-white">K-of-M</div><div className="text-[9px] text-gray-500 uppercase">Quorum Gate</div></div>
+                </div>
+              </div>
+              <a href="https://github.com/mriotorto33/hik-vn" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-between text-xs font-mono text-[#A855F7] bg-[#A855F7]/10 hover:bg-[#A855F7]/20 px-4 py-2.5 rounded-xl transition-colors">
+                github.com/mriotorto33/hik-vn ↗ <ChevronRight size={14} />
+              </a>
+            </div>
+
+            {/* 3,040 Battle Test Card */}
+            <div className="pro-card bg-[#161B22] border border-[#30363D] p-6 rounded-2xl flex flex-col justify-between hover:border-[#10B981] transition-all">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#10B981]/10 text-[#10B981] flex items-center justify-center font-bold text-xl">🎯</div>
+                  <span className="text-[10px] font-mono font-bold text-[#10B981] bg-[#10B981]/10 px-2.5 py-1 rounded-full border border-[#10B981]/30">AUDIT VALIDATED</span>
+                </div>
+                <span className="text-[11px] font-bold tracking-wider text-[#10B981] uppercase block mb-1">Enterprise Middleware</span>
+                <h3 className="text-xl font-black text-white mb-2">3,040 Battle Test</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                  Comprehensive L1.5 normalization audit results: 94.37% attack neutralization across 3,000 security threat probes and 95.0% clean legal query pass rate.
+                </p>
+                <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
+                  <div><div className="text-sm font-bold text-white">94.37%</div><div className="text-[9px] text-gray-500 uppercase">Neutralized</div></div>
+                  <div><div className="text-sm font-bold text-white">95.0%</div><div className="text-[9px] text-gray-500 uppercase">Clean Pass</div></div>
+                  <div><div className="text-sm font-bold text-white">5.0%</div><div className="text-[9px] text-gray-500 uppercase">FP Rate</div></div>
+                </div>
+              </div>
+              <a href="https://github.com/mriotorto33/HumanIsKind" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-between text-xs font-mono text-[#10B981] bg-[#10B981]/10 hover:bg-[#10B981]/20 px-4 py-2.5 rounded-xl transition-colors">
+                github.com/mriotorto33/HumanIsKind ↗ <ChevronRight size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== SECTION B — VERTICALS ===== */}
       <section className="section-spacing bg-[#F7F7F7]">
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
