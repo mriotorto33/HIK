@@ -279,20 +279,21 @@ export const en = {
 
   openRepos: {
     tag: "Open Source Ecosystem v2.7.0",
-    title: "Public Verified Infrastructure Repositories",
-    subtitle: "Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes.",
-    sdkTag: "v2.7.0 VERIFIED",
+    title: "Public Infrastructure & Open SDKs",
+    subtitle: "Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes, backed by the private core platform.",
+    sdkTag: "v2.7.0 PUBLIC",
     sdkLabel: "SDK & Edge Gate",
     sdkTitle: "HIK SDK",
     sdkDesc: "Real-time C2PA 2.3 stream integrity & fail-closed CDN edge enforcement. Isomorphic zero-dependency edge bundle with mechanical claims verification gate.",
-    vnTag: "v2.7.0 VERIFIED",
+    vnTag: "v2.7.0 PUBLIC",
     vnLabel: "Verification Node",
     vnTitle: "HIK-VN",
     vnDesc: "Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum.",
-    battleTag: "AUDIT VALIDATED",
-    battleLabel: "Enterprise Middleware",
+    battleTag: "PRIVATE REPO (FCL-1.0)",
+    battleLabel: "Core Middleware",
     battleTitle: "3,040 Battle Test",
-    battleDesc: "Comprehensive L1.5 normalization audit results: 94.37% attack neutralization across 3,000 security threat probes and 95.0% clean legal query pass rate."
+    battleDesc: "Comprehensive L1.5 normalization audit results for the private core platform (FCL-1.0): 94.37% attack neutralization across 3,000 security threat probes."
   }
 };
+
 
