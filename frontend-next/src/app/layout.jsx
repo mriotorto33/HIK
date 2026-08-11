@@ -23,7 +23,7 @@ export const metadata = {
     'zero-trust AI',
   ],
   openGraph: {
-    title: 'HumanisKind | Deterministic AI Governance & EU AI Act Compliance',
+    title: 'HumanIsKind | Deterministic AI Governance & EU AI Act Compliance',
     description: 'Probabilistic guardrails fail. HIK provides Zero-Trust Runtime Enforcement for M2M agents. Secure your infrastructure before the August 2026 EU AI Act Article 50 deadline.',
     type: 'website',
     siteName: 'Human Is Kind™',
@@ -32,7 +32,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HumanisKind | Deterministic AI Governance & EU AI Act Compliance',
+    title: 'HumanIsKind | Deterministic AI Governance & EU AI Act Compliance',
     description: 'Probabilistic guardrails fail. HIK provides Zero-Trust Runtime Enforcement for M2M agents. Secure your infrastructure before the August 2026 EU AI Act Article 50 deadline.',
     site: '@humaniskind',
   },
@@ -67,7 +67,7 @@ const organizationJsonLd = {
     { '@type': 'ContactPoint', email: 'contact@humaniskind.com', contactType: 'customer support' },
   ],
   sameAs: [
-    'https://github.com/mriotorto33/HumanisKind',
+    'https://github.com/mriotorto33/HumanIsKind',
     'https://humaniskind.com',
   ],
   hasOfferCatalog: {

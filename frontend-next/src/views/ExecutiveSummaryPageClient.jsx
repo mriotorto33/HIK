@@ -46,7 +46,7 @@ const ExecutiveSummaryPageClient = () => {
           <div className="absolute inset-0 will-change-transform opacity-15" style={{backgroundImage:`url(${HERO_BG})`,backgroundSize:'cover',backgroundPosition:'center',transform:`translateY(${scrollY*0.1}px)`}} />
           <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
             <p className="hero-subtitle text-xs uppercase tracking-[0.3em] text-[#E8761D] mb-4 sm:mb-5 font-semibold">{t.ui.executiveSummary}</p>
-            <h1 className="hero-desc text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-3 sm:mb-4">HumanisKind (HIK)</h1>
+            <h1 className="hero-desc text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] mb-3 sm:mb-4">HumanIsKind (HIK)</h1>
             <p className="hero-desc text-lg sm:text-xl text-[#E8761D] font-medium">{t.hero.subtitle}</p>
           </div>
         </div>
