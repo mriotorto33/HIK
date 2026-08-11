@@ -257,5 +257,24 @@ export const pt = {
       { label: "EU AI Act Artigo 50 Pronto" },
       { label: "Fail-Close por Design" }
     ]
+  },
+
+  openRepos: {
+    tag: "Ecossistema Open Source v2.7.0",
+    title: "Repositórios de Infraestrutura Pública Verificada",
+    subtitle: "Repositórios de código aberto com verificação mecânica de declarações para integridade de stream C2PA 2.3 no edge e nós independentes de veredito de deepfakes.",
+    sdkTag: "v2.7.0 VERIFICADO",
+    sdkLabel: "SDK & Gate Edge",
+    sdkTitle: "HIK SDK",
+    sdkDesc: "Integridade de stream C2PA 2.3 em tempo real e aplicação CDN edge fail-closed. Bundle isomórfico sem dependências com portão mecânico de verificação.",
+    vnTag: "v2.7.0 VERIFICADO",
+    vnLabel: "Nó de Verificação",
+    vnTitle: "HIK-VN",
+    vnDesc: "Microserviço Go independente para vereditos de deepfakes por fragmento. Recursos: proxy HTTP Modo A, armazenamento Durable Object Modo B e quórum N-de-M.",
+    battleTag: "AUDITADO & VALIDADO",
+    battleLabel: "Middleware Enterprise",
+    battleTitle: "Teste de Batalha (3.040 Consultas)",
+    battleDesc: "Resultados da auditoria de normalização L1.5: 94,37% de neutralização de ataques em 3.000 testes de segurança e 95,0% de taxa de aprovação em consultas limpas."
   }
 };
+

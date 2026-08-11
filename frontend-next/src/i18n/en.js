@@ -275,5 +275,24 @@ export const en = {
       { label: "EU AI Act Article 50 Ready" },
       { label: "Fail-Close by Design" }
     ]
+  },
+
+  openRepos: {
+    tag: "Open Source Ecosystem v2.7.0",
+    title: "Public Verified Infrastructure Repositories",
+    subtitle: "Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes.",
+    sdkTag: "v2.7.0 VERIFIED",
+    sdkLabel: "SDK & Edge Gate",
+    sdkTitle: "HIK SDK",
+    sdkDesc: "Real-time C2PA 2.3 stream integrity & fail-closed CDN edge enforcement. Isomorphic zero-dependency edge bundle with mechanical claims verification gate.",
+    vnTag: "v2.7.0 VERIFIED",
+    vnLabel: "Verification Node",
+    vnTitle: "HIK-VN",
+    vnDesc: "Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum.",
+    battleTag: "AUDIT VALIDATED",
+    battleLabel: "Enterprise Middleware",
+    battleTitle: "3,040 Battle Test",
+    battleDesc: "Comprehensive L1.5 normalization audit results: 94.37% attack neutralization across 3,000 security threat probes and 95.0% clean legal query pass rate."
   }
 };
+

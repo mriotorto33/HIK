@@ -189,13 +189,13 @@ const HomePageClient = () => {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
           <div className="reveal text-center mb-10 sm:mb-14">
             <span className="px-3.5 py-1 text-[11px] font-bold tracking-widest text-[#38BDF8] uppercase bg-[#38BDF8]/10 border border-[#38BDF8]/30 rounded-full mb-3 inline-block">
-              Open Source Ecosystem v2.7.0
+              {t.openRepos?.tag || "Open Source Ecosystem v2.7.0"}
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white mb-4">
-              Public Verified Infrastructure Repositories
+              {t.openRepos?.title || "Public Verified Infrastructure Repositories"}
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">
-              Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes.
+              {t.openRepos?.subtitle || "Mechanically claims-verified open source repositories for edge C2PA 2.3 stream integrity and independent deepfake verdict nodes."}
             </p>
           </div>
 
@@ -205,12 +205,12 @@ const HomePageClient = () => {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-lg bg-[#38BDF8]/10 text-[#38BDF8] flex items-center justify-center font-bold text-xl">⚡</div>
-                  <span className="text-[10px] font-mono font-bold text-[#38BDF8] bg-[#38BDF8]/10 px-2.5 py-1 rounded-full border border-[#38BDF8]/30">v2.7.0 VERIFIED</span>
+                  <span className="text-[10px] font-mono font-bold text-[#38BDF8] bg-[#38BDF8]/10 px-2.5 py-1 rounded-full border border-[#38BDF8]/30">{t.openRepos?.sdkTag || "v2.7.0 VERIFIED"}</span>
                 </div>
-                <span className="text-[11px] font-bold tracking-wider text-[#38BDF8] uppercase block mb-1">SDK & Edge Gate</span>
-                <h3 className="text-xl font-black text-white mb-2">HIK SDK</h3>
+                <span className="text-[11px] font-bold tracking-wider text-[#38BDF8] uppercase block mb-1">{t.openRepos?.sdkLabel || "SDK & Edge Gate"}</span>
+                <h3 className="text-xl font-black text-white mb-2">{t.openRepos?.sdkTitle || "HIK SDK"}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed mb-4">
-                  Real-time C2PA 2.3 stream integrity & fail-closed CDN edge enforcement. Isomorphic zero-dependency edge bundle with mechanical claims verification gate.
+                  {t.openRepos?.sdkDesc || "Real-time C2PA 2.3 stream integrity & fail-closed CDN edge enforcement. Isomorphic zero-dependency edge bundle with mechanical claims verification gate."}
                 </p>
                 <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
                   <div><div className="text-sm font-bold text-white">104.0kb</div><div className="text-[9px] text-gray-500 uppercase">Bundle</div></div>
@@ -228,12 +228,12 @@ const HomePageClient = () => {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-lg bg-[#A855F7]/10 text-[#A855F7] flex items-center justify-center font-bold text-xl">🛡️</div>
-                  <span className="text-[10px] font-mono font-bold text-[#A855F7] bg-[#A855F7]/10 px-2.5 py-1 rounded-full border border-[#A855F7]/30">v2.7.0 VERIFIED</span>
+                  <span className="text-[10px] font-mono font-bold text-[#A855F7] bg-[#A855F7]/10 px-2.5 py-1 rounded-full border border-[#A855F7]/30">{t.openRepos?.vnTag || "v2.7.0 VERIFIED"}</span>
                 </div>
-                <span className="text-[11px] font-bold tracking-wider text-[#A855F7] uppercase block mb-1">Verification Node</span>
-                <h3 className="text-xl font-black text-white mb-2">HIK-VN</h3>
+                <span className="text-[11px] font-bold tracking-wider text-[#A855F7] uppercase block mb-1">{t.openRepos?.vnLabel || "Verification Node"}</span>
+                <h3 className="text-xl font-black text-white mb-2">{t.openRepos?.vnTitle || "HIK-VN"}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed mb-4">
-                  Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum.
+                  {t.openRepos?.vnDesc || "Independent Go microservice for fragment-bound deepfake verdicts. Features Mode A inline HTTP proxy, Mode B Durable Object store, and N-of-M fail-closed quorum."}
                 </p>
                 <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
                   <div><div className="text-sm font-bold text-white">Go 1.22</div><div className="text-[9px] text-gray-500 uppercase">Language</div></div>
@@ -251,12 +251,12 @@ const HomePageClient = () => {
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="w-10 h-10 rounded-lg bg-[#10B981]/10 text-[#10B981] flex items-center justify-center font-bold text-xl">🎯</div>
-                  <span className="text-[10px] font-mono font-bold text-[#10B981] bg-[#10B981]/10 px-2.5 py-1 rounded-full border border-[#10B981]/30">AUDIT VALIDATED</span>
+                  <span className="text-[10px] font-mono font-bold text-[#10B981] bg-[#10B981]/10 px-2.5 py-1 rounded-full border border-[#10B981]/30">{t.openRepos?.battleTag || "AUDIT VALIDATED"}</span>
                 </div>
-                <span className="text-[11px] font-bold tracking-wider text-[#10B981] uppercase block mb-1">Enterprise Middleware</span>
-                <h3 className="text-xl font-black text-white mb-2">3,040 Battle Test</h3>
+                <span className="text-[11px] font-bold tracking-wider text-[#10B981] uppercase block mb-1">{t.openRepos?.battleLabel || "Enterprise Middleware"}</span>
+                <h3 className="text-xl font-black text-white mb-2">{t.openRepos?.battleTitle || "3,040 Battle Test"}</h3>
                 <p className="text-xs text-gray-400 leading-relaxed mb-4">
-                  Comprehensive L1.5 normalization audit results: 94.37% attack neutralization across 3,000 security threat probes and 95.0% clean legal query pass rate.
+                  {t.openRepos?.battleDesc || "Comprehensive L1.5 normalization audit results: 94.37% attack neutralization across 3,000 security threat probes and 95.0% clean legal query pass rate."}
                 </p>
                 <div className="grid grid-cols-3 gap-2 bg-[#0D1117] p-3 rounded-xl border border-[#21262D] mb-4">
                   <div><div className="text-sm font-bold text-white">94.37%</div><div className="text-[9px] text-gray-500 uppercase">Neutralized</div></div>
