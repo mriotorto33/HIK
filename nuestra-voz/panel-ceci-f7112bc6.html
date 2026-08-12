@@ -140,37 +140,29 @@
     .empty { padding: 40px; text-align: center; color: var(--text-3); }
     .empty i { font-size: 2rem; margin-bottom: 12px; display: block; }
 
+    .mobile-header {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 0 16px; align-items: center; justify-content: space-between;
+      z-index: 99;
+    }
+
     /* ── Responsive Mobile Design ── */
     @media (max-width: 768px) {
-      .admin-layout {
-        flex-direction: column;
-      }
+      .mobile-header { display: flex; }
       .sidebar {
-        width: 100%;
-        position: relative;
-        top: auto;
-        bottom: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        padding: 12px 16px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 6px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 100;
+        box-shadow: 10px 0 30px rgba(0,0,0,0.5);
       }
-      .sidebar-brand {
-        width: 100%;
-        margin-bottom: 4px;
-        padding: 4px 8px;
-      }
-      .sidebar a {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-      }
-      .sidebar-spacer { display: none; }
+      .sidebar.open { transform: translateX(0); }
       .main {
         margin-left: 0 !important;
-        padding: 16px !important;
+        padding-top: 80px !important; /* account for mobile header */
+        padding-left: 16px !important;
+        padding-right: 16px !important;
         width: 100%;
       }
       .stats-grid {
@@ -212,6 +204,15 @@
   </div>
 
   <!-- ═══════ ADMIN PANEL ═══════ -->
+  <header class="mobile-header">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-weight:700;font-size:0.95rem">Nuestra Voz · Admin</span>
+    </div>
+    <button onclick="document.querySelector('.sidebar').classList.toggle('open')" style="background:none;border:none;color:var(--text);font-size:1.2rem;cursor:pointer;padding:6px">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
   <div id="adminPanel" class="admin-layout" style="display:none">
 
     <!-- Sidebar -->
@@ -603,10 +604,13 @@
                 <td>
                   ${p.estado !== 'Publicado en Redes' ? `
                     <button class="btn btn-sm btn-primary" onclick="publishToAllChannels('${p.id}')">
-                      <i class="fa-solid fa-share-nodes"></i> Difundir en Redes Oficiales
+                      <i class="fa-solid fa-share-nodes"></i> Difundir
                     </button>
                   ` : `
                     <small style="color:var(--teal)"><i class="fa-solid fa-circle-check"></i> Difundido</small>
+                    <button class="btn btn-sm btn-ghost" style="margin-left:6px;font-size:0.7rem;padding:4px 6px;" onclick="forceRetryMeta('${p.id}')">
+                      <i class="fa-solid fa-rotate-right"></i> Reintentar
+                    </button>
                   `}
                   <button class="btn btn-sm" style="background:#25D366;color:#fff;margin-left:6px;border:none;cursor:pointer" onclick="shareToWhatsApp('${encodeURIComponent(p.titulo || '')}', '${encodeURIComponent(p.texto || '')}', '${encodeURIComponent(p.imagenUrl || '')}')">
                       <i class="fa-brands fa-whatsapp"></i> Compartir WA
@@ -638,8 +642,25 @@
           estado: 'Publicado en Redes',
           difundidoEn: firebase.firestore.FieldValue.serverTimestamp()
         });
-        alert('✅ ¡Publicación aprobada y difundida con éxito en el Directorio, WhatsApp, Instagram y Facebook Oficial!');
+        alert('✅ ¡Publicación aprobada y enviada a publicación! (Esto puede demorar unos segundos en impactar en FB/IG)');
       } catch(err) { alert('Error al difundir: ' + err.message); }
+    }
+
+    async function forceRetryMeta(pubId) {
+      try {
+        if (!db) return;
+        if(!confirm('¿Estás seguro de que deseas forzar el reintento de publicación en Meta (Facebook e Instagram)? Esto borrará el registro de éxito/error anterior para intentar de nuevo.')) return;
+        
+        await db.collection('publicaciones').doc(String(pubId)).update({
+          fbStatus: firebase.firestore.FieldValue.delete(),
+          fbError: firebase.firestore.FieldValue.delete(),
+          igStatus: firebase.firestore.FieldValue.delete(),
+          igError: firebase.firestore.FieldValue.delete(),
+          estado: 'Publicado en Redes', // Reescribir el estado gatilla la función de nuevo
+          difundidoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert('🔄 Reintento forzado enviado. Refrescá en unos segundos para ver si fue exitoso.');
+      } catch(err) { alert('Error al reintentar: ' + err.message); }
     }
 
     // ── Upsert un operador en Firestore ─────────────────────────

@@ -36,7 +36,7 @@ async function getInstagramToken() {
   }
   try {
     const [version] = await secretClient.accessSecretVersion({
-      name: "projects/nuestravoz-uy/secrets/instagram-login-token/versions/latest",
+      name: "projects/nuestravoz-uy/secrets/INSTAGRAM_LOGIN_TOKEN/versions/latest",
     });
     const token = version.payload.data.toString().trim();
     console.log("🔑 [getInstagramToken] Token obtenido exitosamente desde Secret Manager (instagram-login-token).");
@@ -185,7 +185,7 @@ exports.refreshInstagramToken = functions.pubsub.schedule("every 168 hours").onR
   }
   try {
     const [version] = await secretClient.accessSecretVersion({
-      name: "projects/nuestravoz-uy/secrets/instagram-login-token/versions/latest",
+      name: "projects/nuestravoz-uy/secrets/INSTAGRAM_LOGIN_TOKEN/versions/latest",
     });
     const currentToken = version.payload.data.toString().trim();
 
@@ -194,7 +194,7 @@ exports.refreshInstagramToken = functions.pubsub.schedule("every 168 hours").onR
     });
 
     await secretClient.addSecretVersion({
-      parent: "projects/nuestravoz-uy/secrets/instagram-login-token",
+      parent: "projects/nuestravoz-uy/secrets/INSTAGRAM_LOGIN_TOKEN",
       payload: { data: Buffer.from(res.data.access_token) },
     });
     console.log("✅ Token de Instagram renovado exitosamente, vence en", res.data.expires_in, "segundos");

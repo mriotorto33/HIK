@@ -131,7 +131,9 @@
         box-shadow: 10px 0 30px rgba(0,0,0,0.5);
       }
       .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; padding-top: 80px; padding-left: 16px; padding-right: 16px; }
+      .main { margin-left: 0; padding-top: 80px; padding-left: 16px; padding-right: 16px; width: 100%; }
+      .card { overflow-x: auto; }
+      table { min-width: 600px; }
     }
   </style>
 </head>
@@ -162,8 +164,8 @@
           <div class="sidebar-user-plan" id="sidebarUserPlan">Plan</div>
         </div>
       </div>
-      <a href="#" class="active" onclick="showSection('inicio')">
-        <i class="fa-solid fa-gauge"></i> Mi Panel
+      <a href="#" onclick="showSection('inicio')">
+        <i class="fa-solid fa-house"></i> Inicio
       </a>
       <a href="#" onclick="showSection('publicar')">
         <i class="fa-solid fa-paper-plane"></i> Publicar Contenido
@@ -171,7 +173,7 @@
       <a href="#" onclick="showSection('canales')">
         <i class="fa-solid fa-share-nodes"></i> Mis Canales
       </a>
-      <a href="#" onclick="showSection('perfil')">
+      <a href="#" class="active" onclick="showSection('perfil')">
         <i class="fa-solid fa-user"></i> Mi Perfil
       </a>
       <div class="sidebar-spacer"></div>
@@ -185,8 +187,8 @@
 
     <!-- Main Content -->
     <main class="main">
-      <!-- ── Section: Inicio / Overview ── -->
-      <section id="sec-inicio">
+      <!-- ── Dashboard / Inicio ── -->
+      <section id="sec-inicio" style="display:none">
         <div class="page-header">
           <div>
             <div class="page-title" id="welcomeName">Bienvenido/a a tu Panel</div>
@@ -265,8 +267,8 @@
               <label style="display:flex;align-items:center;gap:8px;font-size:0.88rem;cursor:pointer"><input type="checkbox" checked disabled /> Facebook Oficial</label>
             </div>
           </div>
-          <button class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center" onclick="sendContentForPublishing()">
-            <i class="fa-solid fa-paper-plane"></i> Enviar a Cecilia para Publicar
+          <button class="btn btn-primary" style="margin-top:16px;width:100%;justify-content:center" onclick="sendContentForPublishing()" id="btnSendPub">
+            <i class="fa-solid fa-paper-plane"></i> Enviar para Publicar
           </button>
         </div>
       </section>
@@ -287,8 +289,8 @@
         </div>
       </section>
 
-      <!-- ── Section: Perfil ── -->
-      <section id="sec-perfil" style="display:none">
+      <!-- ── Mi Perfil ── -->
+      <section id="sec-perfil">
         <div class="page-header">
           <div>
             <div class="page-title">Mi Perfil Profesional</div>
@@ -475,6 +477,7 @@
 
       renderUserPubs();
       syncLocalPubsToFirestore();
+      listenUserPubsFromFirestore();
     }
 
     // Auto-sincronizar publicaciones almacenadas localmente hacia Firestore
@@ -577,8 +580,37 @@
       renderUserPubs();
     }
 
-    function renderUserPubs() {
-      const pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+    // Helper para mostrar badge según estado real
+    function estadoBadge(p) {
+      const est = p.estado || '';
+      const fb = p.fbStatus || '';
+      const ig = p.igStatus || '';
+
+      if (est === 'Publicado en Redes') {
+        const fbOk = fb === 'success' || fb === '';
+        const igOk = ig === 'success' || ig === 'skipped_no_image' || ig === '';
+        if (fbOk && igOk) {
+          return `<span class="badge badge-active"><i class="fa-solid fa-circle-check"></i> Publicado</span>`;
+        }
+        // Parcialmente publicado
+        const parts = [];
+        if (fb === 'success') parts.push('FB ✓');
+        else if (fb === 'error') parts.push('FB ✗');
+        if (ig === 'success') parts.push('IG ✓');
+        else if (ig === 'error') parts.push('IG ✗');
+        return `<span class="badge badge-pending" title="Parcial"><i class="fa-solid fa-circle-half-stroke"></i> ${parts.join(' · ')}</span>`;
+      }
+      if (est === 'Enviado a Cecilia') {
+        return `<span class="badge badge-pending"><i class="fa-solid fa-clock"></i> Pendiente aprobación</span>`;
+      }
+      if (est === 'error') {
+        return `<span class="badge" style="background:rgba(220,60,60,0.15);color:#f87171;border:1px solid rgba(220,60,60,0.3)"><i class="fa-solid fa-triangle-exclamation"></i> Error</span>`;
+      }
+      return `<span class="badge badge-pending"><i class="fa-solid fa-spinner fa-spin"></i> ${est || 'Procesando...'}</span>`;
+    }
+
+    function renderUserPubs(pubs) {
+      if (!pubs) pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
       document.getElementById('sentCount').textContent = pubs.length;
       const tbody = document.getElementById('userPubsTable');
       if (pubs.length === 0) {
@@ -588,16 +620,41 @@
           <tr>
             <td><strong>${p.titulo}</strong><br><small style="color:var(--text-3)">${(p.texto || '').substring(0,60)}...</small></td>
             <td><small style="color:var(--teal)">Directorio, WhatsApp, IG, FB</small></td>
-            <td><span class="badge badge-pending"><i class="fa-solid fa-spinner fa-spin"></i> ${p.estado}</span></td>
+            <td>${estadoBadge(p)}</td>
             <td><small style="color:var(--text-3)">${p.fecha}</small></td>
-            <td>
-              <button class="btn btn-sm" style="background:#25D366;color:#fff;border:none;cursor:pointer;padding:4px 8px;font-size:0.78rem;border-radius:6px" onclick="shareToWhatsApp('${encodeURIComponent(p.titulo || '')}', '${encodeURIComponent(p.texto || '')}', '${encodeURIComponent(p.imagenUrl || '')}')">
-                <i class="fa-brands fa-whatsapp"></i> Compartir WA
-              </button>
-            </td>
+            <td></td>
           </tr>
         `).join('');
       }
+    }
+
+    // Escuchar publicaciones en tiempo real desde Firestore
+    let _pubsUnsubscribe = null;
+    function listenUserPubsFromFirestore() {
+      if (typeof firebase === 'undefined') return;
+      if (_pubsUnsubscribe) _pubsUnsubscribe();
+      const db = firebase.firestore();
+      const email = currentUser?.email || '';
+      if (!email) return;
+      _pubsUnsubscribe = db.collection('publicaciones')
+        .where('operadorEmail', '==', email)
+        .orderBy('creado', 'desc')
+        .limit(30)
+        .onSnapshot(snapshot => {
+          const pubs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          // Actualizar también localStorage para offline
+          const existing = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+          const merged = [...pubs];
+          existing.forEach(lp => {
+            if (!merged.find(p => p.id === lp.id)) merged.push(lp);
+          });
+          localStorage.setItem('nv_user_pubs', JSON.stringify(merged));
+          document.getElementById('sentCount').textContent = pubs.length;
+          renderUserPubs(pubs);
+        }, err => {
+          console.warn('Firestore listen error:', err);
+          renderUserPubs(); // fallback to localStorage
+        });
     }
 
     function shareToWhatsApp(rawTitle, rawText, rawImageUrl) {
@@ -611,6 +668,34 @@
       }
       const encoded = encodeURIComponent(msg);
       window.open(`https://api.whatsapp.com/send?text=${encoded}`, '_blank');
+    }
+
+    async function forceRetryMeta(pubId) {
+      if (typeof firebase === 'undefined') return alert('Firebase no cargado.');
+      try {
+        const db = firebase.firestore();
+        if(!confirm('¿Forzar reintento de publicación en Meta?')) return;
+        
+        await db.collection('publicaciones').doc(String(pubId)).update({
+          fbStatus: firebase.firestore.FieldValue.delete(),
+          fbError: firebase.firestore.FieldValue.delete(),
+          igStatus: firebase.firestore.FieldValue.delete(),
+          igError: firebase.firestore.FieldValue.delete(),
+          estado: 'Publicado en Redes',
+          difundidoEn: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        
+        // Update local storage representation
+        const pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+        const idx = pubs.findIndex(p => p.id === pubId);
+        if (idx !== -1) {
+          pubs[idx].estado = 'Publicado en Redes';
+          localStorage.setItem('nv_user_pubs', JSON.stringify(pubs));
+        }
+        
+        alert('🔄 Reintento enviado.');
+        renderUserPubs();
+      } catch(err) { alert('Error al reintentar: ' + err.message); }
     }
 
     async function saveProfileChanges() {
