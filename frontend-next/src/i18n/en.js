@@ -29,6 +29,7 @@ export const en = {
   },
   hero: {
     subtitle: "DETERMINISTIC POLICY ENFORCEMENT FOR ENTERPRISE AI",
+    pqcMilestone: "🚀 Milestone: HIK is now Post-Quantum Cryptography (PQC) Ready! Crystals-Dilithium anchoring is live.",
     description: "AI systems make consequential decisions — but produce no proof they stayed within policy. HIK changes that: every AI interaction is enforced at the policy boundary and issues a court-admissible compliance receipt before it reaches your workflow.",
     badges: ["Fail Open to Humans", "Fail Closed to Machines", "EU AI Act Art. 50", "NYC LL144", "GDPR Art. 22", "Zero Trust", "Blockchain-Anchored", "Model-Agnostic"],
     cta: {

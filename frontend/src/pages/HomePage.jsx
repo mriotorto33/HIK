@@ -115,6 +115,11 @@ const HomePage = () => {
           <p data-testid="hero-subtitle" className="hero-subtitle text-sm sm:text-base md:text-lg text-[#E8761D] tracking-[0.06em] uppercase mb-5 font-bold leading-snug">
             {t.hero.subtitle}
           </p>
+          {t.hero.pqcMilestone && (
+            <div className="bg-[#E8761D]/10 border border-[#E8761D]/30 text-[#E8761D] px-4 py-3 rounded-lg mb-6 max-w-3xl mx-auto text-sm sm:text-base font-semibold shadow-[0_0_15px_rgba(232,118,29,0.2)]">
+              {t.hero.pqcMilestone}
+            </div>
+          )}
           <p data-testid="hero-description" className="hero-desc text-base sm:text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">{t.hero.description}</p>
 
           {/* Regulatory badges — outcome-focused, no acronym soup */}
