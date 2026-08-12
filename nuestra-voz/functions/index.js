@@ -2,10 +2,8 @@ const functions = require("firebase-functions/v1");
 const admin = require("firebase-admin");
 const axios = require("axios");
 const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
-const sharp = require("sharp");
-const path = require("path");
-const os = require("os");
-const fs = require("fs");
+// NOTE: sharp is required lazily inside prepareImageForInstagram to avoid
+// Firebase Functions initialization timeout during deployment analysis.
 
 admin.initializeApp();
 let secretClient = null;
@@ -64,6 +62,7 @@ async function getInstagramToken() {
  * Si la imagen ya está dentro del rango aceptado, retorna la URL original.
  */
 async function prepareImageForInstagram(imageUrl, pubId) {
+  const sharp = require("sharp"); // lazy require — avoids init timeout
   console.log(`📏 [prepareImageForInstagram] Verificando aspect ratio de: ${imageUrl}`);
 
   // Descargar imagen
