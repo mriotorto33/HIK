@@ -58,14 +58,15 @@ async function getInstagramToken() {
 /**
  * Descarga una imagen, la recorta a 1:1 (cuadrado) si el aspect ratio está
  * fuera del rango válido de Instagram (4:5 a 1.91:1), y la sube de vuelta
- * a Firebase Storage. Retorna la nueva URL pública.
- * Si la imagen ya está dentro del rango aceptado, retorna la URL original.
+ * a Firebase Storage con URL pública permanente (sin token de auth).
+ * SIEMPRE retorna una URL pública — nunca la URL con token de Firebase Storage,
+ * ya que esos tokens expiran y Instagram no puede descargar la imagen.
  */
 async function prepareImageForInstagram(imageUrl, pubId) {
   const sharp = require("sharp"); // lazy require — avoids init timeout
-  console.log(`📏 [prepareImageForInstagram] Verificando aspect ratio de: ${imageUrl}`);
+  console.log(`📏 [prepareImageForInstagram] Procesando imagen para Instagram: ${imageUrl}`);
 
-  // Descargar imagen
+  // Descargar imagen (la función tiene permisos de GCP para URLs de Firebase Storage)
   let imageBuffer;
   try {
     const response = await axios.get(imageUrl, { responseType: "arraybuffer", timeout: 30000 });
@@ -89,43 +90,48 @@ async function prepareImageForInstagram(imageUrl, pubId) {
 
   console.log(`📐 [prepareImageForInstagram] Dimensiones: ${width}x${height} | Ratio: ${ratio.toFixed(3)} | Rango IG: [${MIN_RATIO}, ${MAX_RATIO}]`);
 
+  let finalBuffer;
+  let suffix;
+
   if (ratio >= MIN_RATIO && ratio <= MAX_RATIO) {
-    console.log("✅ [prepareImageForInstagram] Ratio dentro del rango de Instagram. No se necesita recorte.");
-    return imageUrl;
+    // Ratio OK — pero IGUALMENTE re-subimos para obtener URL pública sin token
+    console.log(`✅ [prepareImageForInstagram] Ratio dentro del rango. Re-subiendo con URL pública permanente...`);
+    finalBuffer = await sharp(imageBuffer).jpeg({ quality: 92 }).toBuffer();
+    suffix = "ig_ready";
+  } else {
+    // Recortar al cuadrado máximo posible (centrado)
+    console.log(`✂️ [prepareImageForInstagram] Ratio fuera de rango (${ratio.toFixed(3)}). Recortando a cuadrado 1:1 centrado...`);
+    const size = Math.min(width, height);
+    const left = Math.floor((width - size) / 2);
+    const top  = Math.floor((height - size) / 2);
+    try {
+      finalBuffer = await sharp(imageBuffer)
+        .extract({ left, top, width: size, height: size })
+        .jpeg({ quality: 92 })
+        .toBuffer();
+      suffix = "ig_square";
+    } catch (err) {
+      console.warn(`⚠️ [prepareImageForInstagram] Error al recortar: ${err.message}. Usando URL original.`);
+      return imageUrl;
+    }
   }
 
-  // Recortar al cuadrado máximo posible (centrado)
-  console.log(`✂️ [prepareImageForInstagram] Ratio fuera de rango (${ratio.toFixed(3)}). Recortando a cuadrado 1:1 centrado...`);
-  const size = Math.min(width, height);
-  const left = Math.floor((width - size) / 2);
-  const top  = Math.floor((height - size) / 2);
-
-  let croppedBuffer;
-  try {
-    croppedBuffer = await sharp(imageBuffer)
-      .extract({ left, top, width: size, height: size })
-      .jpeg({ quality: 92 })
-      .toBuffer();
-  } catch (err) {
-    console.warn(`⚠️ [prepareImageForInstagram] Error al recortar: ${err.message}. Usando URL original.`);
-    return imageUrl;
-  }
-
-  // Subir imagen recortada a Firebase Storage
+  // Subir imagen a Firebase Storage con URL pública permanente (sin token)
   try {
     const bucket = admin.storage().bucket();
-    const destPath = `publicaciones/${pubId}_ig_square.jpg`;
+    const destPath = `publicaciones/${pubId}_${suffix}.jpg`;
     const file = bucket.file(destPath);
-    await file.save(croppedBuffer, { metadata: { contentType: "image/jpeg" } });
+    await file.save(finalBuffer, { metadata: { contentType: "image/jpeg" } });
     await file.makePublic();
     const publicUrl = `https://storage.googleapis.com/${bucket.name}/${destPath}`;
-    console.log(`🖼️ [prepareImageForInstagram] Imagen cuadrada subida exitosamente: ${publicUrl}`);
+    console.log(`🖼️ [prepareImageForInstagram] Imagen subida exitosamente con URL pública: ${publicUrl}`);
     return publicUrl;
   } catch (err) {
-    console.warn(`⚠️ [prepareImageForInstagram] Error al subir imagen recortada: ${err.message}. Usando URL original.`);
+    console.warn(`⚠️ [prepareImageForInstagram] Error al subir imagen: ${err.message}. Usando URL original.`);
     return imageUrl;
   }
 }
+
 
 async function publishToFacebookPage(text, imageUrl) {
   const base = `https://graph.facebook.com/${GRAPH_API_VERSION}/${META_PAGE_ID}`;

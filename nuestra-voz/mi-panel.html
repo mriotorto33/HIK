@@ -195,7 +195,7 @@
             <div class="page-subtitle">Gestioná tu presencia en 4 canales de difusión</div>
           </div>
           <div style="display:flex;align-items:center;gap:12px">
-            <div style="font-size:0.8rem;color:var(--text-3)">Ver como operador:</div>
+            <div style="font-size:0.8rem;color:var(--text-3)">Ver como profesional:</div>
             <select id="accountSelector" class="form-input" style="width:220px" onchange="switchOperatorAccount(this.value)"></select>
             <button class="btn btn-primary" onclick="showSection('publicar')">
               <i class="fa-solid fa-plus"></i> Nueva Publicación
@@ -278,7 +278,7 @@
         <div class="page-header">
           <div>
             <div class="page-title">Mis Canales de Publicación</div>
-            <div class="page-subtitle">Redes asociadas a tu plan de operador</div>
+            <div class="page-subtitle">Redes asociadas a tu plan profesional</div>
           </div>
         </div>
 
@@ -380,7 +380,7 @@
 
       currentUser = {
         id: 'demo',
-        nombre: 'Sin operador configurado',
+        nombre: 'Sin profesional configurado',
         email: '',
         telefono: '',
         especialidad: '',
@@ -394,7 +394,7 @@
       const sel = document.getElementById('accountSelector');
       const ops = getAllOperators();
       if (ops.length === 0) {
-        sel.innerHTML = '<option value="">— Sin operadores —</option>';
+        sel.innerHTML = '<option value="">— Sin profesionales —</option>';
         return;
       }
       sel.innerHTML = ops.map(o =>
@@ -409,7 +409,7 @@
       if (!op) return;
 
       const expectedPass = op.pass || '123456';
-      const inputPass = prompt(`🔐 Autenticación de Operador:\nIngresá la contraseña para acceder a la cuenta de "${op.nombre}":`);
+      const inputPass = prompt(`🔐 Autenticación:\nIngresá la contraseña para acceder a la cuenta de "${op.nombre}":`);
 
       if (inputPass === null) {
         populateAccountSelector(); // Reset select if canceled
@@ -480,19 +480,35 @@
       listenUserPubsFromFirestore();
     }
 
-    // Auto-sincronizar publicaciones almacenadas localmente hacia Firestore
-    function syncLocalPubsToFirestore() {
+    // Auto-sincronizar publicaciones locales a Firestore (CREATE-ONLY).
+    // IMPORTANTE: NO sobreescribir documentos que ya existen en Firestore,
+    // porque Ceci puede haber cambiado el estado a "Publicado en Redes"
+    // y el localStorage todavía tiene "Enviado a Cecilia".
+    async function syncLocalPubsToFirestore() {
       if (typeof firebase === 'undefined') return;
       const pubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
       if (pubs.length === 0) return;
       
       try {
         const db = firebase.firestore();
-        pubs.forEach(pub => {
-          db.collection('publicaciones').doc(pub.id).set(pub, { merge: true })
-            .then(() => console.log('Sync Firestore pub:', pub.id))
-            .catch(err => console.warn('Sync error:', err));
-        });
+        for (const pub of pubs) {
+          const docRef = db.collection('publicaciones').doc(pub.id);
+          const doc = await docRef.get();
+          if (!doc.exists) {
+            // Solo crear si no existe — nunca sobreescribir
+            await docRef.set(pub);
+            console.log('Sync Firestore pub (new):', pub.id);
+          } else {
+            // Actualizar localStorage con el estado real de Firestore
+            const serverData = doc.data();
+            const localPubs = JSON.parse(localStorage.getItem('nv_user_pubs') || '[]');
+            const idx = localPubs.findIndex(p => p.id === pub.id);
+            if (idx !== -1) {
+              localPubs[idx] = { ...localPubs[idx], ...serverData, id: pub.id };
+              localStorage.setItem('nv_user_pubs', JSON.stringify(localPubs));
+            }
+          }
+        }
       } catch (e) { console.error('Sync error:', e); }
     }
 

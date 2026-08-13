@@ -225,7 +225,7 @@
         <i class="fa-solid fa-gauge"></i> Dashboard
       </a>
       <a href="#" onclick="showSection('operators')">
-        <i class="fa-solid fa-users"></i> Operadores
+        <i class="fa-solid fa-users"></i> Profesionales
       </a>
       <a href="#" onclick="showSection('materials')">
         <i class="fa-solid fa-file-lines"></i> Materiales
@@ -255,13 +255,13 @@
             <div class="page-subtitle">Bienvenida, Cecilia 👋</div>
           </div>
           <button class="btn btn-primary" onclick="openNewOperatorModal()">
-            <i class="fa-solid fa-plus"></i> Nuevo Operador
+            <i class="fa-solid fa-plus"></i> Nuevo Profesional
           </button>
         </div>
 
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="label">Operadores activos</div>
+            <div class="label">Profesionales activos</div>
             <div class="value" id="statOperators">0</div>
             <div class="change up">↑ Fase de lanzamiento</div>
           </div>
@@ -281,12 +281,12 @@
 
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Últimos operadores registrados</div>
+            <div class="card-title">Últimos profesionales registrados</div>
           </div>
           <div id="recentOperators">
             <div class="empty">
               <i class="fa-solid fa-users"></i>
-              Todavía no hay operadores registrados. Hacé clic en "Nuevo Operador" para crear el primero.
+              Todavía no hay profesionales registrados. Hacé clic en "Nuevo Profesional" para crear el primero.
             </div>
           </div>
         </div>
@@ -296,11 +296,11 @@
       <section id="sec-operators" style="display:none">
         <div class="page-header">
           <div>
-            <div class="page-title">SuperAdmin · Gestión de Operadores</div>
-            <div class="page-subtitle">Alta, baja, edición y aprobación de operadores terapéuticos</div>
+            <div class="page-title">SuperAdmin · Gestión de Profesionales</div>
+            <div class="page-subtitle">Alta, baja, edición y aprobación de profesionales de la salud y el bienestar</div>
           </div>
           <button class="btn btn-primary" onclick="openNewOperatorModal()">
-            <i class="fa-solid fa-user-plus"></i> Nuevo Operador
+            <i class="fa-solid fa-user-plus"></i> Nuevo Profesional
           </button>
         </div>
 
@@ -325,7 +325,7 @@
           <table>
             <thead>
               <tr>
-                <th>Operador / Especialidad</th>
+                <th>Profesional / Especialidad</th>
                 <th>Contacto</th>
                 <th>Plan</th>
                 <th>Pago</th>
@@ -335,7 +335,7 @@
               </tr>
             </thead>
             <tbody id="operatorsTableBody">
-              <tr><td colspan="7" class="empty"><i class="fa-solid fa-users"></i> Cargando operadores...</td></tr>
+              <tr><td colspan="7" class="empty"><i class="fa-solid fa-users"></i> Cargando profesionales...</td></tr>
             </tbody>
           </table>
         </div>
@@ -345,7 +345,7 @@
       <section id="sec-materials" style="display:none">
         <div class="page-header">
           <div>
-            <div class="page-title">Materiales y Contenidos de Operadores</div>
+            <div class="page-title">Materiales y Contenidos de Profesionales</div>
             <div class="page-subtitle">Coordinación de difusión en el Directorio, WhatsApp, Instagram y Facebook Oficial</div>
           </div>
         </div>
@@ -357,7 +357,7 @@
             <div class="empty">
               <i class="fa-solid fa-file-lines"></i>
               No hay publicaciones pendientes.<br>
-              <small style="color:var(--text-3)">Las publicaciones que los operadores envíen desde "Mi Panel" aparecerán acá para su aprobación y difusión.</small>
+              <small style="color:var(--text-3)">Las publicaciones que los profesionales envíen desde "Mi Panel" aparecerán acá para su aprobación y difusión.</small>
             </div>
           </div>
         </div>
@@ -401,7 +401,7 @@
   <!-- ═══════ MODAL: New Operator ═══════ -->
   <div class="modal-bg" id="newOperatorModal">
     <div class="modal">
-      <h3 id="operatorModalTitle">👤 Crear Nuevo Operador</h3>
+      <h3 id="operatorModalTitle">👤 Crear Nuevo Profesional</h3>
       <input type="hidden" id="editOpId" value="" />
       <div class="form-group">
         <label class="form-label">Nombre completo *</label>
@@ -409,7 +409,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">Email *</label>
-        <input class="form-input" type="email" id="opEmail" placeholder="operador@email.com" />
+        <input class="form-input" type="email" id="opEmail" placeholder="profesional@email.com" />
       </div>
       <div class="form-group">
         <label class="form-label">WhatsApp</label>
@@ -463,7 +463,7 @@
       </div>
       <div style="display:flex;gap:10px;margin-top:20px">
         <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="saveOperatorFromModal()">
-          <i class="fa-solid fa-floppy-disk"></i> Guardar Operador
+          <i class="fa-solid fa-floppy-disk"></i> Guardar Profesional
         </button>
         <button class="btn btn-ghost" onclick="closeNewOperatorModal()">Cancelar</button>
       </div>
@@ -543,7 +543,7 @@
       if (unsubscribe) unsubscribe();
 
       const tbody = document.getElementById('operatorsTableBody');
-      if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-spinner fa-spin"></i> Cargando operadores desde Firestore...</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-spinner fa-spin"></i> Cargando profesionales desde Firestore...</td></tr>';
 
       unsubscribe = db.collection('operadores')
         .orderBy('creado', 'desc')
@@ -556,7 +556,7 @@
             `<tr><td colspan="7" class="empty" style="color:var(--red)">Error Firestore: ${err.message}. Verificá las reglas de seguridad.</td></tr>`;
         });
 
-      // Escuchar solicitudes de publicación enviadas por los operadores
+      // Escuchar solicitudes de publicación enviadas por los profesionales
       db.collection('publicaciones')
         .onSnapshot(snapshot => {
           const pubs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -574,7 +574,7 @@
           <div class="empty">
             <i class="fa-solid fa-file-lines"></i>
             No hay publicaciones pendientes.<br>
-            <small style="color:var(--text-3)">Las publicaciones que los operadores envíen desde "Mi Panel" aparecerán acá para su aprobación y difusión en los 4 canales.</small>
+            <small style="color:var(--text-3)">Las publicaciones que los profesionales envíen desde "Mi Panel" aparecerán acá para su aprobación y difusión en los 4 canales.</small>
           </div>`;
         return;
       }
@@ -583,7 +583,7 @@
         <table style="width:100%">
           <thead>
             <tr>
-              <th>Operador</th>
+              <th>Profesional</th>
               <th>Título y Contenido</th>
               <th>Canales de Difusión</th>
               <th>Estado</th>
@@ -593,7 +593,7 @@
           <tbody>
             ${pubs.map(p => `
               <tr>
-                <td><strong>${p.operadorNombre || 'Operador'}</strong><br><small style="color:var(--text-3)">${p.operadorEmail || ''}</small></td>
+                <td><strong>${p.operadorNombre || 'Profesional'}</strong><br><small style="color:var(--text-3)">${p.operadorEmail || ''}</small></td>
                 <td><strong>${p.titulo}</strong><br><small style="color:var(--text-2)">${(p.texto || '').substring(0,80)}...</small></td>
                 <td><small style="color:var(--teal)">🌐 WEB, 📲 WA, 📸 IG, 📘 FB</small></td>
                 <td>
@@ -692,7 +692,7 @@
     // ── Modales ────────────────────────────────────────────────
     function openNewOperatorModal() {
       document.getElementById('editOpId').value = '';
-      document.getElementById('operatorModalTitle').textContent = '👤 Crear Nuevo Operador';
+      document.getElementById('operatorModalTitle').textContent = '👤 Crear Nuevo Profesional';
       document.getElementById('opNombre').value = '';
       document.getElementById('opEmail').value = '';
       document.getElementById('opTel').value = '';
@@ -708,7 +708,7 @@
       const op = cachedOps.find(o => String(o.id) === String(id));
       if (!op) return;
       document.getElementById('editOpId').value = op.id;
-      document.getElementById('operatorModalTitle').textContent = '✏️ Editar Operador · ABM SuperAdmin';
+      document.getElementById('operatorModalTitle').textContent = '✏️ Editar Profesional · ABM SuperAdmin';
       document.getElementById('opNombre').value = op.nombre || '';
       document.getElementById('opEmail').value = op.email || '';
       document.getElementById('opTel').value = op.telefono || '';
@@ -782,7 +782,7 @@
     }
 
     async function deleteOperator(id) {
-      if (!confirm('⚠️ SuperAdmin: ¿Eliminar permanentemente este operador?')) return;
+      if (!confirm('⚠️ SuperAdmin: ¿Eliminar permanentemente este profesional?')) return;
       try {
         await deleteFromFS(id);
         // onSnapshot actualiza la tabla
@@ -815,7 +815,7 @@
       // Render ABM Table
       const tbody = document.getElementById('operatorsTableBody');
       if (filtered.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-filter"></i> No se encontraron operadores.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="empty"><i class="fa-solid fa-filter"></i> No se encontraron profesionales.</td></tr>';
       } else {
         tbody.innerHTML = filtered.map(o => {
           const planLabel = o.plan === 'elite' ? '👑 Elite ($75)' : (o.plan === 'profesional' ? '⭐ Pro ($35)' : 'Básico ($15)');
