@@ -1,0 +1,43 @@
+# Nuestra Voz
+
+> Plataforma marketplace de Uruguay para profesionales de la salud y el bienestar mental. Publicá tus servicios y contenidos en Instagram, WhatsApp y Facebook con un solo clic.
+
+## Sobre Nuestra Voz
+
+Nuestra Voz es la primera plataforma de Uruguay diseñada específicamente para profesionales de la salud y el bienestar mental. Fue fundada por Cecilia Mahia, profesional certificada especializada en adicciones y situaciones de abuso.
+
+La plataforma permite a los profesionales:
+- Publicar sus servicios en un directorio público verificado
+- Difundir contenidos simultáneamente en Instagram, Facebook y WhatsApp desde un solo panel
+- Gestionar su presencia digital profesional sin conocimientos técnicos
+
+## Especialidades disponibles
+
+- Adicciones
+- Abuso y violencia
+- Ansiedad y depresión
+- Terapia de pareja
+- Psicología infantil
+- Coaching de vida
+- Nutrición y bienestar
+- Mindfulness y meditación
+
+## Planes
+
+- **Plan Básico ($15 USD/mes):** Publicación en el directorio + 1 canal de difusión
+- **Plan Profesional ($35 USD/mes):** Directorio + 3 canales (WhatsApp, Instagram, Facebook)
+- **Plan Elite ($75 USD/mes):** Todos los canales + posicionamiento destacado + soporte prioritario
+
+## Ubicación
+
+Uruguay — con soporte para pagos en UYU y USD.
+
+## Contacto
+
+- Web: https://nuestravoz.humaniskind.com
+- Instagram: https://www.instagram.com/nuestravoz_uy/
+- Email: contact@humaniskind.com
+
+## Tecnología
+
+Desarrollada por HumanIsKind. La plataforma corre sobre Firebase (Hosting, Firestore, Cloud Functions, Storage) con integración directa a la Meta Graph API para publicación automatizada en Instagram y Facebook.

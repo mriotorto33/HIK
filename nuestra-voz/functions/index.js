@@ -1,7 +1,8 @@
 const functions = require("firebase-functions/v1");
 const admin = require("firebase-admin");
 const axios = require("axios");
-const { SecretManagerServiceClient } = require("@google-cloud/secret-manager");
+// NOTE: @google-cloud/secret-manager is loaded lazily inside getInstagramToken()
+// to avoid Firebase Functions initialization timeout during deployment.
 // NOTE: sharp is required lazily inside prepareImageForInstagram to avoid
 // Firebase Functions initialization timeout during deployment analysis.
 

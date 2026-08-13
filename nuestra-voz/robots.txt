@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /panel-ceci-*
+Disallow: /mi-panel.html
+
+Sitemap: https://nuestravoz.humaniskind.com/sitemap.xml
